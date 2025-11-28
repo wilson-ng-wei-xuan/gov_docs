@@ -1,0 +1,17 @@
+FROM registry.sgts.gitlab-dedicated.com/wog/gvt/acpd/govtech-acpd/automated-red-teaming/automated-red-teaming/kali-base
+
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+
+# Project files
+COPY pentestagent-workflow/ .
+
+# Python venv + deps
+RUN rm -rf venv && virtualenv venv && ./venv/bin/pip install -U pip \
+ && ./venv/bin/pip install --no-cache-dir -r requirements.txt \
+ && ./venv/bin/pip install --no-cache-dir playwright
+
+# Install Playwright browsers (Chromium) inside the image
+RUN ./venv/bin/python -m playwright install chromium
+
+CMD ["./venv/bin/python","-m","uvicorn","server.server:app","--host","0.0.0.0","--port","8000","--workers","1"]
