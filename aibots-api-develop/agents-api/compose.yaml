@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  agents:
+    image: "${ATLAS_REGISTRY}aibots/agents-api:${TAG:-main}"
+    ports:
+      - "${EXTERNAL_PORT:-443}:${INTERNAL_PORT:-443}"
+    container_name: agents
+    environment:
+      HOST: "${HOST:-0.0.0.0}"
+      PORT: "${INTERNAL_PORT:-443}"
+      LOGGING_LEVEL: "${LOGGING_LEVEL:-20}"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+        reservations:
+          memory: 100m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50M"
+        max-file: "1"
+    networks:
+      - aibots
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    expose:
+      - "80"did u
+      - "443"
+
+networks:
+  aibots:

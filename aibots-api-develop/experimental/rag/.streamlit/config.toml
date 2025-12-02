@@ -1,0 +1,6 @@
+[server]
+baseUrlPath = "aibotsprototypes"
+enableXsrfProtection=false
+
+[deprecation]
+showPyplotGlobalUse = false

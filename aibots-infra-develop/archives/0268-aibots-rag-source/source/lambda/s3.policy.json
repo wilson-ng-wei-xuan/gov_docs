@@ -1,0 +1,52 @@
+{
+  "Version" : "2012-10-17",
+  "Statement" : [
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "s3:ListBucket",
+				"s3:PutObject",
+        "sqs:ChangeMessageVisibility",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:ReceiveMessage"
+      ],
+      "Resource" : [
+        "${PROJECT__BUCKET_ARN}",
+        "${PROJECT__BUCKET_ARN}/*",
+        "${ANALYTICS__BUCKET_ARN}",
+        "${ANALYTICS__BUCKET_ARN}/*",
+        "${SOURCE__SQS_ARN}"
+      ]
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "sqs:sendmessage"
+      ],
+      "Resource" : [
+        "${PROJECT_RAG_STATUS_MAIN__SQS_ARN}",
+        "${PROJECT_RAG_PARSE_DOCX__SQS_ARN}",
+        "${PROJECT_RAG_PARSE_XLSX__SQS_ARN}",
+        "${PROJECT_RAG_PARSE_PPTX__SQS_ARN}",
+        "${PROJECT_RAG_PARSE_CSV__SQS_ARN}",
+        "${PROJECT_RAG_PARSE_TXT__SQS_ARN}",
+        "${PROJECT_RAG_PARSE_PDF__SQS_ARN}",
+        "${PROJECT_RAG_EXTSTACK_GOVTEXT__SQS_ARN}",
+        "${PROJECT_RAG_SOURCE_S3__SQS_ARN}",
+        "${PROJECT_RAG_SOURCE_URL__SQS_ARN}"
+      ]
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "s3:GetObject",
+        "s3:DeleteObject"
+      ],
+      "Resource" : [
+        "${PROJECT__BUCKET_ARN}",
+        "${PROJECT__BUCKET_ARN}/*"
+      ]
+    }
+  ]
+}

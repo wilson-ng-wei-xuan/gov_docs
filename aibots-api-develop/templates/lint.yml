@@ -1,0 +1,7 @@
+
+.lint:
+  before_script:
+    - pip install poetry nox nox-poetry && export PATH="/tmp/.local/bin:$PATH"
+  script:
+    - cd $COMPONENT_PATH
+    - nox -k "tests and lint"

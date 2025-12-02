@@ -1,0 +1,4492 @@
+{
+	"info": {
+		"_postman_id": "559dbf0a-051c-45d5-a367-f85683d8d135",
+		"name": "[AIBots] CRUD Files",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27973896",
+		"_collection_link": "https://launchpad-dsaid.postman.co/workspace/Moonshot-Workspace~9c1f39db-dd94-4f31-8ace-bbaf5da2b4f2/collection/27973896-559dbf0a-051c-45d5-a367-f85683d8d135?action=share&source=collection_link&creator=27973896"
+	},
+	"item": [
+		{
+			"name": "Login to AIBots",
+			"item": [
+				{
+					"name": "Request Email OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Request Email OTP",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 05 Jul 2024 03:45:13 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Retrieve Email OTPs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieve Email OTPs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var last = jsonData.length - 1\r",
+									"    pm.expect(jsonData.length).to.be.gte(1);\r",
+									"    pm.expect(jsonData[last].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[last].user).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[last].email).to.eql(pm.environment.get(\"TEST_EMAIL_ADDRESS1\"));\r",
+									"    const required_keys = [\"otp\", \"timestamp\", \"expiry\"];\r",
+									"    pm.expect(required_keys.every((v) => Object.keys(jsonData[last]).includes(v))).to.eql(true);\r",
+									"    pm.environment.set(\"TEST_OTP\", jsonData[last].otp);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Email OTPs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 05 Jul 2024 03:45:16 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "225"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"799bd37265a5410eb3add9ec7c0a99a0\",\n        \"user\": \"04e058973c6252aa8640ca126441e52c\",\n        \"email\": \"davidtwlee@dsaid.gov.sg\",\n        \"otp\": \"030745\",\n        \"timestamp\": \"2024-07-05T11:45:14.153000+08:00\",\n        \"expiry\": \"2024-07-05T11:45:26.153000+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Login via Email OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successful Login via Email OTP\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"TEST_EMAIL_ADDRESS1\"));\r",
+									"    pm.expect(jsonData.newUser).to.eql(true);\r",
+									"    pm.expect(jsonData.refreshCount).to.eql(0);\r",
+									"    pm.expect(jsonData.maxRefresh).to.eql(5);\r",
+									"    pm.expect(jsonData.scopes).to.eql([\"*\"]);\r",
+									"    pm.expect(jsonData.itemScopes.length).to.eql(3);\r",
+									"    pm.expect(jsonData.superuser).to.eql(true);\r",
+									"    const required_keys = [\"name\", \"timestamp\", \"token\", \"refreshToken\", \"expiry\", \"issuer\", \"product\", \"refreshCount\", \"maxRefresh\", \"role\"];\r",
+									"    pm.expect(required_keys.every((v) => Object.keys(jsonData).includes(v))).to.eql(true);\r",
+									"    pm.environment.set(\"REFRESH_TOKEN\", jsonData.refreshToken);\r",
+									"    pm.environment.set(\"TEST_USER1_NAME\", jsonData.name);\r",
+									"    pm.environment.set(\"TEST_USER1_ID\", jsonData.id);\r",
+									"});\r",
+									"pm.test(\"Authorization header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Authorization\");\r",
+									"    pm.environment.set(\"AUTH_TOKEN\", pm.response.headers.get('Authorization').split(' ')[1]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\",\r\n    \"otp\": \"{{TEST_OTP}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails/logins",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails",
+								"logins"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login via Email OTP",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\",\r\n    \"otp\": \"{{TEST_OTP}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails/logins",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails",
+										"logins"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 05 Jul 2024 03:45:19 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "authorization",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDE1MTExOSwiaWF0IjoxNzIwMTUxMTE5LCJleHAiOjE3MjAxNTgzMTksImp0aSI6IjI4NTJhZDdkZGY2YjRmZmViYjlhMGY4NzUyODdjY2UxIiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiIwNjNiMjgxNWRmM2I0YWUzODI0N2IzZWEyZTMxZDE0MSIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJoS3NjSVYyUXlmOUM0eGpnVW40V2ZRIn0.kKod_kbmMXwVMnOc9ICKUsgOV5rz1A7p1IzmkvosEy8"
+								},
+								{
+									"key": "content-length",
+									"value": "1247"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"Davidtwlee\",\n    \"id\": \"04e058973c6252aa8640ca126441e52c\",\n    \"issuer\": \"GovTech\",\n    \"product\": \"sit.aibots.gov.sg\",\n    \"refreshToken\": \"ef0922739a9f776a5e062a1cb7e6a020\",\n    \"refreshCount\": 0,\n    \"maxRefresh\": 5,\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDE1MTExOSwiaWF0IjoxNzIwMTUxMTE5LCJleHAiOjE3MjAxNTgzMTksImp0aSI6IjI4NTJhZDdkZGY2YjRmZmViYjlhMGY4NzUyODdjY2UxIiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiIwNjNiMjgxNWRmM2I0YWUzODI0N2IzZWEyZTMxZDE0MSIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJoS3NjSVYyUXlmOUM0eGpnVW40V2ZRIn0.kKod_kbmMXwVMnOc9ICKUsgOV5rz1A7p1IzmkvosEy8\",\n    \"scopes\": [\n        \"*\"\n    ],\n    \"itemScopes\": [\n        \"agents.804885b4423e485cb21592c7dfa8baa8:read,allow\",\n        \"chats.804885b4423e485cb21592c7dfa8baa8:create,read,update,delete\",\n        \"messages.804885b4423e485cb21592c7dfa8baa8:create,read,update,delete\"\n    ],\n    \"expiry\": \"2024-07-05T13:45:19.946325+08:00\",\n    \"startUse\": \"2024-07-05T11:45:19.946323+08:00\",\n    \"timestamp\": \"2024-07-05T11:45:19.946382+08:00\",\n    \"email\": \"davidtwlee@dsaid.gov.sg\",\n    \"newUser\": true,\n    \"role\": \"063b2815df3b4ae38247b3ea2e31d141\",\n    \"superuser\": true,\n    \"agency\": \"govtech\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "CRUD Files",
+			"item": [
+				{
+					"name": "Attempt to RUD non-existent Files",
+					"item": [
+						{
+							"name": "Retrieve non-existent File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"pm.test(\"Retrieve non-existent File\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.code).to.eql(404);\r",
+											"    pm.expect(jsonData.message).to.eql(\"File does not exist\");\r",
+											"    pm.expect(jsonData.details.id).to.eql(pm.environment.get(\"TEST_NONEXISTENT_ID\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const uuid = require(\"uuid\");\r",
+											"pm.environment.set('TEST_NONEXISTENT_ID', uuid.v4().replaceAll(\"-\", \"\"))\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_NONEXISTENT_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve non-existent File",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_NONEXISTENT_ID}}"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 05 Jul 2024 03:47:46 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "1139"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 404,\n    \"message\": \"File does not exist\",\n    \"request\": {\n        \"url\": \"https://localhost:20002/latest/files/20251ea61c9645da81fe6a10bfa8babf\",\n        \"headers\": {\n            \"authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDE1MTExOSwiaWF0IjoxNzIwMTUxMTE5LCJleHAiOjE3MjAxNTgzMTksImp0aSI6IjI4NTJhZDdkZGY2YjRmZmViYjlhMGY4NzUyODdjY2UxIiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiIwNjNiMjgxNWRmM2I0YWUzODI0N2IzZWEyZTMxZDE0MSIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJoS3NjSVYyUXlmOUM0eGpnVW40V2ZRIn0.kKod_kbmMXwVMnOc9ICKUsgOV5rz1A7p1IzmkvosEy8\",\n            \"user-agent\": \"PostmanRuntime/7.39.0\",\n            \"accept\": \"*/*\",\n            \"cache-control\": \"no-cache\",\n            \"postman-token\": \"73ae78aa-2aac-4b30-a9c0-6d79407cb653\",\n            \"host\": \"localhost:20002\",\n            \"accept-encoding\": \"gzip, deflate, br\",\n            \"connection\": \"keep-alive\"\n        },\n        \"path_params\": {\n            \"file_id\": \"20251ea61c9645da81fe6a10bfa8babf\"\n        },\n        \"query_params\": {},\n        \"client\": {\n            \"host\": \"127.0.0.1\",\n            \"port\": 49266\n        },\n        \"body\": \"\"\n    },\n    \"details\": {\n        \"id\": \"20251ea61c9645da81fe6a10bfa8babf\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Retrieve non-existent File details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"pm.test(\"Retrieve non-existent File\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.code).to.eql(404);\r",
+											"    pm.expect(jsonData.message).to.eql(\"File does not exist\");\r",
+											"    pm.expect(jsonData.details.id).to.eql(pm.environment.get(\"TEST_NONEXISTENT_ID\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const uuid = require(\"uuid\");\r",
+											"pm.environment.set('TEST_NONEXISTENT_ID', uuid.v4().replaceAll(\"-\", \"\"))\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"details",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_NONEXISTENT_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve non-existent File details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"details",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_NONEXISTENT_ID}}"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 05 Jul 2024 03:50:07 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "1147"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 404,\n    \"message\": \"File does not exist\",\n    \"request\": {\n        \"url\": \"https://localhost:20002/latest/files/details/f456f4c68cc143238c300ce3579ba5f1\",\n        \"headers\": {\n            \"authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDE1MTExOSwiaWF0IjoxNzIwMTUxMTE5LCJleHAiOjE3MjAxNTgzMTksImp0aSI6IjI4NTJhZDdkZGY2YjRmZmViYjlhMGY4NzUyODdjY2UxIiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiIwNjNiMjgxNWRmM2I0YWUzODI0N2IzZWEyZTMxZDE0MSIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJoS3NjSVYyUXlmOUM0eGpnVW40V2ZRIn0.kKod_kbmMXwVMnOc9ICKUsgOV5rz1A7p1IzmkvosEy8\",\n            \"user-agent\": \"PostmanRuntime/7.39.0\",\n            \"accept\": \"*/*\",\n            \"cache-control\": \"no-cache\",\n            \"postman-token\": \"d885fdc0-3da8-49b8-89c4-5954622432b8\",\n            \"host\": \"localhost:20002\",\n            \"accept-encoding\": \"gzip, deflate, br\",\n            \"connection\": \"keep-alive\"\n        },\n        \"path_params\": {\n            \"file_id\": \"f456f4c68cc143238c300ce3579ba5f1\"\n        },\n        \"query_params\": {},\n        \"client\": {\n            \"host\": \"127.0.0.1\",\n            \"port\": 38636\n        },\n        \"body\": \"\"\n    },\n    \"details\": {\n        \"id\": \"f456f4c68cc143238c300ce3579ba5f1\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Retrieve non-existent File via CDN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"pm.test(\"Retrieve non-existent File\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.code).to.eql(404);\r",
+											"    pm.expect(jsonData.message).to.eql(\"File does not exist\");\r",
+											"    pm.expect(jsonData.details.id).to.eql(pm.environment.get(\"TEST_NONEXISTENT_ID\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const uuid = require(\"uuid\");\r",
+											"pm.environment.set('TEST_NONEXISTENT_ID', uuid.v4().replaceAll(\"-\", \"\"))\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/cdn/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"cdn",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_NONEXISTENT_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve non-existent File via CDN",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/cdn/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"cdn",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_NONEXISTENT_ID}}"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 05 Jul 2024 03:50:17 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "1143"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 404,\n    \"message\": \"File does not exist\",\n    \"request\": {\n        \"url\": \"https://localhost:20002/latest/files/cdn/6d6f80a93db74a8c9cc140cfa98d784f\",\n        \"headers\": {\n            \"authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDE1MTExOSwiaWF0IjoxNzIwMTUxMTE5LCJleHAiOjE3MjAxNTgzMTksImp0aSI6IjI4NTJhZDdkZGY2YjRmZmViYjlhMGY4NzUyODdjY2UxIiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiIwNjNiMjgxNWRmM2I0YWUzODI0N2IzZWEyZTMxZDE0MSIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJoS3NjSVYyUXlmOUM0eGpnVW40V2ZRIn0.kKod_kbmMXwVMnOc9ICKUsgOV5rz1A7p1IzmkvosEy8\",\n            \"user-agent\": \"PostmanRuntime/7.39.0\",\n            \"accept\": \"*/*\",\n            \"cache-control\": \"no-cache\",\n            \"postman-token\": \"77d00742-2d44-463d-a74d-7a8056527a3e\",\n            \"host\": \"localhost:20002\",\n            \"accept-encoding\": \"gzip, deflate, br\",\n            \"connection\": \"keep-alive\"\n        },\n        \"path_params\": {\n            \"file_id\": \"6d6f80a93db74a8c9cc140cfa98d784f\"\n        },\n        \"query_params\": {},\n        \"client\": {\n            \"host\": \"127.0.0.1\",\n            \"port\": 60190\n        },\n        \"body\": \"\"\n    },\n    \"details\": {\n        \"id\": \"6d6f80a93db74a8c9cc140cfa98d784f\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete non-existent File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"pm.test(\"Delete non-existent File\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.code).to.eql(404);\r",
+											"    pm.expect(jsonData.message).to.eql(\"File does not exist\");\r",
+											"    pm.expect(jsonData.details.id).to.eql(pm.environment.get(\"TEST_NONEXISTENT_ID\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const uuid = require(\"uuid\");\r",
+											"pm.environment.set('TEST_NONEXISTENT_ID', uuid.v4().replaceAll(\"-\", \"\"))\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id/",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_NONEXISTENT_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Delete non-existent File",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id/",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_NONEXISTENT_ID}}"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 05 Jul 2024 03:50:26 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "1140"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 404,\n    \"message\": \"File does not exist\",\n    \"request\": {\n        \"url\": \"https://localhost:20002/latest/files/a451bee0280149adb5f6e1b0cb7d1119/\",\n        \"headers\": {\n            \"authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDE1MTExOSwiaWF0IjoxNzIwMTUxMTE5LCJleHAiOjE3MjAxNTgzMTksImp0aSI6IjI4NTJhZDdkZGY2YjRmZmViYjlhMGY4NzUyODdjY2UxIiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiIwNjNiMjgxNWRmM2I0YWUzODI0N2IzZWEyZTMxZDE0MSIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJoS3NjSVYyUXlmOUM0eGpnVW40V2ZRIn0.kKod_kbmMXwVMnOc9ICKUsgOV5rz1A7p1IzmkvosEy8\",\n            \"user-agent\": \"PostmanRuntime/7.39.0\",\n            \"accept\": \"*/*\",\n            \"cache-control\": \"no-cache\",\n            \"postman-token\": \"c2101c87-755b-4e36-86ed-91110a38ae8b\",\n            \"host\": \"localhost:20002\",\n            \"accept-encoding\": \"gzip, deflate, br\",\n            \"connection\": \"keep-alive\"\n        },\n        \"path_params\": {\n            \"file_id\": \"a451bee0280149adb5f6e1b0cb7d1119\"\n        },\n        \"query_params\": {},\n        \"client\": {\n            \"host\": \"127.0.0.1\",\n            \"port\": 55016\n        },\n        \"body\": \"\"\n    },\n    \"details\": {\n        \"id\": \"a451bee0280149adb5f6e1b0cb7d1119\"\n    }\n}"
+								}
+							]
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const uuid = require('uuid');",
+									"pm.collectionVariables.set('TEST_NON_EXISTENT_ID', uuid.v4())",
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Attempt to create invalid Files",
+					"item": [
+						{
+							"name": "Attempt to create Files with empty request",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Retrieve create Files with empty requests\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.code).to.eql(400);\r",
+											"    pm.expect(jsonData.message).to.eql(\"Validation error\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const uuid = require(\"uuid\");\r",
+											"pm.environment.set('TEST_NONEXISTENT_ID', uuid.v4().replaceAll(\"-\", \"\"))\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Attempt to create Files with empty request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 05 Jul 2024 03:53:11 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "1129"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 400,\n    \"message\": \"Validation error\",\n    \"request\": {\n        \"url\": \"https://localhost:20002/latest/files\",\n        \"headers\": {\n            \"authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDE1MTExOSwiaWF0IjoxNzIwMTUxMTE5LCJleHAiOjE3MjAxNTgzMTksImp0aSI6IjI4NTJhZDdkZGY2YjRmZmViYjlhMGY4NzUyODdjY2UxIiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiIwNjNiMjgxNWRmM2I0YWUzODI0N2IzZWEyZTMxZDE0MSIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJoS3NjSVYyUXlmOUM0eGpnVW40V2ZRIn0.kKod_kbmMXwVMnOc9ICKUsgOV5rz1A7p1IzmkvosEy8\",\n            \"user-agent\": \"PostmanRuntime/7.39.0\",\n            \"accept\": \"*/*\",\n            \"cache-control\": \"no-cache\",\n            \"postman-token\": \"f4694167-43a2-4511-8641-47ee7f2306e7\",\n            \"host\": \"localhost:20002\",\n            \"accept-encoding\": \"gzip, deflate, br\",\n            \"connection\": \"keep-alive\",\n            \"content-length\": \"0\"\n        },\n        \"path_params\": {},\n        \"query_params\": {},\n        \"client\": {\n            \"host\": \"127.0.0.1\",\n            \"port\": 44894\n        },\n        \"body\": \"\"\n    },\n    \"details\": {\n        \"errors\": [\n            {\n                \"type\": \"missing\",\n                \"loc\": [\n                    \"body\",\n                    \"files\"\n                ],\n                \"msg\": \"Field required\",\n                \"input\": null\n            }\n        ]\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Attempt to create Files with invalid files uploaded",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Attempt to create Files with invalid files uploaded\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.code).to.eql(400);\r",
+											"    pm.expect(jsonData.message).to.eql(\"Validation error\");\r",
+											"    // Postman runner converts this to a text input instead of a file, hence this test will not pass\r",
+											"    // pm.expect(jsonData.message).to.eql(\"Invalid file(s) uploaded\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const uuid = require(\"uuid\");\r",
+											"pm.environment.set('TEST_NONEXISTENT_ID', uuid.v4().replaceAll(\"-\", \"\"))\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Attempt to create Files with invalid files uploaded",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "files",
+													"type": "file",
+													"src": []
+												}
+											]
+										},
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Fri, 12 Jul 2024 06:05:02 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "1159"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 400,\n    \"message\": \"Invalid file(s) uploaded\",\n    \"request\": {\n        \"url\": \"https://localhost:20002/latest/files\",\n        \"headers\": {\n            \"authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDc2NDIwMSwiaWF0IjoxNzIwNzY0MjAxLCJleHAiOjE3MjA3NzE0MDEsImp0aSI6IjFkZjIzNDNiZWIxNzQ5NTZhYTk1NWViM2JkMzg2NTY0IiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiI1NmVkYmYwNjY2YzE0MThmYWY1Yzc2MGRiOTg1NzY4NyIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJmVTRMbjdqb00xaEpKOVpYa2tCeldnIn0.JkDq-e1v-Ol8tvGlzROPTTTm1NjTMwWe9XK3QBrmADc\",\n            \"user-agent\": \"PostmanRuntime/7.39.0\",\n            \"accept\": \"*/*\",\n            \"cache-control\": \"no-cache\",\n            \"postman-token\": \"070f94e9-d89c-49aa-937b-27fc6cd6c881\",\n            \"host\": \"localhost:20002\",\n            \"accept-encoding\": \"gzip, deflate, br\",\n            \"connection\": \"keep-alive\",\n            \"content-type\": \"multipart/form-data; boundary=--------------------------058207322148197412612799\",\n            \"content-length\": \"173\"\n        },\n        \"path_params\": {},\n        \"query_params\": {},\n        \"client\": {\n            \"host\": \"127.0.0.1\",\n            \"port\": 48052\n        },\n        \"body\": {\n            \"files\": \"\"\n        }\n    },\n    \"details\": {}\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Create Files",
+					"item": [
+						{
+							"name": "Create Audio Files",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"pm.test(\"Successfully uploaded audio files\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(jsonData.length).to.eql(1);\r",
+											"    pm.expect(jsonData[0].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+											"    pm.expect(jsonData[0].name).to.eql(\"file_example_MP3_1MG.mp3\");\r",
+											"    pm.expect(jsonData[0].versions).to.eql([1]);\r",
+											"    pm.expect(jsonData[0].folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData[0].fullPath).to.eql(\"/file_example_MP3_1MG1.mp3\");\r",
+											"    pm.expect(jsonData[0].metadata.content_type).to.eql(\"audio/mpeg\");\r",
+											"    pm.expect(jsonData[0].metadata.filename).to.eql(\"file_example_MP3_1MG.mp3\");\r",
+											"    pm.expect(jsonData[0].metadata.type).to.eql(undefined);\r",
+											"    pm.expect(jsonData[0].meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData[0].meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData[0].meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData[0].meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData[0].id));\r",
+											"    pm.expect(jsonData[0].meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData[0].meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.archivedUser).to.eql(null);\r",
+											"    pm.environment.set(\"TEST_AUDIO_FILE1_ID\", jsonData[0].id)\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": "file_example_MP3_1MG.mp3"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Create Audio Files",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "files",
+													"type": "file",
+													"src": "file_example_MP3_1MG.mp3"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:12:51 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "700"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/8c36b1e2f9f549c9b88eedf3c931e972\",\n            \"version\": 1,\n            \"created\": \"2024-07-11T08:12:52.070097Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"8c36b1e2f9f549c9b88eedf3c931e972\",\n        \"name\": \"file_example_MP3_1MG.mp3\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"file_example_MP3_1MG.mp3\",\n            \"checksum\": \"9be36f5cbc4a01490d0846eb17c5e2c1389c0932352ac1aa8d64d0e692f8b6ea42c5f3ffbc543a4f134f04bb2181d406\",\n            \"content_type\": \"audio/mpeg\"\n        },\n        \"fullPath\": \"/file_example_MP3_1MG1.mp3\"\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "Create Video Files",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"pm.test(\"Successfully uploaded Video Files\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(jsonData.length).to.eql(3);\r",
+											"    pm.expect(jsonData[0].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+											"    pm.expect(jsonData[0].name).to.eql(\"file_example_MP4_640_3MG.mp4\");\r",
+											"    pm.expect(jsonData[0].versions).to.eql([1]);\r",
+											"    pm.expect(jsonData[0].folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData[0].fullPath).to.eql(\"/file_example_MP4_640_3MG1.mp4\");\r",
+											"    pm.expect(jsonData[0].metadata.type).to.eql(\"video\");\r",
+											"    pm.expect(jsonData[0].metadata.content_type).to.eql(\"video/mp4\");\r",
+											"    pm.expect(jsonData[0].metadata.filename).to.eql(\"file_example_MP4_640_3MG.mp4\");\r",
+											"    pm.expect(jsonData[0].meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData[0].meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData[0].meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData[0].meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData[0].id));\r",
+											"    pm.expect(jsonData[0].meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData[0].meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.archivedUser).to.eql(null);\r",
+											"    pm.environment.set(\"TEST_VIDEO_FILE1_ID\", jsonData[0].id);\r",
+											"\r",
+											"    pm.expect(jsonData[1].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+											"    pm.expect(jsonData[1].name).to.eql(\"file_example_MOV_640_800kB.mov\");\r",
+											"    pm.expect(jsonData[1].versions).to.eql([1]);\r",
+											"    pm.expect(jsonData[1].folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData[1].fullPath).to.eql(\"/file_example_MOV_640_800kB1.mov\");\r",
+											"    pm.expect(jsonData[1].metadata.type).to.eql(\"video\");\r",
+											"    pm.expect(jsonData[1].metadata.content_type).to.eql(\"video/quicktime\");\r",
+											"    pm.expect(jsonData[1].metadata.filename).to.eql(\"file_example_MOV_640_800kB.mov\");\r",
+											"    pm.expect(jsonData[1].meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData[1].meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData[1].meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData[1].meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData[1].id));\r",
+											"    pm.expect(jsonData[1].meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData[1].meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.archivedUser).to.eql(null);\r",
+											"    pm.environment.set(\"TEST_VIDEO_FILE2_ID\", jsonData[1].id);\r",
+											"    \r",
+											"    pm.expect(jsonData[2].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+											"    pm.expect(jsonData[2].name).to.eql(\"file_example_WMV_640_1_6MB.wmv\");\r",
+											"    pm.expect(jsonData[2].versions).to.eql([1]);\r",
+											"    pm.expect(jsonData[2].folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData[2].fullPath).to.eql(\"/file_example_WMV_640_1_6MB1.wmv\");\r",
+											"    pm.expect(jsonData[2].metadata.type).to.eql(\"video\");\r",
+											"    pm.expect(jsonData[2].metadata.hello).to.eql(\"world\");\r",
+											"    pm.expect(jsonData[2].metadata.content_type).to.eql(\"video/x-ms-wmv\");\r",
+											"    pm.expect(jsonData[2].metadata.filename).to.eql(\"file_example_WMV_640_1_6MB.wmv\");\r",
+											"    pm.expect(jsonData[2].meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData[2].meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData[2].meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData[2].meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData[2].id));\r",
+											"    pm.expect(jsonData[2].meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData[2].meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.archivedUser).to.eql(null);\r",
+											"    pm.environment.set(\"TEST_VIDEO_FILE3_ID\", jsonData[2].id);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": "file_example_MP4_640_3MG.mp4"
+										},
+										{
+											"key": "files",
+											"type": "file",
+											"src": "file_example_MOV_640_800kB.mov"
+										},
+										{
+											"key": "files",
+											"type": "file",
+											"src": "file_example_WMV_640_1_6MB.wmv"
+										},
+										{
+											"key": "details",
+											"value": "{\"file_example_MP4_640_3MG.mp4\": {\"metadata\": {\"type\": \"video\"}}, \"file_example_MOV_640_800kB.mov\": {\"metadata\": {\"type\": \"video\"}}, \"file_example_WMV_640_1_6MB.wmv\": {\"metadata\": {\"type\": \"video\", \"hello\": \"world\"}}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Create Video Files",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "files",
+													"type": "file",
+													"src": "file_example_MP4_640_3MG.mp4"
+												},
+												{
+													"key": "files",
+													"type": "file",
+													"src": "file_example_MOV_640_800kB.mov"
+												},
+												{
+													"key": "files",
+													"type": "file",
+													"src": "file_example_WMV_640_1_6MB.wmv"
+												},
+												{
+													"key": "details",
+													"value": "{\"file_example_MP4_640_3MG.mp4\": {\"metadata\": {\"type\": \"video\"}}, \"file_example_MOV_640_800kB.mov\": {\"metadata\": {\"type\": \"video\"}}, \"file_example_WMV_640_1_6MB.wmv\": {\"metadata\": {\"type\": \"video\", \"hello\": \"world\"}}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:14:20 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "2215"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/6c60c70dd62a47fb881bf9d73b7f901c\",\n            \"version\": 1,\n            \"created\": \"2024-07-11T08:14:20.699726Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"6c60c70dd62a47fb881bf9d73b7f901c\",\n        \"name\": \"file_example_MP4_640_3MG.mp4\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"file_example_MP4_640_3MG.mp4\",\n            \"checksum\": \"2e82b60e930add029255ecd7d46a22114c928e0f2d9f6f3830b597f660b1fa160fc42611047bb78da02d31e696d99034\",\n            \"content_type\": \"video/mp4\",\n            \"type\": \"video\"\n        },\n        \"fullPath\": \"/file_example_MP4_640_3MG1.mp4\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/1d6cdc102e094a3fa57af2615c775b47\",\n            \"version\": 1,\n            \"created\": \"2024-07-11T08:14:21.436313Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"1d6cdc102e094a3fa57af2615c775b47\",\n        \"name\": \"file_example_MOV_640_800kB.mov\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"file_example_MOV_640_800kB.mov\",\n            \"checksum\": \"637c58bdba5c49f9886d79fee576d11760d7039641b01aa38ac16014823d3467ec33f745bcfc80a30a65f237624ee6ad\",\n            \"content_type\": \"video/quicktime\",\n            \"type\": \"video\"\n        },\n        \"fullPath\": \"/file_example_MOV_640_800kB1.mov\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/158b8b6d0ced4f5cbdd04dc4f7b3a8c3\",\n            \"version\": 1,\n            \"created\": \"2024-07-11T08:14:21.617672Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"158b8b6d0ced4f5cbdd04dc4f7b3a8c3\",\n        \"name\": \"file_example_WMV_640_1_6MB.wmv\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"file_example_WMV_640_1_6MB.wmv\",\n            \"checksum\": \"859e93d2353e7817ecca4ef3ce5d68efa446ff79647b01dd98f85bc7b260205bc130bc2041f68677f9c0322bf4870b5d\",\n            \"content_type\": \"video/x-ms-wmv\",\n            \"type\": \"video\",\n            \"hello\": \"world\"\n        },\n        \"fullPath\": \"/file_example_WMV_640_1_6MB1.wmv\"\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "Create Image Files",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"pm.test(\"Successfully uploaded Image Files\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(jsonData.length).to.eql(3);\r",
+											"    pm.expect(jsonData[0].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+											"    pm.expect(jsonData[0].name).to.eql(\"file_example_PNG_1MB.png\");\r",
+											"    pm.expect(jsonData[0].versions).to.eql([1]);\r",
+											"    pm.expect(jsonData[0].folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData[0].fullPath).to.eql(\"/file_example_PNG_1MB1.png\");\r",
+											"    pm.expect(jsonData[0].metadata.type).to.eql(\"image\");\r",
+											"    pm.expect(jsonData[0].metadata.content_type).to.eql(\"image/png\");\r",
+											"    pm.expect(jsonData[0].metadata.filename).to.eql(\"file_example_PNG_1MB.png\");\r",
+											"    pm.expect(jsonData[0].meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData[0].meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData[0].meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData[0].meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData[0].id));\r",
+											"    pm.expect(jsonData[0].meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData[0].meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.archivedUser).to.eql(null);\r",
+											"    pm.environment.set(\"TEST_IMAGE_FILE1_ID\", jsonData[0].id);\r",
+											"\r",
+											"    pm.expect(jsonData[1].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+											"    pm.expect(jsonData[1].name).to.eql(\"get-a-sample-robin-james.gif\");\r",
+											"    pm.expect(jsonData[1].versions).to.eql([1]);\r",
+											"    pm.expect(jsonData[1].folder).to.eql(\"/hello/world\");\r",
+											"    pm.expect(jsonData[1].fullPath).to.eql(\"/hello/world/get-a-sample-robin-james1.gif\");\r",
+											"    pm.expect(jsonData[1].metadata.type).to.eql(\"image\");\r",
+											"    pm.expect(jsonData[1].metadata.content_type).to.eql(\"image/gif\");\r",
+											"    pm.expect(jsonData[1].metadata.filename).to.eql(\"get-a-sample-robin-james.gif\");\r",
+											"    pm.expect(jsonData[1].meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData[1].meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData[1].meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData[1].meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData[1].id));\r",
+											"    pm.expect(jsonData[1].meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData[1].meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.archivedUser).to.eql(null);\r",
+											"    pm.environment.set(\"TEST_IMAGE_FILE2_ID\", jsonData[1].id);\r",
+											"    \r",
+											"    pm.expect(jsonData[2].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+											"    pm.expect(jsonData[2].name).to.eql(\"file_example_JPG_500kB.jpg\");\r",
+											"    pm.expect(jsonData[2].versions).to.eql([1]);\r",
+											"    pm.expect(jsonData[2].folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData[2].fullPath).to.eql(\"/file_example_JPG_500kB1.jpg\");\r",
+											"    pm.expect(jsonData[2].metadata.type).to.eql(\"image\");\r",
+											"    pm.expect(jsonData[2].metadata.content_type).to.eql(\"image/jpeg\");\r",
+											"    pm.expect(jsonData[2].metadata.filename).to.eql(\"file_example_JPG_500kB.jpg\");\r",
+											"    pm.expect(jsonData[2].meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData[2].meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData[2].meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData[2].meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData[2].id));\r",
+											"    pm.expect(jsonData[2].meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData[2].meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData[2].meta.archivedUser).to.eql(null);\r",
+											"    pm.environment.set(\"TEST_IMAGE_FILE3_ID\", jsonData[2].id);\r",
+											"\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": [
+												"file_example_PNG_1MB.png",
+												"get-a-sample-robin-james.gif",
+												"file_example_JPG_500kB.jpg"
+											]
+										},
+										{
+											"key": "details",
+											"value": "{\"file_example_PNG_1MB.png\": {\"metadata\": {\"type\": \"image\"}}, \"get-a-sample-robin-james.gif\": {\"metadata\": {\"type\": \"image\"}, \"folder\": \"hello/world\"}, \"file_example_JPG_500kB.jpg\": {\"metadata\": {\"type\": \"image\"}}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Create Image Files",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "files",
+													"type": "file",
+													"src": [
+														"file_example_PNG_1MB.png",
+														"get-a-sample-robin-james.gif",
+														"file_example_JPG_500kB.jpg"
+													]
+												},
+												{
+													"key": "details",
+													"value": "{\"file_example_PNG_1MB.png\": {\"metadata\": {\"type\": \"image\"}}, \"get-a-sample-robin-james.gif\": {\"metadata\": {\"type\": \"image\"}, \"folder\": \"hello/world\"}, \"file_example_JPG_500kB.jpg\": {\"metadata\": {\"type\": \"image\"}}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:15:33 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "2182"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/da1186a758ea4a96980263a23e06697a\",\n            \"version\": 1,\n            \"created\": \"2024-07-11T08:15:34.289800Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"da1186a758ea4a96980263a23e06697a\",\n        \"name\": \"file_example_PNG_1MB.png\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"file_example_PNG_1MB.png\",\n            \"checksum\": \"24aa00526ce2331dca5c216b43b79cbb876cf944cab29cccb18f9d8f59b6c640d0b1d418b877bdb2f013733720502dbd\",\n            \"content_type\": \"image/png\",\n            \"type\": \"image\"\n        },\n        \"fullPath\": \"/file_example_PNG_1MB1.png\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/b0c5384efa924848b2960f8ac1433d4a\",\n            \"version\": 1,\n            \"created\": \"2024-07-11T08:15:34.702393Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"b0c5384efa924848b2960f8ac1433d4a\",\n        \"name\": \"get-a-sample-robin-james.gif\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/hello/world\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"get-a-sample-robin-james.gif\",\n            \"checksum\": \"a92df7875094d3d01ec24d5f0ef8bf95412c418ba331d81caf0db6b10230cb6eedf56b31c37b233f39f5dff91acabec3\",\n            \"content_type\": \"image/gif\",\n            \"type\": \"image\"\n        },\n        \"fullPath\": \"/hello/world/get-a-sample-robin-james1.gif\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/e1b150ad0ea14a5bb118d981a00c8825\",\n            \"version\": 1,\n            \"created\": \"2024-07-11T08:15:34.941088Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"e1b150ad0ea14a5bb118d981a00c8825\",\n        \"name\": \"file_example_JPG_500kB.jpg\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"file_example_JPG_500kB.jpg\",\n            \"checksum\": \"b2de27680a30a43dabc42d2d34b50c7a577126276dfee4d1f56a0271b03c6f44d4775478dccc47cd65b92289145fb3a3\",\n            \"content_type\": \"image/jpeg\",\n            \"type\": \"image\"\n        },\n        \"fullPath\": \"/file_example_JPG_500kB1.jpg\"\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "Create Document Files",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"pm.test(\"Successfully uploaded Document Files\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(jsonData.length).to.eql(2);\r",
+											"    pm.expect(jsonData[0].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+											"    pm.expect(jsonData[0].name).to.eql(\"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\");\r",
+											"    pm.expect(jsonData[0].versions).to.eql([\"abc\"]);\r",
+											"    pm.expect(jsonData[0].folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData[0].fullPath).to.eql(\"/FAQ for Parents (5D4N 2023 MOE-OBS)abc.pdf\");\r",
+											"    pm.expect(jsonData[0].metadata.type).to.eql(\"document\");\r",
+											"    pm.expect(jsonData[0].metadata.content_type).to.eql(\"application/pdf\");\r",
+											"    pm.expect(jsonData[0].metadata.filename).to.eql(\"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\");\r",
+											"    pm.expect(jsonData[0].meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData[0].meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData[0].meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData[0].meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData[0].id));\r",
+											"    pm.expect(jsonData[0].meta.version).to.eql(\"abc\");\r",
+											"    pm.expect(jsonData[0].meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData[0].meta.archivedUser).to.eql(null);\r",
+											"    pm.environment.set(\"TEST_DOCUMENT_FILE1_ID\", jsonData[0].id);\r",
+											"\r",
+											"    pm.expect(jsonData[1].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+											"    pm.expect(jsonData[1].name).to.eql(\"A Sample HTML Document (Test File).html\");\r",
+											"    pm.expect(jsonData[1].versions).to.eql([1]);\r",
+											"    pm.expect(jsonData[1].folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData[1].fullPath).to.eql(\"/A Sample HTML Document (Test File)1.html\");\r",
+											"    pm.expect(jsonData[1].metadata.type).to.eql(\"document\");\r",
+											"    pm.expect(jsonData[1].metadata.content_type).to.eql(\"text/html\");\r",
+											"    pm.expect(jsonData[1].metadata.filename).to.eql(\"A Sample HTML Document (Test File).html\");\r",
+											"    pm.expect(jsonData[1].meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData[1].meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData[1].meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData[1].meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData[1].id));\r",
+											"    pm.expect(jsonData[1].meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData[1].meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData[1].meta.archivedUser).to.eql(null);\r",
+											"    pm.environment.set(\"TEST_DOCUMENT_FILE2_ID\", jsonData[1].id);\r",
+											"\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": [
+												"FAQ for Parents (5D4N 2023 MOE-OBS).pdf",
+												"A Sample HTML Document (Test File).html"
+											]
+										},
+										{
+											"key": "details",
+											"value": "{\"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\": {\"metadata\": {\"type\": \"document\"}, \"version\": \"abc\"}, \"A Sample HTML Document (Test File).html\": {\"metadata\": {\"type\": \"document\"}}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Create Document Files",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "files",
+													"type": "file",
+													"src": [
+														"FAQ for Parents (5D4N 2023 MOE-OBS).pdf",
+														"A Sample HTML Document (Test File).html"
+													]
+												},
+												{
+													"key": "details",
+													"value": "{\"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\": {\"metadata\": {\"type\": \"document\"}, \"version\": \"abc\"}, \"A Sample HTML Document (Test File).html\": {\"metadata\": {\"type\": \"document\"}}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:17:17 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "1539"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/cc466de5b07742c0afca9252d0d6f786\",\n            \"version\": \"abc\",\n            \"created\": \"2024-07-11T08:17:17.644071Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"cc466de5b07742c0afca9252d0d6f786\",\n        \"name\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n        \"versions\": [\n            \"abc\"\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n            \"checksum\": \"b00e2315d7f3a031aac2d3d97615230dfefecc5721391455e2d9942ae1018571ae8ac93e8e891ead2f3b650900056bfc\",\n            \"content_type\": \"application/pdf\",\n            \"type\": \"document\"\n        },\n        \"fullPath\": \"/FAQ for Parents (5D4N 2023 MOE-OBS)abc.pdf\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/7c4b9ea693cf43e79fb4370ba0945898\",\n            \"version\": 1,\n            \"created\": \"2024-07-11T08:17:17.888447Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"7c4b9ea693cf43e79fb4370ba0945898\",\n        \"name\": \"A Sample HTML Document (Test File).html\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"A Sample HTML Document (Test File).html\",\n            \"checksum\": \"24f2ebdabea4fcdfd90fbf62609272b6de117c1c60affb1d11679f1be49ec64040f68ef355ed7853e25f1103571d4471\",\n            \"content_type\": \"text/html\",\n            \"type\": \"document\"\n        },\n        \"fullPath\": \"/A Sample HTML Document (Test File)1.html\"\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "Retrieve mp3 File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved MOV File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"audio/mpeg\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id/",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AUDIO_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve mp4 File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved MP4 File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"video/mp4\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id/",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_VIDEO_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve mov File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved MOV File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"video/quicktime\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id/",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_VIDEO_FILE2_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve wmv File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved WMV File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"video/x-ms-wmv\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_VIDEO_FILE3_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve png File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved PNG File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"image/png\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_IMAGE_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve gif File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved GIF File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"image/gif\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_IMAGE_FILE2_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve jpeg File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved JPEG File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"image/jpeg\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_IMAGE_FILE3_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve pdf File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved PDF File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/pdf\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id/",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_DOCUMENT_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve html File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved HTML File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"text/html; charset=utf-8\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_DOCUMENT_FILE2_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve mp3 File details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved MP3 File details\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_AUDIO_FILE1_ID\"));\r",
+											"    pm.expect(jsonData.name).to.eql(\"file_example_MP3_1MG.mp3\");\r",
+											"    pm.expect(jsonData.versions).to.eql([1]);\r",
+											"    pm.expect(jsonData.folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData.fullPath).to.eql(\"/file_example_MP3_1MG1.mp3\");\r",
+											"    pm.expect(jsonData.metadata.content_type).to.eql(\"audio/mpeg\");\r",
+											"    pm.expect(jsonData.metadata.filename).to.eql(\"file_example_MP3_1MG.mp3\");\r",
+											"    pm.expect(jsonData.metadata.type).to.eql(undefined);\r",
+											"    pm.expect(jsonData.meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData.meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData.meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData.meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData.meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData.id));\r",
+											"    pm.expect(jsonData.meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData.meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archivedUser).to.eql(null);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"details",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AUDIO_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve mp3 File details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"details",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_AUDIO_FILE1_ID}}"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:19:51 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "698"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"resourceType\": \"files\",\n        \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/8c36b1e2f9f549c9b88eedf3c931e972\",\n        \"version\": 1,\n        \"created\": \"2024-07-11T08:12:52.070000Z\",\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"deleted\": null,\n        \"deletedUser\": null,\n        \"archived\": null,\n        \"archivedUser\": null\n    },\n    \"id\": \"8c36b1e2f9f549c9b88eedf3c931e972\",\n    \"name\": \"file_example_MP3_1MG.mp3\",\n    \"versions\": [\n        1\n    ],\n    \"folder\": \"/\",\n    \"ownership\": null,\n    \"metadata\": {\n        \"filename\": \"file_example_MP3_1MG.mp3\",\n        \"checksum\": \"9be36f5cbc4a01490d0846eb17c5e2c1389c0932352ac1aa8d64d0e692f8b6ea42c5f3ffbc543a4f134f04bb2181d406\",\n        \"content_type\": \"audio/mpeg\"\n    },\n    \"fullPath\": \"/file_example_MP3_1MG1.mp3\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Retrieve mp4 File details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved MP4 File details\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_VIDEO_FILE1_ID\"));\r",
+											"    pm.expect(jsonData.name).to.eql(\"file_example_MP4_640_3MG.mp4\");\r",
+											"    pm.expect(jsonData.versions).to.eql([1]);\r",
+											"    pm.expect(jsonData.folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData.fullPath).to.eql(\"/file_example_MP4_640_3MG1.mp4\");\r",
+											"    pm.expect(jsonData.metadata.type).to.eql(\"video\");\r",
+											"    pm.expect(jsonData.metadata.content_type).to.eql(\"video/mp4\");\r",
+											"    pm.expect(jsonData.metadata.filename).to.eql(\"file_example_MP4_640_3MG.mp4\");\r",
+											"    pm.expect(jsonData.meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData.meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData.meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData.meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData.meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData.id));\r",
+											"    pm.expect(jsonData.meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData.meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archivedUser).to.eql(null);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"details",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_VIDEO_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve mp4 File details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"details",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_VIDEO_FILE1_ID}}"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:20:54 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "724"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"resourceType\": \"files\",\n        \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/6c60c70dd62a47fb881bf9d73b7f901c\",\n        \"version\": 1,\n        \"created\": \"2024-07-11T08:14:20.699000Z\",\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"deleted\": null,\n        \"deletedUser\": null,\n        \"archived\": null,\n        \"archivedUser\": null\n    },\n    \"id\": \"6c60c70dd62a47fb881bf9d73b7f901c\",\n    \"name\": \"file_example_MP4_640_3MG.mp4\",\n    \"versions\": [\n        1\n    ],\n    \"folder\": \"/\",\n    \"ownership\": null,\n    \"metadata\": {\n        \"filename\": \"file_example_MP4_640_3MG.mp4\",\n        \"checksum\": \"2e82b60e930add029255ecd7d46a22114c928e0f2d9f6f3830b597f660b1fa160fc42611047bb78da02d31e696d99034\",\n        \"content_type\": \"video/mp4\",\n        \"type\": \"video\"\n    },\n    \"fullPath\": \"/file_example_MP4_640_3MG1.mp4\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Retrieve mov File details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved MOV File details\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_VIDEO_FILE2_ID\"));\r",
+											"    pm.expect(jsonData.name).to.eql(\"file_example_MOV_640_800kB.mov\");\r",
+											"    pm.expect(jsonData.versions).to.eql([1]);\r",
+											"    pm.expect(jsonData.folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData.fullPath).to.eql(\"/file_example_MOV_640_800kB1.mov\");\r",
+											"    pm.expect(jsonData.metadata.type).to.eql(\"video\");\r",
+											"    pm.expect(jsonData.metadata.content_type).to.eql(\"video/quicktime\");\r",
+											"    pm.expect(jsonData.metadata.filename).to.eql(\"file_example_MOV_640_800kB.mov\");\r",
+											"    pm.expect(jsonData.meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData.meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData.meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData.meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData.meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData.id));\r",
+											"    pm.expect(jsonData.meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData.meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archivedUser).to.eql(null);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"details",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_VIDEO_FILE2_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve mov File details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"details",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_VIDEO_FILE2_ID}}"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:21:40 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "736"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"resourceType\": \"files\",\n        \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/1d6cdc102e094a3fa57af2615c775b47\",\n        \"version\": 1,\n        \"created\": \"2024-07-11T08:14:21.436000Z\",\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"deleted\": null,\n        \"deletedUser\": null,\n        \"archived\": null,\n        \"archivedUser\": null\n    },\n    \"id\": \"1d6cdc102e094a3fa57af2615c775b47\",\n    \"name\": \"file_example_MOV_640_800kB.mov\",\n    \"versions\": [\n        1\n    ],\n    \"folder\": \"/\",\n    \"ownership\": null,\n    \"metadata\": {\n        \"filename\": \"file_example_MOV_640_800kB.mov\",\n        \"checksum\": \"637c58bdba5c49f9886d79fee576d11760d7039641b01aa38ac16014823d3467ec33f745bcfc80a30a65f237624ee6ad\",\n        \"content_type\": \"video/quicktime\",\n        \"type\": \"video\"\n    },\n    \"fullPath\": \"/file_example_MOV_640_800kB1.mov\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Retrieve wmv File details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved WMV File details\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_VIDEO_FILE3_ID\"));\r",
+											"    pm.expect(jsonData.name).to.eql(\"file_example_WMV_640_1_6MB.wmv\");\r",
+											"    pm.expect(jsonData.versions).to.eql([1]);\r",
+											"    pm.expect(jsonData.folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData.fullPath).to.eql(\"/file_example_WMV_640_1_6MB1.wmv\");\r",
+											"    pm.expect(jsonData.metadata.type).to.eql(\"video\");\r",
+											"    pm.expect(jsonData.metadata.hello).to.eql(\"world\");\r",
+											"    pm.expect(jsonData.metadata.content_type).to.eql(\"video/x-ms-wmv\");\r",
+											"    pm.expect(jsonData.metadata.filename).to.eql(\"file_example_WMV_640_1_6MB.wmv\");\r",
+											"    pm.expect(jsonData.meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData.meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData.meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData.meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData.meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData.id));\r",
+											"    pm.expect(jsonData.meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData.meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archivedUser).to.eql(null);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"details",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_VIDEO_FILE3_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve wmv File details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"details",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_VIDEO_FILE3_ID}}"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:22:12 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "751"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"resourceType\": \"files\",\n        \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/158b8b6d0ced4f5cbdd04dc4f7b3a8c3\",\n        \"version\": 1,\n        \"created\": \"2024-07-11T08:14:21.617000Z\",\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"deleted\": null,\n        \"deletedUser\": null,\n        \"archived\": null,\n        \"archivedUser\": null\n    },\n    \"id\": \"158b8b6d0ced4f5cbdd04dc4f7b3a8c3\",\n    \"name\": \"file_example_WMV_640_1_6MB.wmv\",\n    \"versions\": [\n        1\n    ],\n    \"folder\": \"/\",\n    \"ownership\": null,\n    \"metadata\": {\n        \"filename\": \"file_example_WMV_640_1_6MB.wmv\",\n        \"checksum\": \"859e93d2353e7817ecca4ef3ce5d68efa446ff79647b01dd98f85bc7b260205bc130bc2041f68677f9c0322bf4870b5d\",\n        \"content_type\": \"video/x-ms-wmv\",\n        \"type\": \"video\",\n        \"hello\": \"world\"\n    },\n    \"fullPath\": \"/file_example_WMV_640_1_6MB1.wmv\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Retrieve png File details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved PNG File details\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_IMAGE_FILE1_ID\"));\r",
+											"    pm.expect(jsonData.name).to.eql(\"file_example_PNG_1MB.png\");\r",
+											"    pm.expect(jsonData.versions).to.eql([1]);\r",
+											"    pm.expect(jsonData.folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData.fullPath).to.eql(\"/file_example_PNG_1MB1.png\");\r",
+											"    pm.expect(jsonData.metadata.type).to.eql(\"image\");\r",
+											"    pm.expect(jsonData.metadata.content_type).to.eql(\"image/png\");\r",
+											"    pm.expect(jsonData.metadata.filename).to.eql(\"file_example_PNG_1MB.png\");\r",
+											"    pm.expect(jsonData.meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData.meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData.meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData.meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData.meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData.id));\r",
+											"    pm.expect(jsonData.meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData.meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archivedUser).to.eql(null);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"details",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_IMAGE_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve png File details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"details",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_IMAGE_FILE1_ID}}"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:22:50 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "712"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"resourceType\": \"files\",\n        \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/da1186a758ea4a96980263a23e06697a\",\n        \"version\": 1,\n        \"created\": \"2024-07-11T08:15:34.289000Z\",\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"deleted\": null,\n        \"deletedUser\": null,\n        \"archived\": null,\n        \"archivedUser\": null\n    },\n    \"id\": \"da1186a758ea4a96980263a23e06697a\",\n    \"name\": \"file_example_PNG_1MB.png\",\n    \"versions\": [\n        1\n    ],\n    \"folder\": \"/\",\n    \"ownership\": null,\n    \"metadata\": {\n        \"filename\": \"file_example_PNG_1MB.png\",\n        \"checksum\": \"24aa00526ce2331dca5c216b43b79cbb876cf944cab29cccb18f9d8f59b6c640d0b1d418b877bdb2f013733720502dbd\",\n        \"content_type\": \"image/png\",\n        \"type\": \"image\"\n    },\n    \"fullPath\": \"/file_example_PNG_1MB1.png\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Retrieve gif File details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved GIF File details\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_IMAGE_FILE2_ID\"));\r",
+											"    pm.expect(jsonData.name).to.eql(\"get-a-sample-robin-james.gif\");\r",
+											"    pm.expect(jsonData.versions).to.eql([1]);\r",
+											"    pm.expect(jsonData.folder).to.eql(\"/hello/world\");\r",
+											"    pm.expect(jsonData.fullPath).to.eql(\"/hello/world/get-a-sample-robin-james1.gif\");\r",
+											"    pm.expect(jsonData.metadata.type).to.eql(\"image\");\r",
+											"    pm.expect(jsonData.metadata.content_type).to.eql(\"image/gif\");\r",
+											"    pm.expect(jsonData.metadata.filename).to.eql(\"get-a-sample-robin-james.gif\");\r",
+											"    pm.expect(jsonData.meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData.meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData.meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData.meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData.meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData.id));\r",
+											"    pm.expect(jsonData.meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData.meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archivedUser).to.eql(null);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"details",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_IMAGE_FILE2_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve gif File details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"details",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_IMAGE_FILE2_ID}}"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:23:25 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "747"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"resourceType\": \"files\",\n        \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/b0c5384efa924848b2960f8ac1433d4a\",\n        \"version\": 1,\n        \"created\": \"2024-07-11T08:15:34.702000Z\",\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"deleted\": null,\n        \"deletedUser\": null,\n        \"archived\": null,\n        \"archivedUser\": null\n    },\n    \"id\": \"b0c5384efa924848b2960f8ac1433d4a\",\n    \"name\": \"get-a-sample-robin-james.gif\",\n    \"versions\": [\n        1\n    ],\n    \"folder\": \"/hello/world\",\n    \"ownership\": null,\n    \"metadata\": {\n        \"filename\": \"get-a-sample-robin-james.gif\",\n        \"checksum\": \"a92df7875094d3d01ec24d5f0ef8bf95412c418ba331d81caf0db6b10230cb6eedf56b31c37b233f39f5dff91acabec3\",\n        \"content_type\": \"image/gif\",\n        \"type\": \"image\"\n    },\n    \"fullPath\": \"/hello/world/get-a-sample-robin-james1.gif\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Retrieve jpeg File details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved JPEG File details\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_IMAGE_FILE3_ID\"));\r",
+											"    pm.expect(jsonData.name).to.eql(\"file_example_JPG_500kB.jpg\");\r",
+											"    pm.expect(jsonData.versions).to.eql([1]);\r",
+											"    pm.expect(jsonData.folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData.fullPath).to.eql(\"/file_example_JPG_500kB1.jpg\");\r",
+											"    pm.expect(jsonData.metadata.type).to.eql(\"image\");\r",
+											"    pm.expect(jsonData.metadata.content_type).to.eql(\"image/jpeg\");\r",
+											"    pm.expect(jsonData.metadata.filename).to.eql(\"file_example_JPG_500kB.jpg\");\r",
+											"    pm.expect(jsonData.meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData.meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData.meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData.meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData.meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData.id));\r",
+											"    pm.expect(jsonData.meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData.meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archivedUser).to.eql(null);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"details",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_IMAGE_FILE3_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve jpeg File details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"details",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_IMAGE_FILE3_ID}}"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:24:00 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "719"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"resourceType\": \"files\",\n        \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/e1b150ad0ea14a5bb118d981a00c8825\",\n        \"version\": 1,\n        \"created\": \"2024-07-11T08:15:34.941000Z\",\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"deleted\": null,\n        \"deletedUser\": null,\n        \"archived\": null,\n        \"archivedUser\": null\n    },\n    \"id\": \"e1b150ad0ea14a5bb118d981a00c8825\",\n    \"name\": \"file_example_JPG_500kB.jpg\",\n    \"versions\": [\n        1\n    ],\n    \"folder\": \"/\",\n    \"ownership\": null,\n    \"metadata\": {\n        \"filename\": \"file_example_JPG_500kB.jpg\",\n        \"checksum\": \"b2de27680a30a43dabc42d2d34b50c7a577126276dfee4d1f56a0271b03c6f44d4775478dccc47cd65b92289145fb3a3\",\n        \"content_type\": \"image/jpeg\",\n        \"type\": \"image\"\n    },\n    \"fullPath\": \"/file_example_JPG_500kB1.jpg\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Retrieve pdf File details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved PDF File details\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE1_ID\"));\r",
+											"    pm.expect(jsonData.name).to.eql(\"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\");\r",
+											"    pm.expect(jsonData.versions).to.eql([\"abc\"]);\r",
+											"    pm.expect(jsonData.folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData.fullPath).to.eql(\"/FAQ for Parents (5D4N 2023 MOE-OBS)abc.pdf\");\r",
+											"    pm.expect(jsonData.metadata.type).to.eql(\"document\");\r",
+											"    pm.expect(jsonData.metadata.content_type).to.eql(\"application/pdf\");\r",
+											"    pm.expect(jsonData.metadata.filename).to.eql(\"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\");\r",
+											"    pm.expect(jsonData.meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData.meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData.meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData.meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData.meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData.id));\r",
+											"    pm.expect(jsonData.meta.version).to.eql(\"abc\");\r",
+											"    pm.expect(jsonData.meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archivedUser).to.eql(null);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"details",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_DOCUMENT_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve pdf File details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"details",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_DOCUMENT_FILE1_ID}}"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:24:32 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "776"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"resourceType\": \"files\",\n        \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/cc466de5b07742c0afca9252d0d6f786\",\n        \"version\": \"abc\",\n        \"created\": \"2024-07-11T08:17:17.644000Z\",\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"deleted\": null,\n        \"deletedUser\": null,\n        \"archived\": null,\n        \"archivedUser\": null\n    },\n    \"id\": \"cc466de5b07742c0afca9252d0d6f786\",\n    \"name\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n    \"versions\": [\n        \"abc\"\n    ],\n    \"folder\": \"/\",\n    \"ownership\": null,\n    \"metadata\": {\n        \"filename\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n        \"checksum\": \"b00e2315d7f3a031aac2d3d97615230dfefecc5721391455e2d9942ae1018571ae8ac93e8e891ead2f3b650900056bfc\",\n        \"content_type\": \"application/pdf\",\n        \"type\": \"document\"\n    },\n    \"fullPath\": \"/FAQ for Parents (5D4N 2023 MOE-OBS)abc.pdf\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Retrieve html File details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved html File details\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE2_ID\"));\r",
+											"    pm.expect(jsonData.name).to.eql(\"A Sample HTML Document (Test File).html\");\r",
+											"    pm.expect(jsonData.versions).to.eql([1]);\r",
+											"    pm.expect(jsonData.folder).to.eql(\"/\");\r",
+											"    pm.expect(jsonData.fullPath).to.eql(\"/A Sample HTML Document (Test File)1.html\");\r",
+											"    pm.expect(jsonData.metadata.type).to.eql(\"document\");\r",
+											"    pm.expect(jsonData.metadata.content_type).to.eql(\"text/html\");\r",
+											"    pm.expect(jsonData.metadata.filename).to.eql(\"A Sample HTML Document (Test File).html\");\r",
+											"    pm.expect(jsonData.meta.resourceType).to.eql(\"files\");\r",
+											"    pm.expect(jsonData.meta.owner).to.eql(pm.environment.get(\"TEST_USER1_ID\"));\r",
+											"    pm.expect(jsonData.meta.ownerType).to.eql(\"user\");\r",
+											"    pm.expect(jsonData.meta.created).to.not.eql(null);\r",
+											"    pm.expect(jsonData.meta.location).to.match(new RegExp(\"/latest/files/cdn/\" + jsonData.id));\r",
+											"    pm.expect(jsonData.meta.version).to.eql(1);\r",
+											"    pm.expect(jsonData.meta.lastModified).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.lastModifiedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deleted).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.deletedUser).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archived).to.eql(null);\r",
+											"    pm.expect(jsonData.meta.archivedUser).to.eql(null);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"details",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_DOCUMENT_FILE2_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Retrieve html File details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"details",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_DOCUMENT_FILE2_ID}}"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:25:10 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "760"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"resourceType\": \"files\",\n        \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/7c4b9ea693cf43e79fb4370ba0945898\",\n        \"version\": 1,\n        \"created\": \"2024-07-11T08:17:17.888000Z\",\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"deleted\": null,\n        \"deletedUser\": null,\n        \"archived\": null,\n        \"archivedUser\": null\n    },\n    \"id\": \"7c4b9ea693cf43e79fb4370ba0945898\",\n    \"name\": \"A Sample HTML Document (Test File).html\",\n    \"versions\": [\n        1\n    ],\n    \"folder\": \"/\",\n    \"ownership\": null,\n    \"metadata\": {\n        \"filename\": \"A Sample HTML Document (Test File).html\",\n        \"checksum\": \"24f2ebdabea4fcdfd90fbf62609272b6de117c1c60affb1d11679f1be49ec64040f68ef355ed7853e25f1103571d4471\",\n        \"content_type\": \"text/html\",\n        \"type\": \"document\"\n    },\n    \"fullPath\": \"/A Sample HTML Document (Test File)1.html\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Attempt to retrieve Files without authentication",
+					"item": [
+						{
+							"name": "Attempt to retrieve Files without signed url",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{CDN_URL}}/files/:id/file_example_MP3_1MG.mp3",
+									"host": [
+										"{{CDN_URL}}"
+									],
+									"path": [
+										"files",
+										":id",
+										"file_example_MP3_1MG.mp3"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AUDIO_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Attempt to retrieve Files without signed url",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{CDN_URL}}/files/:id/file_example_MP3_1MG.mp3",
+											"host": [
+												"{{CDN_URL}}"
+											],
+											"path": [
+												"files",
+												":id",
+												"file_example_MP3_1MG.mp3"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_AUDIO_FILE1_ID}}"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "xml",
+									"header": [
+										{
+											"key": "Server",
+											"value": "CloudFront"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 10 Jun 2024 06:15:37 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/xml"
+										},
+										{
+											"key": "Content-Length",
+											"value": "146"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Cache",
+											"value": "Error from cloudfront"
+										},
+										{
+											"key": "Via",
+											"value": "1.1 dda7799d8b238a0cfe4bb363587dd4bc.cloudfront.net (CloudFront)"
+										},
+										{
+											"key": "X-Amz-Cf-Pop",
+											"value": "SIN52-P1"
+										},
+										{
+											"key": "X-Amz-Cf-Id",
+											"value": "Aend1M4CsqavX4YpKq2CoXb9dsWnZf3d4ZQgdtqdtLhFmUdmq4J1YQ=="
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "1; mode=block"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "strict-origin-when-cross-origin"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=31536000"
+										},
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Cf-Team",
+											"value": "20a262cdfc000088333bc52400000001"
+										}
+									],
+									"cookie": [],
+									"body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error>\n    <Code>MissingKey</Code>\n    <Message>Missing Key-Pair-Id query parameter or cookie value</Message>\n</Error>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Retrieve Files via CDN",
+					"item": [
+						{
+							"name": "Retrieve mp3 File via CDN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved MOV File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"audio/mpeg\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/cdn/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"cdn",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AUDIO_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve mp4 File via CDN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved MP4 File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"video/mp4\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/cdn/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"cdn",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_VIDEO_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve mov File via CDN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved MOV File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"video/quicktime\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/cdn/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"cdn",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_VIDEO_FILE2_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve wmv File via CDN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved WMV File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"video/x-ms-wmv\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/cdn/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"cdn",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_VIDEO_FILE3_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve png File via CDN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved PNG File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"image/png\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/cdn/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"cdn",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_IMAGE_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve gif File via CDN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved GIF File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"image/gif\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/cdn/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"cdn",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_IMAGE_FILE2_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve jpeg File via CDN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved JPEG File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"image/jpeg\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/cdn/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"cdn",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_IMAGE_FILE3_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve pdf File via CDN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved PDF File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/pdf\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/cdn/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"cdn",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_DOCUMENT_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve html File via CDN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code is 200', function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Retrieved HTML File\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\").includes(\"text/html\")).to.eql(true);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/cdn/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"cdn",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_DOCUMENT_FILE2_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete File",
+					"item": [
+						{
+							"name": "Delete File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AUDIO_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Delete File",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_AUDIO_FILE1_ID}}"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:33:07 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										}
+									],
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "Attempt to retrieve deleted File",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"pm.test(\"Retrieve non-existent File\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.code).to.eql(404);\r",
+											"    pm.expect(jsonData.message).to.eql(\"File does not exist\");\r",
+											"    pm.expect(jsonData.details.id).to.eql(pm.environment.get(\"TEST_AUDIO_FILE1_ID\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AUDIO_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Attempt to retrieve deleted File",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_AUDIO_FILE1_ID}}"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:33:16 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "1136"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 404,\n    \"message\": \"File does not exist\",\n    \"request\": {\n        \"url\": \"https://localhost:20002/latest/files/8c36b1e2f9f549c9b88eedf3c931e972\",\n        \"headers\": {\n            \"authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDY4NjU5NCwiaWF0IjoxNzIwNjg2NTk0LCJleHAiOjE3MjA2OTM3OTQsImp0aSI6IjQ2NTUzNGM0MGQxZTRhYjBiOGNjNGUxNDBkYjMyYTU3IiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOmZhbHNlLCJyb2xlIjoiYzAxY2IwOGI5ZGY3NDY1MGJhOTdlYzZiZmY0Mzg1YWUiLCJzdXBlcnVzZXIiOnRydWUsImFnZW5jeSI6ImRzdGEiLCJhdF9oYXNoIjoiZDJ4c1RvWVVSS2ZLRjM3cmx3ZWlDdyJ9.PSC-f5f-uyrnyrYa5VgisaqzlBtkbw81iMm-5W147wE\",\n            \"user-agent\": \"PostmanRuntime/7.39.0\",\n            \"accept\": \"*/*\",\n            \"cache-control\": \"no-cache\",\n            \"postman-token\": \"b3cadbfd-202b-4444-bfc6-0377e238733a\",\n            \"host\": \"localhost:20002\",\n            \"accept-encoding\": \"gzip, deflate, br\",\n            \"connection\": \"keep-alive\"\n        },\n        \"path_params\": {\n            \"file_id\": \"8c36b1e2f9f549c9b88eedf3c931e972\"\n        },\n        \"query_params\": {},\n        \"client\": {\n            \"host\": \"127.0.0.1\",\n            \"port\": 32950\n        },\n        \"body\": \"\"\n    },\n    \"details\": {\n        \"id\": \"8c36b1e2f9f549c9b88eedf3c931e972\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Attempt to retrieve deleted File details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"pm.test(\"Retrieve non-existent File\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.code).to.eql(404);\r",
+											"    pm.expect(jsonData.message).to.eql(\"File does not exist\");\r",
+											"    pm.expect(jsonData.details.id).to.eql(pm.environment.get(\"TEST_AUDIO_FILE1_ID\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										"details",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AUDIO_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Attempt to retrieve deleted File details",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/details/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												"details",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_AUDIO_FILE1_ID}}"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:34:01 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "1144"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 404,\n    \"message\": \"File does not exist\",\n    \"request\": {\n        \"url\": \"https://localhost:20002/latest/files/details/8c36b1e2f9f549c9b88eedf3c931e972\",\n        \"headers\": {\n            \"authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDY4NjU5NCwiaWF0IjoxNzIwNjg2NTk0LCJleHAiOjE3MjA2OTM3OTQsImp0aSI6IjQ2NTUzNGM0MGQxZTRhYjBiOGNjNGUxNDBkYjMyYTU3IiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOmZhbHNlLCJyb2xlIjoiYzAxY2IwOGI5ZGY3NDY1MGJhOTdlYzZiZmY0Mzg1YWUiLCJzdXBlcnVzZXIiOnRydWUsImFnZW5jeSI6ImRzdGEiLCJhdF9oYXNoIjoiZDJ4c1RvWVVSS2ZLRjM3cmx3ZWlDdyJ9.PSC-f5f-uyrnyrYa5VgisaqzlBtkbw81iMm-5W147wE\",\n            \"user-agent\": \"PostmanRuntime/7.39.0\",\n            \"accept\": \"*/*\",\n            \"cache-control\": \"no-cache\",\n            \"postman-token\": \"287945d2-212c-49d8-8dfc-620ed3f64e40\",\n            \"host\": \"localhost:20002\",\n            \"accept-encoding\": \"gzip, deflate, br\",\n            \"connection\": \"keep-alive\"\n        },\n        \"path_params\": {\n            \"file_id\": \"8c36b1e2f9f549c9b88eedf3c931e972\"\n        },\n        \"query_params\": {},\n        \"client\": {\n            \"host\": \"127.0.0.1\",\n            \"port\": 59808\n        },\n        \"body\": \"\"\n    },\n    \"details\": {\n        \"id\": \"8c36b1e2f9f549c9b88eedf3c931e972\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Attempt to retrieve deleted File via CDN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"pm.test(\"Retrieve non-existent File\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.code).to.eql(404);\r",
+											"    pm.expect(jsonData.message).to.eql(\"File does not exist\");\r",
+											"    pm.expect(jsonData.details.id).to.eql(pm.environment.get(\"TEST_AUDIO_FILE1_ID\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{AUTH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AUDIO_FILE1_ID}}"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Attempt to retrieve deleted File via CDN",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files/:id",
+											"protocol": "{{SCHEME}}",
+											"host": [
+												"{{AGENTS_URL}}"
+											],
+											"path": [
+												"{{API_VERSION}}",
+												"files",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{TEST_AUDIO_FILE1_ID}}"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "date",
+											"value": "Thu, 11 Jul 2024 08:33:27 GMT"
+										},
+										{
+											"key": "server",
+											"value": "uvicorn"
+										},
+										{
+											"key": "content-length",
+											"value": "1136"
+										},
+										{
+											"key": "content-type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"code\": 404,\n    \"message\": \"File does not exist\",\n    \"request\": {\n        \"url\": \"https://localhost:20002/latest/files/8c36b1e2f9f549c9b88eedf3c931e972\",\n        \"headers\": {\n            \"authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDY4NjU5NCwiaWF0IjoxNzIwNjg2NTk0LCJleHAiOjE3MjA2OTM3OTQsImp0aSI6IjQ2NTUzNGM0MGQxZTRhYjBiOGNjNGUxNDBkYjMyYTU3IiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOmZhbHNlLCJyb2xlIjoiYzAxY2IwOGI5ZGY3NDY1MGJhOTdlYzZiZmY0Mzg1YWUiLCJzdXBlcnVzZXIiOnRydWUsImFnZW5jeSI6ImRzdGEiLCJhdF9oYXNoIjoiZDJ4c1RvWVVSS2ZLRjM3cmx3ZWlDdyJ9.PSC-f5f-uyrnyrYa5VgisaqzlBtkbw81iMm-5W147wE\",\n            \"user-agent\": \"PostmanRuntime/7.39.0\",\n            \"accept\": \"*/*\",\n            \"cache-control\": \"no-cache\",\n            \"postman-token\": \"c5caf41e-4d7e-4e1d-a9a5-045b48ed4c11\",\n            \"host\": \"localhost:20002\",\n            \"accept-encoding\": \"gzip, deflate, br\",\n            \"connection\": \"keep-alive\"\n        },\n        \"path_params\": {\n            \"file_id\": \"8c36b1e2f9f549c9b88eedf3c931e972\"\n        },\n        \"query_params\": {},\n        \"client\": {\n            \"host\": \"127.0.0.1\",\n            \"port\": 42776\n        },\n        \"body\": \"\"\n    },\n    \"details\": {\n        \"id\": \"8c36b1e2f9f549c9b88eedf3c931e972\"\n    }\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "TEST_NON_EXISTENT_ID",
+			"value": ""
+		}
+	]
+}

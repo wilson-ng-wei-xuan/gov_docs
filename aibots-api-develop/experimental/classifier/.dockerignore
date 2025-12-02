@@ -1,0 +1,7 @@
+data
+notebook/.env
+**/__pycache__/
+**/*.pyc
+model/mdeberta
+model/xgboost
+.gitignore

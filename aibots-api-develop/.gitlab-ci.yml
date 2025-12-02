@@ -1,0 +1,43 @@
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+stages:
+  - test
+  - triggers
+
+sast:
+  stage: test
+  variables:
+    SAST_EXCLUDED_PATHS: spec, test, tests, tmp, postman_tests, integration_tests
+
+gitlab-advanced-sast:
+  stage: test
+  extends: .sast-analyzer
+
+gemnasium-dependency_scanning:
+  stage: test
+  variables:
+    DS_MAX_DEPTH: 5
+
+trigger-aibots-job:
+  stage: triggers
+  trigger:
+    include: aibots/.gitlab-ci.yml
+
+trigger-agents-job:
+  stage: triggers
+  trigger:
+    include: agents-api/.gitlab-ci.yml
+
+trigger-chats-job:
+  stage: triggers
+  trigger:
+    include: chats-api/.gitlab-ci.yml
+
+trigger-rag-pipeline-job:
+  stage: triggers
+  trigger:
+    include: rag/.gitlab-ci.yml

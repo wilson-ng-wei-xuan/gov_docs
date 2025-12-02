@@ -1,0 +1,191 @@
+
+services:
+  text_semantic:
+    build:
+      context: "../"
+      target: "production"
+      dockerfile: "rag/Dockerfile"
+      args:
+        RAG_COMPONENT_PATH: "rag/chunk/text_semantic_chunker"
+        ATLAS_USER: "${ATLAS_USER}"
+        ATLAS_TOKEN: "${ATLAS_TOKEN}"
+        ATLAS_BASE_IMAGE: "${ATLAS_BASE_IMAGE:-registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base}"
+        ATLAS_BASE_IMAGE_TAG: "${ATLAS_BASE_IMAGE_TAG:-latest}"
+        VERSION: "${VERSION:-v1.0.0}"
+        RELEASE_DATE: "${RELEASE_DATE}"
+        GIT_BRANCH: "${GIT_BRANCH}"
+        GIT_COMMIT_HASH: "${GIT_COMMIT_HASH}"
+        KEY_PASS: "${KEY_PASS}"
+    image: "${REGISTRY}aibots/rag/chunk/text_semantic:${TAG:-latest}"
+    container_name: text_semantic
+
+  cohere:
+    build:
+      context: "../"
+      target: "production"
+      dockerfile: "rag/Dockerfile"
+      args:
+        RAG_COMPONENT_PATH: "rag/embed/cohere"
+        ATLAS_USER: "${ATLAS_USER}"
+        ATLAS_TOKEN: "${ATLAS_TOKEN}"
+        ATLAS_BASE_IMAGE: "${ATLAS_BASE_IMAGE:-registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base}"
+        ATLAS_BASE_IMAGE_TAG: "${ATLAS_BASE_IMAGE_TAG:-latest}"
+        VERSION: "${VERSION:-v1.0.0}"
+        RELEASE_DATE: "${RELEASE_DATE}"
+        GIT_BRANCH: "${GIT_BRANCH}"
+        GIT_COMMIT_HASH: "${GIT_COMMIT_HASH}"
+        KEY_PASS: "${KEY_PASS}"
+    image: "${REGISTRY}aibots/rag/embed/cohere:${TAG:-latest}"
+    container_name: cohere
+
+  csv:
+    build:
+      context: "../"
+      target: "production"
+      dockerfile: "rag/Dockerfile"
+      args:
+        RAG_COMPONENT_PATH: "rag/parse/csv"
+        ATLAS_USER: "${ATLAS_USER}"
+        ATLAS_TOKEN: "${ATLAS_TOKEN}"
+        ATLAS_BASE_IMAGE: "${ATLAS_BASE_IMAGE:-registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base}"
+        ATLAS_BASE_IMAGE_TAG: "${ATLAS_BASE_IMAGE_TAG:-latest}"
+        VERSION: "${VERSION:-v1.0.0}"
+        RELEASE_DATE: "${RELEASE_DATE}"
+        GIT_BRANCH: "${GIT_BRANCH}"
+        GIT_COMMIT_HASH: "${GIT_COMMIT_HASH}"
+        KEY_PASS: "${KEY_PASS}"
+    image: "${REGISTRY}aibots/rag/parse/csv:${TAG:-latest}"
+    container_name: csv
+
+  docx:
+    build:
+      context: "../"
+      target: "nltk_production"
+      dockerfile: "rag/Dockerfile"
+      args:
+        RAG_COMPONENT_PATH: "rag/parse/docx"
+        ATLAS_USER: "${ATLAS_USER}"
+        ATLAS_TOKEN: "${ATLAS_TOKEN}"
+        ATLAS_BASE_IMAGE: "${ATLAS_BASE_IMAGE:-registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base}"
+        ATLAS_BASE_IMAGE_TAG: "${ATLAS_BASE_IMAGE_TAG:-latest}"
+        VERSION: "${VERSION:-v1.0.0}"
+        RELEASE_DATE: "${RELEASE_DATE}"
+        GIT_BRANCH: "${GIT_BRANCH}"
+        GIT_COMMIT_HASH: "${GIT_COMMIT_HASH}"
+        KEY_PASS: "${KEY_PASS}"
+    image: "${REGISTRY}aibots/rag/parse/docx:${TAG:-latest}"
+    container_name: docx
+
+#  html:
+#    build:
+#      context: "../"
+#      target: "nltk_production"
+#      dockerfile: "rag/Dockerfile"
+#      args:
+#        RAG_COMPONENT_PATH: "rag/parse/html"
+#        ATLAS_USER: "${ATLAS_USER}"
+#        ATLAS_TOKEN: "${ATLAS_TOKEN}"
+#        ATLAS_BASE_IMAGE: "${ATLAS_BASE_IMAGE:-registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base}"
+#        ATLAS_BASE_IMAGE_TAG: "${ATLAS_BASE_IMAGE_TAG:-latest}"
+#        VERSION: "${VERSION:-v1.0.0}"
+#        RELEASE_DATE: "${RELEASE_DATE}"
+#        GIT_BRANCH: "${GIT_BRANCH}"
+#        GIT_COMMIT_HASH: "${GIT_COMMIT_HASH}"
+#        KEY_PASS: "${KEY_PASS}"
+#    image: "${REGISTRY}aibots/rag/parse/html:${TAG:-latest}"
+#    container_name: html
+
+  pdf:
+    build:
+      context: "../"
+      target: "pdf_production"
+      dockerfile: "rag/Dockerfile"
+      args:
+        RAG_COMPONENT_PATH: "rag/parse/pdf"
+        ATLAS_USER: "${ATLAS_USER}"
+        ATLAS_TOKEN: "${ATLAS_TOKEN}"
+        ATLAS_BASE_IMAGE: "${ATLAS_BASE_IMAGE:-registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base}"
+        ATLAS_BASE_IMAGE_TAG: "${ATLAS_BASE_IMAGE_TAG:-latest}"
+        VERSION: "${VERSION:-v1.0.0}"
+        RELEASE_DATE: "${RELEASE_DATE}"
+        GIT_BRANCH: "${GIT_BRANCH}"
+        GIT_COMMIT_HASH: "${GIT_COMMIT_HASH}"
+        KEY_PASS: "${KEY_PASS}"
+    image: "${REGISTRY}aibots/rag/parse/pdf:${TAG:-latest}"
+    container_name: pdf
+
+  pptx:
+    build:
+      context: "../"
+      target: "nltk_production"
+      dockerfile: "rag/Dockerfile"
+      args:
+        RAG_COMPONENT_PATH: "rag/parse/pptx"
+        ATLAS_USER: "${ATLAS_USER}"
+        ATLAS_TOKEN: "${ATLAS_TOKEN}"
+        ATLAS_BASE_IMAGE: "${ATLAS_BASE_IMAGE:-registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base}"
+        ATLAS_BASE_IMAGE_TAG: "${ATLAS_BASE_IMAGE_TAG:-latest}"
+        VERSION: "${VERSION:-v1.0.0}"
+        RELEASE_DATE: "${RELEASE_DATE}"
+        GIT_BRANCH: "${GIT_BRANCH}"
+        GIT_COMMIT_HASH: "${GIT_COMMIT_HASH}"
+        KEY_PASS: "${KEY_PASS}"
+    image: "${REGISTRY}aibots/rag/parse/pptx:${TAG:-latest}"
+    container_name: pptx
+
+  txt:
+    build:
+      context: "../"
+      target: "production"
+      dockerfile: "rag/Dockerfile"
+      args:
+        RAG_COMPONENT_PATH: "rag/parse/txt"
+        ATLAS_USER: "${ATLAS_USER}"
+        ATLAS_TOKEN: "${ATLAS_TOKEN}"
+        ATLAS_BASE_IMAGE: "${ATLAS_BASE_IMAGE:-registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base}"
+        ATLAS_BASE_IMAGE_TAG: "${ATLAS_BASE_IMAGE_TAG:-latest}"
+        VERSION: "${VERSION:-v1.0.0}"
+        RELEASE_DATE: "${RELEASE_DATE}"
+        GIT_BRANCH: "${GIT_BRANCH}"
+        GIT_COMMIT_HASH: "${GIT_COMMIT_HASH}"
+        KEY_PASS: "${KEY_PASS}"
+    image: "${REGISTRY}aibots/rag/parse/txt:${TAG:-latest}"
+    container_name: txt
+
+  xlsx:
+    build:
+      context: "../"
+      target: "production"
+      dockerfile: "rag/Dockerfile"
+      args:
+        RAG_COMPONENT_PATH: "rag/parse/xlsx"
+        ATLAS_USER: "${ATLAS_USER}"
+        ATLAS_TOKEN: "${ATLAS_TOKEN}"
+        ATLAS_BASE_IMAGE: "${ATLAS_BASE_IMAGE:-registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base}"
+        ATLAS_BASE_IMAGE_TAG: "${ATLAS_BASE_IMAGE_TAG:-latest}"
+        VERSION: "${VERSION:-v1.0.0}"
+        RELEASE_DATE: "${RELEASE_DATE}"
+        GIT_BRANCH: "${GIT_BRANCH}"
+        GIT_COMMIT_HASH: "${GIT_COMMIT_HASH}"
+        KEY_PASS: "${KEY_PASS}"
+    image: "${REGISTRY}aibots/rag/parse/xlsx:${TAG:-latest}"
+    container_name: xlsx
+
+  opensearch:
+    build:
+      context: "../"
+      target: "production"
+      dockerfile: "rag/Dockerfile"
+      args:
+        RAG_COMPONENT_PATH: "rag/store/opensearch"
+        ATLAS_USER: "${ATLAS_USER}"
+        ATLAS_TOKEN: "${ATLAS_TOKEN}"
+        ATLAS_BASE_IMAGE: "${ATLAS_BASE_IMAGE:-registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base}"
+        ATLAS_BASE_IMAGE_TAG: "${ATLAS_BASE_IMAGE_TAG:-latest}"
+        VERSION: "${VERSION:-v1.0.0}"
+        RELEASE_DATE: "${RELEASE_DATE}"
+        GIT_BRANCH: "${GIT_BRANCH}"
+        GIT_COMMIT_HASH: "${GIT_COMMIT_HASH}"
+        KEY_PASS: "${KEY_PASS}"
+    image: "${REGISTRY}aibots/rag/store/opensearch:${TAG:-latest}"
+    container_name: opensearch

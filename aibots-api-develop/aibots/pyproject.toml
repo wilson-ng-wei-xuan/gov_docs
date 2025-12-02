@@ -1,0 +1,123 @@
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-srP"
+testpaths = [
+    "postman_tests",
+    "integration_tests",
+    "tests",
+]
+log_cli = true
+env = [
+    "D:DATABASE_HOST=mongodb://localhost:27017",
+    "D:AWS_ID=1400465454",
+    "D:MESSAGE_FOLDER=messages",
+    "D:GOVTEXT_URL=https://amp.stg.govtext.gov.sg",
+    "D:GOVTEXT__SQS=sqs-sitezapp-aibots-rag-status-govtext",
+]
+asyncio_mode = "auto"
+
+[tool.ruff]
+extend-exclude = [
+    "*test*.py",
+    "noxfile.py",
+    ".gitignore",
+    ".dockerignore",
+]
+line-length = 79
+target-version = "py311"
+
+[tool.ruff.extend-per-file-ignores]
+"__init__.py" = ["E402", "F401", "I001", "I002"]
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle
+    "F", # Pyflakes
+    "B", # flake8-bugbear
+    "SIM", # flake8-simplify
+    "I", # isort
+    "Q", # flake8-quotes
+    "YTT", # flake8-2020
+    "ASYNC", # flake8-async
+    "S", # flake8-bandit
+    "COM", # flake8-commas
+    "C4", # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "T20", # flake8-print
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "PTH", # flake8-use-pathlib
+]
+ignore = ['E231', 'E241', 'W291', 'W293', 'S105', 'S101', 'COM812']
+
+[tool.ruff.isort]
+required-imports = ["from __future__ import annotations"]
+
+[tool.coverage.run]
+branch = true
+source = ["."]
+omit = ["noxfile.py"]
+
+[tool.coverage.report]
+ignore_errors = true
+omit = [
+    "*/postman_tests/*",
+    "*/integration_tests/*",
+    "*/postman_tests/*",
+    "*/tests/*",
+    "noxfile.py"
+]
+
+[tool.poetry]
+name = "aibots"
+version = "1.0.3"
+description = "Contains source code for AI Bots common models"
+authors = ["David Lee <david_tw_lee@tech.gov.sg>"]
+readme = "README.md"
+packages = [
+    { include = "aibots" },
+]
+exclude = [
+    "tests",
+    "integration_tests",
+    "postman_tests",
+    "mocks"
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+atlas = { version = "^0.16.0.a1", allow-prereleases = true, source = "atlas" }
+atlas-asgi = { version = "^0.16.0.a1", allow-prereleases = true, source = "atlas" }
+atlas-genai = { version = "^0.16.0.a1", allow-prereleases = true, source = "atlas" }
+atlas-boto3 = { version = "^0.16.0.a1", allow-prereleases = true, source = "atlas" }
+atlas-httpx = { version = "^0.16.0.a1", allow-prereleases = true, source = "atlas" }
+
+
+[tool.poetry.group.dev.dependencies]
+# Linters
+ruff = "^0.1.4"
+
+# Automation Tools
+nox = "^2024.3.2"
+nox-poetry = "^1.0.3"
+
+# Testing
+pytest = "^8.1.1"
+pytest-mock = "^3.14.0"
+pytest-env = "^1.1.3"
+pytest-asyncio = "^0.23.6"
+pytest-httpx = "^0.30.0"
+coverage = "^7.4.4"
+moto = "^5.0.14"
+python-docx = "^1.1.2"
+mongomock-motor = "^0.0.29"
+setuptools = { version = "^70.0.0", python = ">=3.12" }
+
+[[tool.poetry.source]]
+name = "atlas"
+url = "https://sgts.gitlab-dedicated.com/api/v4/groups/39960/-/packages/pypi/simple"
+priority = "supplemental"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

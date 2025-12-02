@@ -1,0 +1,14 @@
+
+services:
+  atlas-mongo:
+    image: "${ATLAS_REGISTRY}atlas-mongo/auth:${TAG:-latest}"
+    container_name: atlas-mongo
+    environment:
+      MONGO_INITDB_DATABASE: "${ATLAS_ADMIN_DB:-admin}"
+      MONGO_INITDB_ROOT_USERNAME: "${DB_USER:-admin}"
+      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD:-dsa1d-st}"
+    expose:
+      - 27017
+    ports:
+      - "27017:27017"
+    restart: unless-stopped

@@ -1,0 +1,7 @@
+[server]
+baseUrlPath = "multimodal"
+enableXsrfProtection=false
+maxUploadSize = 10000
+
+[deprecation]
+showPyplotGlobalUse = false

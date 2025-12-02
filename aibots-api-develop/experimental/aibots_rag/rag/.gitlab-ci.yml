@@ -1,0 +1,210 @@
+
+variables:
+  ATLAS_IMAGE: registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base
+  ATLAS_USER: $ATLAS_REGISTRY_USER
+  ATLAS_TOKEN: $ATLAS_REGISTRY_TOKEN
+  COMPONENT_PATH: "rag"
+
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
+  - template: Security/Container-Scanning.gitlab-ci.yml
+  - local: '/templates/build-docker.yml'
+  - local: '/templates/lint.yml'
+  - local: '/templates/unittests.yml'
+  - project: 'WOG/GVT/ship/ship-hats-templates'
+    ref: "main"
+    file:
+      - '/templates/.gitlab-ci-docker-build.yml'
+      - '/templates/.gitlab-ci-docker-push.yml'
+      - "/templates/.gitlab-ci-common.yml"
+
+stages:
+  - test
+  - build
+  - scan
+  - deploy
+
+lint-job:
+  stage: test
+  image: python:3.11.8-slim-bookworm
+  extends: .lint
+
+unittests-job:
+  stage: test
+  image: python:3.11.8-slim-bookworm
+  extends: .unittests
+
+build-docker-chunk-text-semantic-job:
+  stage: build
+  extends: .build-image
+  variables:
+    ATLAS_BUILD_ARGS: "--target production --build-arg RAG_COMPONENT_PATH=${COMPONENT_PATH}/chunk/text_semantic"
+  needs:
+    - lint-job
+    - unittests-job
+
+push-docker-chunk-text-semantic-job:
+  stage: build
+  extends: .push-image
+  variables:
+    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH/chunk/text_semantic:$CI_COMMIT_REF_SLUG"
+  needs:
+    - build-docker-chunk-text-semantic-job
+
+build-docker-embed-cohere-job:
+  stage: build
+  extends: .build-image
+  variables:
+    ATLAS_BUILD_ARGS: "--target production --build-arg RAG_COMPONENT_PATH=${COMPONENT_PATH}/embed/cohere"
+  needs:
+    - lint-job
+    - unittests-job
+
+push-docker-embed-cohere-job:
+  stage: build
+  extends: .push-image
+  variables:
+    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH/embed/cohere:$CI_COMMIT_REF_SLUG"
+  needs:
+    - build-docker-embed-cohere-job
+
+build-docker-parse-csv-job:
+  stage: build
+  extends: .build-image
+  variables:
+    ATLAS_BUILD_ARGS: "--target production --build-arg RAG_COMPONENT_PATH=${COMPONENT_PATH}/parse/csv"
+  needs:
+    - lint-job
+    - unittests-job
+
+push-docker-parse-csv-job:
+  stage: build
+  extends: .push-image
+  variables:
+    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH/parse/csv:$CI_COMMIT_REF_SLUG"
+  needs:
+    - build-docker-parse-csv-job
+
+build-docker-parse-docx-job:
+  stage: build
+  extends: .build-image
+  variables:
+    ATLAS_BUILD_ARGS: "--target nltk_production --build-arg RAG_COMPONENT_PATH=${COMPONENT_PATH}/parse/docx"
+  needs:
+    - lint-job
+    - unittests-job
+
+push-docker-parse-docx-job:
+  stage: build
+  extends: .push-image
+  variables:
+    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH/parse/docx:$CI_COMMIT_REF_SLUG"
+  needs:
+    - build-docker-parse-docx-job
+
+build-docker-parse-html-job:
+  stage: build
+  extends: .build-image
+  variables:
+    ATLAS_BUILD_ARGS: "--target nltk_production --build-arg RAG_COMPONENT_PATH=${COMPONENT_PATH}/parse/html"
+  needs:
+    - lint-job
+    - unittests-job
+
+push-docker-parse-html-job:
+  stage: build
+  extends: .push-image
+  variables:
+    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH/parse/html:$CI_COMMIT_REF_SLUG"
+  needs:
+    - build-docker-parse-html-job
+
+#build-docker-parse-pdf-job:
+#  stage: build
+#  extends: .build-image
+#  variables:
+#    ATLAS_BUILD_ARGS: "--target pdf_production --build-arg RAG_COMPONENT_PATH=${COMPONENT_PATH}/parse/pdf"
+#  needs:
+#    - lint-job
+#    - unittests-job
+#
+#push-docker-parse-pdf-job:
+#  stage: build
+#  extends: .push-image
+#  variables:
+#    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH/parse/pdf:$CI_COMMIT_REF_SLUG"
+#  needs:
+#    - build-docker-parse-pdf-job
+
+build-docker-parse-pptx-job:
+  stage: build
+  extends: .build-image
+  variables:
+    ATLAS_BUILD_ARGS: "--target nltk_production --build-arg RAG_COMPONENT_PATH=${COMPONENT_PATH}/parse/pptx"
+  needs:
+    - lint-job
+    - unittests-job
+
+push-docker-parse-pptx-job:
+  stage: build
+  extends: .push-image
+  variables:
+    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH/parse/pptx:$CI_COMMIT_REF_SLUG"
+  needs:
+    - build-docker-parse-pptx-job
+
+build-docker-parse-txt-job:
+  stage: build
+  extends: .build-image
+  variables:
+    ATLAS_BUILD_ARGS: "--target production --build-arg RAG_COMPONENT_PATH=${COMPONENT_PATH}/parse/txt"
+  needs:
+    - lint-job
+    - unittests-job
+
+push-docker-parse-txt-job:
+  stage: build
+  extends: .push-image
+  variables:
+    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH/parse/txt:$CI_COMMIT_REF_SLUG"
+  needs:
+    - build-docker-parse-txt-job
+
+build-docker-parse-xlsx-job:
+  stage: build
+  extends: .build-image
+  variables:
+    ATLAS_BUILD_ARGS: "--target production --build-arg RAG_COMPONENT_PATH=${COMPONENT_PATH}/parse/xlsx"
+  needs:
+    - lint-job
+    - unittests-job
+
+push-docker-parse-xlsx-job:
+  stage: build
+  extends: .push-image
+  variables:
+    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH/parse/xlsx:$CI_COMMIT_REF_SLUG"
+  needs:
+    - build-docker-parse-xlsx-job
+
+build-docker-store-opensearch-job:
+  stage: build
+  extends: .build-image
+  variables:
+    ATLAS_BUILD_ARGS: "--target production --build-arg RAG_COMPONENT_PATH=${COMPONENT_PATH}/store/opensearch"
+  needs:
+    - lint-job
+    - unittests-job
+
+push-docker-store-opensearch-job:
+  stage: build
+  extends: .push-image
+  variables:
+    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH/store/opensearch:$CI_COMMIT_REF_SLUG"
+  needs:
+    - build-docker-store-opensearch-job
+
+container_scanning:
+  stage: scan
+  variables:
+    CS_IMAGE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/rag/text_semantic:$CI_COMMIT_REF_SLUG"

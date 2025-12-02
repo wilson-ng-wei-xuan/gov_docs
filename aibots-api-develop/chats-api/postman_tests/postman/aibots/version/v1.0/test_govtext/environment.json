@@ -1,0 +1,993 @@
+{
+	"id": "b8857cc1-48fd-4201-9353-b15e6f6ecb81",
+	"name": "AIBots Environment",
+	"values": [
+		{
+			"key": "SCHEME",
+			"value": "https",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "AGENTS_URL",
+			"value": "localhost:20002",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "CHATS_URL",
+			"value": "localhost:20003",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "CDN_URL",
+			"value": "https://public.sit.aibots.gov.sg",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "API_VERSION",
+			"value": "latest",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_INVALID_OTP",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_NONEXISTENT_OTP",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_OTP",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "AUTH_TOKEN",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "REFRESH_TOKEN",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_NONEXISTENT_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_INVALID_EMAIL_ADDRESS",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_UNVERIFIED_USER1_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_UNVERIFIED_USER1_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_UNVERIFIED_USER1_GROUP_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_UNVERIFIED_USER2_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_UNVERIFIED_USER2_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_UNVERIFIED_USER2_GROUP_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_UNVERIFIED_USER3_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_UNVERIFIED_USER3_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_UNVERIFIED_USER3_GROUP_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_EMAIL_ADDRESS1",
+			"value": "xin_zhuan_teng_from.tp@tech.gov.sg",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER1_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER1_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER1_GROUP_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_EMAIL_ADDRESS2",
+			"value": "david_tw_lee@tech.gov.sg",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER2_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER2_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER2_GROUP_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_EMAIL_ADDRESS3",
+			"value": "kieu_quoc_thang@tech.gov.sg",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER3_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER3_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER3_GROUP_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_EMAIL_ADDRESS4",
+			"value": "louisa_ong@tech.gov.sg",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER4_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER4_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_USER4_GROUP_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AUDIO_FILE1_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AUDIO_FILE1_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_VIDEO_FILE1_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_VIDEO_FILE1_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_VIDEO_FILE2_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_VIDEO_FILE2_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_VIDEO_FILE3_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_VIDEO_FILE3_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_IMAGE_FILE1_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_IMAGE_FILE1_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_IMAGE_FILE2_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_IMAGE_FILE2_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_IMAGE_FILE3_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_IMAGE_FILE3_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_DOCUMENT_FILE1_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_DOCUMENT_FILE1_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_DOCUMENT_FILE2_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_DOCUMENT_FILE2_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE1_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE1_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE2_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE2_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE3_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE3_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE4_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE4_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE5_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE5_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE6_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE6_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE7_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE7_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE8_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE8_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE9_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE9_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE10_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_FILE10_NAME",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "DEFAULT_PLAYGROUND_AGENT_ID",
+			"value": "804885b4423e485cb21592c7dfa8baa8",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "DEFAULT_PLAYGROUND_AGENT_SLUG",
+			"value": "the-playground-bot",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT1_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT1_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT1_KB1_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT1_KB2_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT1_KB3_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT1_RAG1_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT1_RAG2_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT1_RAG3_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT2_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT2_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT3_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT3_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT4_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT4_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT5_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT5_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT6_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT6_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT7_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT7_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT7_RAG1_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT8_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT8_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT8_RAG1_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT8_RAG2_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT9_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT9_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT9_RAG1_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT10_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT10_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT11_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT11_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT11_RAG1_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT11_RAG2_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT12_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT12_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT12_RAG1_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT12_RAG2_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT12_RAG3_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT12_RAG4_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT13_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT13_SLUG",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT13_KB1_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT13_KB2_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT13_KB3_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT13_KB4_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT13_KB5_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT13_KB6_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT13_KB7_ID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHAT1",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHAT2",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHAT3",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHAT4",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHAT5",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHAT6",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHAT7",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE0",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE1",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE2",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE3",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE4",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE5",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE6",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE7",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE8",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE9",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE10",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE11",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_AGENT1",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_RAG_AGENT_ID",
+			"value": "1d522ecf-e479-488d-8382-ccb8bf7e54fc",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHAT_PLAYGROUND",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHAT_DEFAULT",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHATMESSAGE_RAG",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHAT_RAG",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_KNOWLEDGE_BASE1",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_SCIM_GROUP1",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_KNOWLEDGE_BASE2",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_CHAT1_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_DOCUMENT_FILE3_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_DOCUMENT_FILE3_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_DOCUMENT_FILE4_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_DOCUMENT_FILE4_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_DOCUMENT_FILE5_NAME",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_DOCUMENT_FILE5_ID",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_KNOWLEDGE_BASE3",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_KNOWLEDGE_BASE4",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "TEST_KNOWLEDGE_BASE5",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-09-17T05:31:50.632Z",
+	"_postman_exported_using": "Postman/11.0.11"
+}

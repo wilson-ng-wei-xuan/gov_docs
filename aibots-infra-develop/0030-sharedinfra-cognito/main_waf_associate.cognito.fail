@@ -1,0 +1,4 @@
+resource "aws_wafv2_web_acl_association" "web_acl" {
+  resource_arn = aws_cognito_user_pool.wog-aad.arn
+  web_acl_arn  = data.aws_wafv2_web_acl.sharedinfra_ez_regional.arn
+}

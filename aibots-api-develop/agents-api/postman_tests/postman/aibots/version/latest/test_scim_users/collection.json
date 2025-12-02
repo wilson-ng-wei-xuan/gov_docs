@@ -1,0 +1,544 @@
+{
+	"info": {
+		"_postman_id": "13ea72e1-e913-4427-870a-fd0e2ceb32ab",
+		"name": "[AIBots] SCIM Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15499661",
+		"_collection_link": "https://lively-trinity-802253.postman.co/workspace/Joen~e904f178-b272-4546-b4cb-0f733cf02ab5/collection/15499661-13ea72e1-e913-4427-870a-fd0e2ceb32ab?action=share&source=collection_link&creator=15499661"
+	},
+	"item": [
+		{
+			"name": "Create Users With Invalid Groups",
+			"item": [
+				{
+					"name": "Create User With Invalid Groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Message contains 'Group member with ID: <UUID> does not exist'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Group with ID:\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:User\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:User\"\n    ],\n    \"external_id\": \"e291372d-d33d-5f51-9403-943dec5587b8\",\n    \"user_name\": null,\n    \"display_name\": \"Joen Tan\",\n    \"name\": {\n        \"family_name\": null,\n        \"given_name\": null,\n        \"middle_name\": null,\n        \"honorific_prefix\": null,\n        \"honorific_suffix\": null,\n        \"formatted\": \"Joen Tan\"\n    },\n    \"nick_name\": null,\n    \"profile_url\": null,\n    \"title\": null,\n    \"user_type\": \"user\",\n    \"preferred_language\": \"en\",\n    \"locale\": \"en_SG\",\n    \"timezone\": \"Singapore\",\n    \"active\": true,\n    \"password\": null,\n    \"emails\": [\n        {\n            \"type\": \"Government Email\",\n            \"primary\": true,\n            \"display\": \"joen_tan_from.tp@tech.gov.sg\",\n            \"value\": \"joen_tan_from.tp@tech.gov.sg\"\n        }\n    ],\n    \"phone_numbers\": [],\n    \"ims\": [],\n    \"photos\": [],\n    \"addresses\": [],\n    \"groups\": [\n        {\n            \"type\": \"groups\",\n            \"$ref\": \"None/scim/v2/Groups/2c1588de-af8f-4904-8a05-7e5291c8a5f2\",\n            \"display\": \"Dewan Rakyat\",\n            \"value\": \"2c1588de-af8f-4904-8a05-7e5291c8a5f2\"\n        }\n    ],\n    \"entitlements\": [],\n    \"roles\": [\n        {\n            \"type\": \"rbac\",\n            \"primary\": true,\n            \"display\": \"Moonshot Admin User\",\n            \"value\": \"8305473a-016f-4931-800d-60f4aa1437c0\"\n        }\n    ],\n    \"x509_certificates\": [],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"govtech\",\n        \"settings\": {},\n        \"favourites\": {},\n        \"details\": {},\n        \"verified\": true,\n        \"api_keys\": [],\n        \"allow\": true,\n        \"salt\": \"57bf5315ac4c6341\"\n    },\n    \"agency\": \"govtech\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/Users",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"Users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create SCIM User",
+			"item": [
+				{
+					"name": "Create New SCIM User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Id is a valid UUID\", function () {",
+									"    const responseBody = pm.response.json();",
+									"    const id = responseBody.id;",
+									"    pm.expect(id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);",
+									"    pm.environment.set('TEST_SCIM_USER1', id);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:User\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:User\"\n    ],\n    \"external_id\": \"e291372d-d33d-5f51-9403-943dec5587b8\",\n    \"user_name\": null,\n    \"display_name\": \"Joen Tan\",\n    \"name\": {\n        \"family_name\": null,\n        \"given_name\": null,\n        \"middle_name\": null,\n        \"honorific_prefix\": null,\n        \"honorific_suffix\": null,\n        \"formatted\": \"Joen Tan\"\n    },\n    \"nick_name\": null,\n    \"profile_url\": null,\n    \"title\": null,\n    \"user_type\": \"user\",\n    \"preferred_language\": \"en\",\n    \"locale\": \"en_SG\",\n    \"timezone\": \"Singapore\",\n    \"active\": true,\n    \"password\": null,\n    \"emails\": [\n        {\n            \"type\": \"Government Email\",\n            \"primary\": true,\n            \"display\": \"joen_tan_from.tp@tech.gov.sg\",\n            \"value\": \"joen_tan_from.tp@tech.gov.sg\"\n        }\n    ],\n    \"phone_numbers\": [],\n    \"ims\": [],\n    \"photos\": [],\n    \"addresses\": [],\n    \"groups\": [\n       \n{\"type\":\"groups\",\n\"ref\":\"https://sit.aibots.gov.sg/scim/v2/Groups/ffceedfb-cf44-5c96-aa08-1b561\",\n\"display\":\"Government Technology Agency\",\n\"value\":\"ffceedfb-cf44-5c96-aa08-1b5613faf81b\"}\n    ],\n    \"entitlements\": [],\n    \"roles\": [\n        {\n            \"type\": \"rbac\",\n            \"primary\": true,\n            \"display\": \"Moonshot Admin User\",\n            \"value\": \"8305473a-016f-4931-800d-60f4aa1437c0\"\n        }\n    ],\n    \"x509_certificates\": [],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"govtech\",\n        \"settings\": {},\n        \"favourites\": {},\n        \"details\": {},\n        \"verified\": true,\n        \"api_keys\": [],\n        \"allow\": true,\n        \"salt\": \"57bf5315ac4c6341\"\n    },\n    \"agency\": \"govtech\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/users",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Retrieve SCIM Users",
+			"item": [
+				{
+					"name": "Get List of SCIM Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"const expectedUserListStructure ={",
+									"    schemas:\"array\",",
+									"    totalResults: \"number\",",
+									"    startIndex: \"number\",",
+									"    itemsPerPage: \"number\",",
+									"    resources:\"array\"",
+									"}",
+									"// Function to validate the structure and types",
+									"function validateStructure(obj, structure) {",
+									"    for (let key in structure) {",
+									"        pm.test(`Check if ${key} exists and is of type ${structure[key]}`, function () {",
+									"            pm.expect(obj).to.have.property(key);",
+									"            const expectedTypes = Array.isArray(structure[key]) ? structure[key] : [structure[key]];",
+									"            const actualType = obj[key] === null ? 'null' : (Array.isArray(obj[key]) ? 'array' : typeof obj[key]);",
+									"            pm.expect(expectedTypes).to.include(actualType);",
+									"        });",
+									"    }",
+									"}",
+									"",
+									"// Parse the response body",
+									"const response = pm.response.json();",
+									"",
+									"validateStructure(response, expectedUserListStructure)",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/users",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get SCIM User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Id is a valid UUID\", function () {",
+									"    const responseBody = pm.response.json();",
+									"    const id = responseBody.id;",
+									"    pm.expect(id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);",
+									"",
+									"});",
+									"// Define the structure and types of the ScimUser object",
+									"const expectedStructure = {",
+									"    schemas: 'array',",
+									"    id: 'string',",
+									"    meta: 'object',",
+									"    external_id: ['string', 'null'],",
+									"    user_name: ['string', 'null'],",
+									"    name: ['object', 'null'],",
+									"    display_name: ['string', 'null'],",
+									"    nick_name: ['string', 'null'],",
+									"    profile_url: ['string', 'null'],",
+									"    title: ['string', 'null'],",
+									"    user_type: ['string', 'null'],",
+									"    preferred_language: 'string',",
+									"    locale: 'string',",
+									"    timezone: 'string',",
+									"    active: 'boolean',",
+									"    password: ['string', 'null'],",
+									"    emails: 'array',",
+									"    phone_numbers: 'array',",
+									"    ims: 'array',",
+									"    photos: 'array',",
+									"    addresses: 'array',",
+									"    groups: 'array',",
+									"    entitlements: 'array',",
+									"    roles: 'array',",
+									"    x509_certificates: 'array',",
+									"};",
+									"",
+									"// Function to validate the structure and types",
+									"function validateStructure(obj, structure) {",
+									"    for (let key in structure) {",
+									"        pm.test(`Check if ${key} exists and is of type ${structure[key]}`, function () {",
+									"            pm.expect(obj).to.have.property(key);",
+									"            const expectedTypes = Array.isArray(structure[key]) ? structure[key] : [structure[key]];",
+									"            const actualType = obj[key] === null ? 'null' : (Array.isArray(obj[key]) ? 'array' : typeof obj[key]);",
+									"            pm.expect(expectedTypes).to.include(actualType);",
+									"        });",
+									"    }",
+									"}",
+									"",
+									"// Parse the response body",
+									"const response = pm.response.json();",
+									"",
+									"// Validate the structure and types",
+									"validateStructure(response, expectedStructure);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/users/{{TEST_SCIM_USER1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"users",
+								"{{TEST_SCIM_USER1}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update SCIM User With Invalid Group",
+			"item": [
+				{
+					"name": "Update SCIM User With Invalid Group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Message contains 'Group member with ID: <UUID> does not exist'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Group with ID:\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"e291372d-d33d-5f51-9403-943dec5587b8\",\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:User\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:User\"\n    ],\n    \"external_id\": \"e291372d-d33d-5f51-9403-943dec5587b8\",\n    \"user_name\": null,\n    \"display_name\": \"Joen Tan Zhuo En\",\n    \"name\": {\n        \"family_name\": null,\n        \"given_name\": null,\n        \"middle_name\": null,\n        \"honorific_prefix\": null,\n        \"honorific_suffix\": null,\n        \"formatted\": \"Joen Tan\"\n    },\n    \"nick_name\": null,\n    \"profile_url\": null,\n    \"title\": null,\n    \"user_type\": \"user\",\n    \"preferred_language\": \"en\",\n    \"locale\": \"en_SG\",\n    \"timezone\": \"Singapore\",\n    \"active\": true,\n    \"password\": null,\n    \"emails\": [\n        {\n            \"type\": \"Government Email\",\n            \"primary\": true,\n            \"display\": \"joen_tan_from.tp@tech.gov.sg\",\n            \"value\": \"joen_tan_from.tp@tech.gov.sg\"\n        }\n    ],\n    \"phone_numbers\": [],\n    \"ims\": [],\n    \"photos\": [],\n    \"addresses\": [],\n    \"groups\": [\n       {\n            \"type\": \"groups\",\n            \"$ref\": \"None/scim/v2/Groups/2c1588de-af8f-4904-8a05-7e5291c8a5f2\",\n            \"display\": \"Dewan Rakyat\",\n            \"value\": \"2c1588de-af8f-4904-8a05-7e5291c8a5f2\"\n        }\n    ],\n    \"entitlements\": [],\n    \"roles\": [\n        {\n            \"type\": \"rbac\",\n            \"primary\": true,\n            \"display\": \"Moonshot Admin User\",\n            \"value\": \"8305473a-016f-4931-800d-60f4aa1437c0\"\n        }\n    ],\n    \"x509_certificates\": [],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"govtech\",\n        \"settings\": {},\n        \"favourites\": {},\n        \"details\": {},\n        \"verified\": true,\n        \"api_keys\": [],\n        \"allow\": true,\n        \"salt\": \"57bf5315ac4c6341\"\n    },\n    \"agency\": \"govtech\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/users/{{TEST_SCIM_USER1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"users",
+								"{{TEST_SCIM_USER1}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update SCIM User Details",
+			"item": [
+				{
+					"name": "Update SCIM User Details",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"_id\": \"e291372d-d33d-5f51-9403-943dec5587b8\",\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:User\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:User\"\n    ],\n    \"external_id\": \"e291372d-d33d-5f51-9403-943dec5587b8\",\n    \"user_name\": null,\n    \"display_name\": \"Joen Tan Zhuo En\",\n    \"name\": {\n        \"family_name\": null,\n        \"given_name\": null,\n        \"middle_name\": null,\n        \"honorific_prefix\": null,\n        \"honorific_suffix\": null,\n        \"formatted\": \"Joen Tan\"\n    },\n    \"nick_name\": null,\n    \"profile_url\": null,\n    \"title\": null,\n    \"user_type\": \"user\",\n    \"preferred_language\": \"en\",\n    \"locale\": \"en_SG\",\n    \"timezone\": \"Singapore\",\n    \"active\": true,\n    \"password\": null,\n    \"emails\": [\n        {\n            \"type\": \"Government Email\",\n            \"primary\": true,\n            \"display\": \"joen_tan_from.tp@tech.gov.sg\",\n            \"value\": \"joen_tan_from.tp@tech.gov.sg\"\n        }\n    ],\n    \"phone_numbers\": [],\n    \"ims\": [],\n    \"photos\": [],\n    \"addresses\": [],\n    \"groups\": [\n        {\n            \"type\": \"groups\",\n            \"$ref\": \"None/scim/v2/Groups/da0e0edc-a441-54c0-a5ed-f2a7bf8f64dc\",\n            \"display\": \"Government Technology Agency\",\n            \"value\": \"da0e0edc-a441-54c0-a5ed-f2a7bf8f64dc\"\n        }\n    ],\n    \"entitlements\": [],\n    \"roles\": [\n        {\n            \"type\": \"rbac\",\n            \"primary\": true,\n            \"display\": \"Moonshot Admin User\",\n            \"value\": \"8305473a-016f-4931-800d-60f4aa1437c0\"\n        }\n    ],\n    \"x509_certificates\": [],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"govtech\",\n        \"settings\": {},\n        \"favourites\": {},\n        \"details\": {},\n        \"verified\": true,\n        \"api_keys\": [],\n        \"allow\": true,\n        \"salt\": \"57bf5315ac4c6341\"\n    },\n    \"agency\": \"govtech\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/users/{{TEST_SCIM_USER1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"users",
+								"{{TEST_SCIM_USER1}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete SCIM User",
+			"item": [
+				{
+					"name": "Delete SCIM User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/users/{{TEST_SCIM_USER1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"users",
+								"{{TEST_SCIM_USER1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete SCIM User Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/users/{{TEST_SCIM_USER1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"users",
+								"{{TEST_SCIM_USER1}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Retrieve Non-Existent SCIM User",
+			"item": [
+				{
+					"name": "Get Non-Existent SCIM User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/users/{{TEST_SCIM_USER1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"users",
+								"{{TEST_SCIM_USER1}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

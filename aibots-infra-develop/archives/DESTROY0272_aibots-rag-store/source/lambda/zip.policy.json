@@ -1,0 +1,54 @@
+{
+  "Version" : "2012-10-17",
+  "Statement" : [
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "s3:ListBucket",
+				"s3:PutObject",
+        "sqs:ChangeMessageVisibility",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:ReceiveMessage"
+      ],
+      "Resource" : [
+        "${PROJECT__BUCKET_ARN}",
+        "${PROJECT__BUCKET_ARN}/*",
+        "${ANALYTICS__BUCKET_ARN}",
+        "${ANALYTICS__BUCKET_ARN}/*",
+        "${SOURCE__SQS_ARN}"
+      ]
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "sqs:sendmessage"
+      ],
+      "Resource" : [
+        "${PROJECT_RAG_STATUS_ZIP__SQS_ARN}"
+      ]
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "s3:GetObject",
+        "s3:DeleteObject"
+      ],
+      "Resource" : [
+        "${PROJECT__BUCKET_ARN}",
+        "${PROJECT__BUCKET_ARN}/*"
+      ]
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "aoss:BatchGetCollection",
+        "aoss:ListCollection",
+        "aoss:APIAccessAll"
+      ],
+      "Resource" : [
+        "*"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+
+services:
+  agents:
+    build:
+      context: "../"
+      target: "production"
+      dockerfile: "agents-api/Dockerfile"
+      args:
+        ATLAS_USER: "${ATLAS_USER}"
+        ATLAS_TOKEN: "${ATLAS_TOKEN}"
+        ATLAS_BASE_IMAGE: "${ATLAS_BASE_IMAGE:-registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base}"
+        ATLAS_BASE_IMAGE_TAG: "${ATLAS_BASE_IMAGE_TAG:-latest}"
+        VERSION: "${VERSION:-v1.0.0}"
+        RELEASE_DATE: "${RELEASE_DATE}"
+        GIT_BRANCH: "${GIT_BRANCH}"
+        GIT_COMMIT_HASH: "${GIT_COMMIT_HASH}"
+        KEY_PASS: "${KEY_PASS}"
+    image: "${REGISTRY}aibots/agents-api:${TAG:-latest}"
+    container_name: agents

@@ -1,0 +1,57 @@
+## Use this payload to test from SQS console
+## to test directly in lambda console, copy from cloudwatch.
+{
+  "bot_id"    : "1",
+  "doc_id"    : "2",
+  "action"    : "3",
+  "rag_source": {
+    "zip": {
+      "config": {},
+      "result": {
+        "remark": "optional in case source-url needs to pass in some sort of results."
+      }
+    }
+  },
+  "rag_parse": {
+    "zip": {
+      "config": {},
+      "result": {}
+    }
+  },
+  "rag_chunk": {
+    "zip": {
+      "config": {},
+      "result": {}
+    }
+  },
+  "rag_embed": {
+    "zip": {
+      "config": {
+        "document": [
+          {
+            "text": "abc",
+            "embedding": [
+              0.01,
+              0.02
+            ],
+            "metadata": {
+              "source": "xyz.pdf",
+              "page_number": 1,
+              "last_update_date": "2023-01-01",
+              "chunk": 0
+            }
+          }
+        ],
+        "host": "not use, pull from env var >> not-in-use.ap-southeast-1.aoss.amazonaws.com",
+        "index_name": "bot3",
+        "embedding_type": "example",
+        "query": "What is xyz?",
+        "embedding": [
+          0.01,
+          0.2
+        ],
+        "k": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+
+include:
+  - project: 'innersource/sgts/ship-hats/ship-hats-templates'
+    ref: "main"
+    file:
+      - '/templates/.gitlab-ci-docker-build.yml'
+      - '/templates/.gitlab-ci-docker-push.yml'
+      - "/templates/.gitlab-ci-common.yml"
+      - "/templates/vars/.gitlab-ci-sonatype-vars.yml"
+      - "/templates/.gitlab-ci-aws.yml"
+
+
+.build_image:
+  extends: .build-docker-image
+  variables:
+    DOCKERFILE_CONTEXT: "../"
+    DOCKERFILE_PATH: "$COMPONENT_PATH/"
+    DOCKERFILE_NAME: "Dockerfile"
+    DOCKER_AUTH_CONFIG: $DOCKER_AUTH_CONFIG_DEPENDENCIES
+    DIGESTFILE_NAME: "$CI_PROJECT_DIR/digest"
+    ATLAS_BUILD_ARGS: "--target production"
+  before_script:
+    - cd $DOCKERFILE_PATH
+    - export OPTS="--build-arg ATLAS_USER=$ATLAS_USER --build-arg ATLAS_TOKEN=$ATLAS_TOKEN --build-arg ATLAS_BASE_IMAGE=$ATLAS_IMAGE --build-arg ATLAS_BASE_IMAGE_TAG=latest --build-arg GIT_COMMIT_HASH=$CI_COMMIT_SHA --build-arg GIT_BRANCH=$CI_COMMIT_BRANCH --build-arg RELEASE_DATE=$(date +\"%Y-%m-%dT%H:%M:%S%:z\") --build-arg VERSION=$CI_COMMIT_REF_SLUG --build-arg KEY_PASS=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 20; echo) ${ATLAS_BUILD_ARGS}"
+    - !reference [.check-docker-auth-config-sh, script]
+    - cp ~/.docker/config.json /kaniko/.docker/config.json
+    - echo "Building ${DOCKER_TARGET_IMAGE} with ${OPTS}"
+  artifacts:
+    paths:
+      - "$COMPONENT_PATH/output.tar"
+    expire_in: 30 days
+  dependencies: []
+
+.push_image:
+  stage: build
+  extends: .push-docker-image-to-private-registry
+  variables:
+    DOCKER_AUTH_CONFIG: $DOCKER_AUTH_CONFIG_REGISTRY
+    TAR_PATH: "$COMPONENT_PATH/output.tar"
+    DOCKER_TARGET_REGISTRY: "$CI_REGISTRY"
+    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH:$CI_COMMIT_REF_SLUG"
+  script:
+    - echo "Pushing ${DOCKER_TARGET_IMAGE} to ${DOCKER_TARGET_REGISTRY}"
+
+.generate_aws_ecr_auth:
+  stage: deploy
+  extends: .invoke-ecr-token-retrieval
+  image: $PIPELINE_COE_REGISTRY/aws-cli-container:latest
+  script:
+    - echo "DOCKER_USER=AWS" > $VAR_FILE_NAME
+    - echo "DOCKER_PASSWORD=$ECR_TOKEN" >> $VAR_FILE_NAME
+    - echo "AWS_ECR_TOKEN=$ECR_TOKEN" >> $VAR_FILE_NAME
+    - !reference [.set-and-encrypt-var-file, script]
+  artifacts:
+    paths:
+      - $VAR_FILE_NAME.gpg
+
+.push_ecr:
+  stage: deploy
+  extends: .push-docker-image-to-private-registry-and-generate-digest
+  before_script:
+    - !reference [.get-and-decrypt-var-file, script]
+    - !reference [.push-docker-image-to-private-registry-and-generate-digest, before_script]
+  variables:
+    TAR_PATH: "$COMPONENT_PATH/output.tar"
+    DOCKER_TARGET_REGISTRY: $AWS_ECR_URL

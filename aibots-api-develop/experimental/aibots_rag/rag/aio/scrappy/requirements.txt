@@ -1,0 +1,15 @@
+boto3
+umap-learn
+opensearch-py
+scikit-learn
+hdbscan
+unstructured 
+unstructured-inference 
+unstructured-pytesseract 
+pdfminer-six 
+pillow 
+pillow-heif
+python-docx
+semantic-router 
+semantic-chunkers 
+pytesseract 

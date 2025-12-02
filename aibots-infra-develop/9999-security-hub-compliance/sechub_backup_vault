@@ -1,0 +1,26 @@
+data "aws_backup_vault" "Default" {
+  name = "Default"
+}
+################################################################################
+data "aws_iam_policy_document" "Default-vault" {
+  statement {
+    effect = "Deny"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "backup:DeleteRecoveryPoint"
+    ]
+
+    resources = [data.aws_backup_vault.Default.arn]
+  }
+}
+
+resource "aws_backup_vault_policy" "Default" {
+  backup_vault_name = data.aws_backup_vault.Default.name
+  policy            = data.aws_iam_policy_document.Default-vault.json
+}
+################################################################################

@@ -1,0 +1,2956 @@
+{
+	"info": {
+		"_postman_id": "2c298ac2-584d-4832-bbdf-3202d50ef390",
+		"name": "[AIBots] Test GovText",
+		"description": "This Postman collection requires both agents-api and chats-api to be runnning along with the 5 files to be uploaded in Test GovText Pipeline Creation/Create Document Files",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34750184"
+	},
+	"item": [
+		{
+			"name": "Login to AIBots",
+			"item": [
+				{
+					"name": "Request Email OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Request Email OTP",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Sun, 23 Jun 2024 11:20:49 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Retrieve Email OTPs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieve Email OTPs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var last = jsonData.length - 1\r",
+									"    pm.expect(jsonData.length).to.be.gte(1);\r",
+									"    pm.expect(jsonData[last].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[last].user).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[last].email).to.eql(pm.environment.get(\"TEST_EMAIL_ADDRESS1\"));\r",
+									"    const required_keys = [\"otp\", \"timestamp\", \"expiry\"];\r",
+									"    pm.expect(required_keys.every((v) => Object.keys(jsonData[last]).includes(v))).to.eql(true);\r",
+									"    pm.environment.set(\"TEST_OTP\", jsonData[last].otp);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Email OTPs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Thu, 04 Jul 2024 03:30:26 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "225"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"c765426efe15482b852c583a8e0a8efb\",\n        \"user\": \"04e058973c6252aa8640ca126441e52c\",\n        \"email\": \"davidtwlee@dsaid.gov.sg\",\n        \"otp\": \"132753\",\n        \"timestamp\": \"2024-07-04T11:30:17.930000+08:00\",\n        \"expiry\": \"2024-07-04T11:30:29.930000+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Login via Email OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successful Login via Email OTP\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"TEST_EMAIL_ADDRESS1\"));\r",
+									"    pm.expect(jsonData.refreshCount).to.eql(0);\r",
+									"    pm.expect(jsonData.maxRefresh).to.eql(5);\r",
+									"    const required_keys = [\"name\", \"timestamp\", \"token\", \"refreshToken\", \"expiry\", \"issuer\", \"product\", \"refreshCount\", \"maxRefresh\", \"role\"];\r",
+									"    pm.expect(required_keys.every((v) => Object.keys(jsonData).includes(v))).to.eql(true);\r",
+									"    pm.environment.set(\"REFRESH_TOKEN\", jsonData.refreshToken);\r",
+									"    pm.environment.set(\"TEST_USER1_NAME\", jsonData.name);\r",
+									"    pm.environment.set(\"TEST_USER1_ID\", jsonData.id);\r",
+									"});\r",
+									"pm.test(\"Authorization header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Authorization\");\r",
+									"    pm.environment.set(\"AUTH_TOKEN\", pm.response.headers.get('Authorization').split(' ')[1]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\",\r\n    \"otp\": \"{{TEST_OTP}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails/logins",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails",
+								"logins"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login via Email OTP",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\",\r\n    \"otp\": \"{{TEST_OTP}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails/logins",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails",
+										"logins"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Thu, 04 Jul 2024 06:48:49 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "authorization",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDA3NTcyOSwiaWF0IjoxNzIwMDc1NzI5LCJleHAiOjE3MjAwODI5MjksImp0aSI6IjFmYTRjMWE0NjEzYjQyMGNhNzNjMGU3OTM5MjFmNmZiIiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiI5MDQ0NTg1MzlkMzc0N2IyOWZiZTQ0NmRkYWEwNDY1MiIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJjVU1hSkJWX1lDVEU0dlRjNWlubzlRIn0.p4BMOVsk65Ak8C_CPDQFq64yoXfwImN7ff83mazH0cM"
+								},
+								{
+									"key": "content-length",
+									"value": "1247"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"Davidtwlee\",\n    \"id\": \"04e058973c6252aa8640ca126441e52c\",\n    \"issuer\": \"GovTech\",\n    \"product\": \"sit.aibots.gov.sg\",\n    \"refreshToken\": \"87539203cac8471ad0b63abf85589522\",\n    \"refreshCount\": 0,\n    \"maxRefresh\": 5,\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDA3NTcyOSwiaWF0IjoxNzIwMDc1NzI5LCJleHAiOjE3MjAwODI5MjksImp0aSI6IjFmYTRjMWE0NjEzYjQyMGNhNzNjMGU3OTM5MjFmNmZiIiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiI5MDQ0NTg1MzlkMzc0N2IyOWZiZTQ0NmRkYWEwNDY1MiIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJjVU1hSkJWX1lDVEU0dlRjNWlubzlRIn0.p4BMOVsk65Ak8C_CPDQFq64yoXfwImN7ff83mazH0cM\",\n    \"scopes\": [\n        \"*\"\n    ],\n    \"itemScopes\": [\n        \"agents.804885b4423e485cb21592c7dfa8baa8:read,allow\",\n        \"chats.804885b4423e485cb21592c7dfa8baa8:create,read,update,delete\",\n        \"messages.804885b4423e485cb21592c7dfa8baa8:create,read,update,delete\"\n    ],\n    \"expiry\": \"2024-07-04T16:48:49.967109+08:00\",\n    \"startUse\": \"2024-07-04T14:48:49.967106+08:00\",\n    \"timestamp\": \"2024-07-04T14:48:49.967168+08:00\",\n    \"email\": \"davidtwlee@dsaid.gov.sg\",\n    \"newUser\": true,\n    \"role\": \"904458539d3747b29fbe446ddaa04652\",\n    \"superuser\": true,\n    \"agency\": \"govtech\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Test GovText Pipeline Creation",
+			"item": [
+				{
+					"name": "Create Document Files",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successfully uploaded Document Files\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData.length).to.eql(5);\r",
+									"    pm.expect(jsonData[0].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].name).to.eql(\"file_example_XLS_50.xlsx\");\r",
+									"    pm.expect(jsonData[0].folder).to.eql(\"/\");\r",
+									"    pm.expect(jsonData[0].fullPath).to.eql(\"/file_example_XLS_501.xlsx\");\r",
+									"    pm.expect(jsonData[0].metadata.filename).to.eql(\"file_example_XLS_50.xlsx\");\r",
+									"    pm.expect(jsonData[0].meta.resourceType).to.eql(\"files\");\r",
+									"    pm.expect(jsonData[0].meta.ownerType).to.eql(\"user\");\r",
+									"    pm.expect(jsonData[0].meta.created).to.not.eql(null);\r",
+									"    pm.expect(jsonData[0].meta.lastModified).to.eql(null);\r",
+									"    pm.expect(jsonData[0].meta.lastModifiedUser).to.eql(null);\r",
+									"    pm.expect(jsonData[0].meta.deleted).to.eql(null);\r",
+									"    pm.expect(jsonData[0].meta.deletedUser).to.eql(null);\r",
+									"    pm.expect(jsonData[0].meta.archived).to.eql(null);\r",
+									"    pm.expect(jsonData[0].meta.archivedUser).to.eql(null);\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE1_NAME\", jsonData[0].name);\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE1_ID\", jsonData[0].id);\r",
+									"\r",
+									"    pm.expect(jsonData[1].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[1].name).to.eql(\"username.csv\");\r",
+									"    pm.expect(jsonData[1].versions).to.eql([1]);\r",
+									"    pm.expect(jsonData[1].folder).to.eql(\"/\");\r",
+									"    pm.expect(jsonData[1].fullPath).to.eql(\"/username1.csv\");\r",
+									"    pm.expect(jsonData[1].metadata.filename).to.eql(\"username.csv\");\r",
+									"    pm.expect(jsonData[1].meta.resourceType).to.eql(\"files\");\r",
+									"    pm.expect(jsonData[1].meta.ownerType).to.eql(\"user\");\r",
+									"    pm.expect(jsonData[1].meta.created).to.not.eql(null);\r",
+									"    pm.expect(jsonData[1].meta.version).to.eql(1);\r",
+									"    pm.expect(jsonData[1].meta.lastModified).to.eql(null);\r",
+									"    pm.expect(jsonData[1].meta.lastModifiedUser).to.eql(null);\r",
+									"    pm.expect(jsonData[1].meta.deleted).to.eql(null);\r",
+									"    pm.expect(jsonData[1].meta.deletedUser).to.eql(null);\r",
+									"    pm.expect(jsonData[1].meta.archived).to.eql(null);\r",
+									"    pm.expect(jsonData[1].meta.archivedUser).to.eql(null);\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE2_NAME\", jsonData[1].name);\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE2_ID\", jsonData[1].id);\r",
+									"\r",
+									"        pm.expect(jsonData[2].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[2].name).to.eql(\"Letter to Parents Template (5D4N 2023 MOE-OBS PN20220727).docx\");\r",
+									"    pm.expect(jsonData[2].versions).to.eql([1]);\r",
+									"    pm.expect(jsonData[2].folder).to.eql(\"/\");\r",
+									"    pm.expect(jsonData[2].fullPath).to.eql(\"/Letter to Parents Template (5D4N 2023 MOE-OBS PN20220727)1.docx\");\r",
+									"    pm.expect(jsonData[2].metadata.filename).to.eql(\"Letter to Parents Template (5D4N 2023 MOE-OBS PN20220727).docx\");\r",
+									"    pm.expect(jsonData[2].meta.resourceType).to.eql(\"files\");\r",
+									"    pm.expect(jsonData[2].meta.ownerType).to.eql(\"user\");\r",
+									"    pm.expect(jsonData[2].meta.created).to.not.eql(null);\r",
+									"    pm.expect(jsonData[2].meta.version).to.eql(1);\r",
+									"    pm.expect(jsonData[2].meta.lastModified).to.eql(null);\r",
+									"    pm.expect(jsonData[2].meta.lastModifiedUser).to.eql(null);\r",
+									"    pm.expect(jsonData[2].meta.deleted).to.eql(null);\r",
+									"    pm.expect(jsonData[2].meta.deletedUser).to.eql(null);\r",
+									"    pm.expect(jsonData[2].meta.archived).to.eql(null);\r",
+									"    pm.expect(jsonData[2].meta.archivedUser).to.eql(null);\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE3_NAME\", jsonData[2].name);\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE3_ID\", jsonData[2].id);\r",
+									"\r",
+									"        pm.expect(jsonData[3].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[3].name).to.eql(\"short_story.txt\");\r",
+									"    pm.expect(jsonData[3].versions).to.eql([1]);\r",
+									"    pm.expect(jsonData[3].folder).to.eql(\"/\");\r",
+									"    pm.expect(jsonData[3].fullPath).to.eql(\"/short_story1.txt\");\r",
+									"    pm.expect(jsonData[3].metadata.filename).to.eql(\"short_story.txt\");\r",
+									"    pm.expect(jsonData[3].meta.resourceType).to.eql(\"files\");\r",
+									"    pm.expect(jsonData[3].meta.ownerType).to.eql(\"user\");\r",
+									"    pm.expect(jsonData[3].meta.created).to.not.eql(null);\r",
+									"    pm.expect(jsonData[3].meta.version).to.eql(1);\r",
+									"    pm.expect(jsonData[3].meta.lastModified).to.eql(null);\r",
+									"    pm.expect(jsonData[3].meta.lastModifiedUser).to.eql(null);\r",
+									"    pm.expect(jsonData[3].meta.deleted).to.eql(null);\r",
+									"    pm.expect(jsonData[3].meta.deletedUser).to.eql(null);\r",
+									"    pm.expect(jsonData[3].meta.archived).to.eql(null);\r",
+									"    pm.expect(jsonData[3].meta.archivedUser).to.eql(null);\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE4_NAME\", jsonData[3].name);\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE4_ID\", jsonData[3].id);\r",
+									"\r",
+									"        pm.expect(jsonData[4].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[4].name).to.eql(\"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\");\r",
+									"    pm.expect(jsonData[4].versions).to.eql([1]);\r",
+									"    pm.expect(jsonData[4].folder).to.eql(\"/\");\r",
+									"    pm.expect(jsonData[4].fullPath).to.eql(\"/FAQ for Parents (5D4N 2023 MOE-OBS)1.pdf\");\r",
+									"    pm.expect(jsonData[4].metadata.filename).to.eql(\"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\");\r",
+									"    pm.expect(jsonData[4].meta.resourceType).to.eql(\"files\");\r",
+									"    pm.expect(jsonData[4].meta.ownerType).to.eql(\"user\");\r",
+									"    pm.expect(jsonData[4].meta.created).to.not.eql(null);\r",
+									"    pm.expect(jsonData[4].meta.version).to.eql(1);\r",
+									"    pm.expect(jsonData[4].meta.lastModified).to.eql(null);\r",
+									"    pm.expect(jsonData[4].meta.lastModifiedUser).to.eql(null);\r",
+									"    pm.expect(jsonData[4].meta.deleted).to.eql(null);\r",
+									"    pm.expect(jsonData[4].meta.deletedUser).to.eql(null);\r",
+									"    pm.expect(jsonData[4].meta.archived).to.eql(null);\r",
+									"    pm.expect(jsonData[4].meta.archivedUser).to.eql(null);\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE5_NAME\", jsonData[4].name);\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE5_ID\", jsonData[4].id);\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": [
+										"postman-cloud:///1ef7416f-0517-4ef0-9854-a255f20cff7f",
+										"postman-cloud:///1ef74140-e05e-4510-956b-a2d288e20567",
+										"postman-cloud:///1ef7413e-ada2-4420-8937-59f3ec1e50b6",
+										"postman-cloud:///1ef70e8e-05a6-49c0-b696-d4a6f0fff2bb",
+										"postman-cloud:///1ef6812f-5f35-4640-9a16-cbc08b97b807"
+									]
+								},
+								{
+									"key": "details",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"files"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Document Files",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": [
+												"FAQ for Parents (5D4N 2023 MOE-OBS).pdf",
+												"A Sample HTML Document (Test File).html"
+											]
+										},
+										{
+											"key": "details",
+											"value": "{\"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\": {\"metadata\": {\"type\": \"document\"}, \"version\": \"abc\"}, \"A Sample HTML Document (Test File).html\": {\"metadata\": {\"type\": \"document\"}}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Thu, 11 Jul 2024 08:17:17 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "1539"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/cc466de5b07742c0afca9252d0d6f786\",\n            \"version\": \"abc\",\n            \"created\": \"2024-07-11T08:17:17.644071Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"cc466de5b07742c0afca9252d0d6f786\",\n        \"name\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n        \"versions\": [\n            \"abc\"\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n            \"checksum\": \"b00e2315d7f3a031aac2d3d97615230dfefecc5721391455e2d9942ae1018571ae8ac93e8e891ead2f3b650900056bfc\",\n            \"content_type\": \"application/pdf\",\n            \"type\": \"document\"\n        },\n        \"fullPath\": \"/FAQ for Parents (5D4N 2023 MOE-OBS)abc.pdf\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/7c4b9ea693cf43e79fb4370ba0945898\",\n            \"version\": 1,\n            \"created\": \"2024-07-11T08:17:17.888447Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"7c4b9ea693cf43e79fb4370ba0945898\",\n        \"name\": \"A Sample HTML Document (Test File).html\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"A Sample HTML Document (Test File).html\",\n            \"checksum\": \"24f2ebdabea4fcdfd90fbf62609272b6de117c1c60affb1d11679f1be49ec64040f68ef355ed7853e25f1103571d4471\",\n            \"content_type\": \"text/html\",\n            \"type\": \"document\"\n        },\n        \"fullPath\": \"/A Sample HTML Document (Test File)1.html\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Create Agent 1 with Knowledge Bases and RAG config",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successfully created an Agent\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.environment.set('TEST_AGENT1_ID', jsonData.id)\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test Bot\",\n    \"description\": \"This is a test\",\n    \"agency\": \"govtech\",\n    \"knowledgeBases\": [\n        {\n            \"name\": \"{{TEST_DOCUMENT_FILE1_NAME}}\",\n            \"description\": \"\",\n            \"type\": \"file\",\n            \"content\": \"{{TEST_DOCUMENT_FILE1_ID}}\",\n            \"metadata\": {\n                \"hello\": \"world\"\n            }\n        },\n        {\n            \"name\": \"{{TEST_DOCUMENT_FILE2_NAME}}\",\n            \"description\": \"\",\n            \"type\": \"file\",\n            \"content\": \"{{TEST_DOCUMENT_FILE2_ID}}\"\n        },\n        {\n            \"name\": \"{{TEST_DOCUMENT_FILE3_NAME}}\",\n            \"description\": \"\",\n            \"type\": \"file\",\n            \"content\": \"{{TEST_DOCUMENT_FILE3_ID}}\"\n        },\n        {\n            \"name\": \"{{TEST_DOCUMENT_FILE4_NAME}}\",\n            \"description\": \"\",\n            \"type\": \"file\",\n            \"content\": \"{{TEST_DOCUMENT_FILE4_ID}}\"\n        },\n        {\n            \"name\": \"{{TEST_DOCUMENT_FILE5_NAME}}\",\n            \"description\": \"\",\n            \"type\": \"file\",\n            \"content\": \"{{TEST_DOCUMENT_FILE5_ID}}\"\n        }\n    ],\n    \"rags\": [\n        {\n            \"type\": \"aibots\",\n            \"config\": {}\n        }\n    ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Agent 1 with Knowledge Bases and RAG config",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Test Bot\",\n    \"description\": \"This is a test\",\n    \"agency\": \"govtech\",\n    \"knowledgeBases\": [\n        {\n            \"name\": \"{{TEST_DOCUMENT_FILE2_NAME}}\",\n            \"description\": \"\",\n            \"type\": \"file\",\n            \"content\": \"{{TEST_DOCUMENT_FILE2_ID}}\",\n            \"metadata\": {\n                \"hello\": \"world\"\n            }\n        },\n        {\n            \"name\": \"{{TEST_DOCUMENT_FILE2_NAME}}\",\n            \"description\": \"\",\n            \"type\": \"file\",\n            \"content\": \"{{TEST_DOCUMENT_FILE2_ID}}\"\n        }\n    ],\n    \"rags\": [\n        {\n            \"type\": \"aibots\",\n            \"config\": {}\n        }\n    ]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Wed, 17 Jul 2024 03:08:13 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "41"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"90eed1f93db545b4a523d2b96adc51c1\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Retrieve Agent 1 Knowledge Bases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieved Agent 1 Knowledge Bases\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(5);\r",
+									"\r",
+									"    pm.expect(jsonData[0].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].name).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE1_NAME\"));\r",
+									"    pm.expect(jsonData[0].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[0].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[0].content).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE1_ID\"));\r",
+									"    pm.expect(jsonData[0].metadata.hello).to.eql(\"world\");\r",
+									"    pm.expect(jsonData[0].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[0].storage.type).to.eql(\"aibots\");\r",
+									"    pm.expect(jsonData[0].storage.value).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}\\+\\d{2}:\\d{2}$/);\r",
+									"    pm.expect(Object.keys(jsonData[0].embeddings).length).to.eql(0);\r",
+									"\r",
+									"    pm.expect(jsonData[1].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[1].name).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE2_NAME\"));\r",
+									"    pm.expect(jsonData[1].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[1].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[1].content).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE2_ID\"));\r",
+									"    pm.expect(jsonData[1].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[1].storage.type).to.eql(\"aibots\");\r",
+									"    pm.expect(jsonData[1].timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}\\+\\d{2}:\\d{2}$/);\r",
+									"    pm.expect(Object.keys(jsonData[0].embeddings).length).to.eql(0);\r",
+									"\r",
+									"    pm.expect(jsonData[2].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[2].name).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE3_NAME\"));\r",
+									"    pm.expect(jsonData[2].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[2].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[2].content).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE3_ID\"));\r",
+									"    pm.expect(jsonData[2].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[2].storage.type).to.eql(\"aibots\");\r",
+									"    pm.expect(jsonData[2].timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}\\+\\d{2}:\\d{2}$/);\r",
+									"    pm.expect(Object.keys(jsonData[0].embeddings).length).to.eql(0);\r",
+									"\r",
+									"    pm.expect(jsonData[3].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[3].name).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE4_NAME\"));\r",
+									"    pm.expect(jsonData[3].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[3].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[3].content).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE4_ID\"));\r",
+									"    pm.expect(jsonData[3].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[3].storage.type).to.eql(\"aibots\");\r",
+									"    pm.expect(jsonData[3].timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}\\+\\d{2}:\\d{2}$/);\r",
+									"    pm.expect(Object.keys(jsonData[0].embeddings).length).to.eql(0);\r",
+									"\r",
+									"    pm.expect(jsonData[4].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[4].name).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE5_NAME\"));\r",
+									"    pm.expect(jsonData[4].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[4].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[4].content).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE5_ID\"));\r",
+									"    pm.expect(jsonData[4].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[4].storage.type).to.eql(\"aibots\");\r",
+									"    pm.expect(jsonData[4].timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}\\+\\d{2}:\\d{2}$/);\r",
+									"    pm.expect(Object.keys(jsonData[0].embeddings).length).to.eql(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"knowledge",
+								"bases"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Agent 1 Knowledge Bases",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"knowledge",
+										"bases"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 19 Jul 2024 17:47:44 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "513"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"f2699b126d2e4e71ab5062f26d6472a2\",\n        \"name\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n        \"description\": \"\",\n        \"type\": \"file\",\n        \"content\": \"5addb71d08af42aea96396646272e38f\",\n        \"metadata\": {\n            \"hello\": \"world\"\n        },\n        \"agent\": \"c2c3b43d31b543898a3ed06889404189\",\n        \"storage\": {\n            \"type\": \"aibots\",\n            \"location\": \"https://public.sit.aibots.gov.sg/files/5addb71d08af42aea96396646272e38f/FAQ%20for%20Parents%20%285D4N%202023%20MOE-OBS%29.pdf\",\n            \"value\": \"5addb71d08af42aea96396646272e38f\"\n        },\n        \"embeddings\": {},\n        \"timestamp\": \"2024-07-20T01:46:09.073000+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Retrieve Agent 1 to set Knowledge Bases ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieve Agent 1\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData.name).to.eql(\"Test Bot\");\r",
+									"    pm.expect(jsonData.description).to.eql(\"This is a test\");\r",
+									"    pm.expect(jsonData.featured).to.eql(false); // Fixed the value to be true\r",
+									"    pm.expect(jsonData.clone).to.eql(null);\r",
+									"    pm.expect(jsonData.files).to.eql([]);\r",
+									"    pm.expect(jsonData.agency).to.eql(\"govtech\");\r",
+									"    pm.expect(jsonData.welcomeMessage).to.eql(\"Hello! I am your assistant. How can I help you?\");\r",
+									"    pm.expect(jsonData.templates).to.eql([]);\r",
+									"    pm.expect(jsonData.knowledgeBases.length).to.eql(5);\r",
+									"    pm.expect(jsonData.defaultPipeline).to.eql(null);\r",
+									"    pm.expect(jsonData.rags.length).to.eql(1);\r",
+									"    pm.expect(jsonData.releaseState.state).to.eql(\"beta\");\r",
+									"    pm.expect(jsonData.releaseState.created).to.eql(null);\r",
+									"    pm.expect(jsonData.releaseState.lastModified).to.eql(null);\r",
+									"    pm.expect(jsonData.releaseState.lastModifiedUser).to.eql(null);\r",
+									"    pm.expect(jsonData.releaseState.denied).to.eql(null);\r",
+									"    pm.expect(jsonData.releaseState.comments).to.eql([]);\r",
+									"    pm.expect(jsonData.chat.model).to.eql(\"azure~gpt-4o\");\r",
+									"    pm.expect(jsonData.chat.systemPrompt.template).to.match(new RegExp(\"personal AI assistant\"));\r",
+									"    pm.expect(jsonData.chat.systemPrompt.variables.personality).to.eql(\"helpful, clever, and very friendly\");\r",
+									"    pm.expect(jsonData.chat.systemPrompt.variables.instructions).to.eql(\"You serve as a personal assistant to public officers in Singapore\");\r",
+									"    pm.expect(jsonData.chat.systemPrompt.variables.guardrails).to.eql(\"You will not answer politically sensitive topics\");\r",
+									"    pm.expect(jsonData.chat.systemPrompt.variables.knowledgeBase).to.eql(\"\");\r",
+									"    pm.expect(jsonData.chat.systemPrompt.placeholders).to.eql([\"personality\", \"instructions\", \"guardrails\", \"knowledgeBase\"]);\r",
+									"    pm.expect(jsonData.chat.params).to.eql({});\r",
+									"    pm.expect(jsonData.chat.properties).to.eql({});\r",
+									"    pm.expect(jsonData.chat.userPrompt).to.eql(null);\r",
+									"    pm.expect(jsonData.tools).to.eql([]);\r",
+									"    pm.expect(Object.keys(jsonData.settings).length).to.eql(0); // Updated length to be 0\r",
+									"    pm.expect(jsonData.tags).to.eql([]);\r",
+									"    pm.expect(jsonData.sharing.urlPath).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData.sharing.publicUrl).to.match(new RegExp(\"/chats/\" + pm.environment.get(\"TEST_AGENT1_ID\")));\r",
+									"    pm.expect(jsonData.sharing.apiUrl).to.match(new RegExp(\"/v1.0/chats/\" + pm.environment.get(\"TEST_AGENT1_ID\")));\r",
+									"    pm.expect(jsonData.sharing.apiKeys).to.eql([]);\r",
+									"    pm.expect(jsonData.ownership.visibility).to.eql(\"private\");\r",
+									"    pm.expect(jsonData.ownership.access.owner.length).to.eql(1);\r",
+									"    pm.expect(jsonData.ownership.access.admin).to.eql([]);\r",
+									"    pm.expect(jsonData.ownership.access.editor).to.eql([]);\r",
+									"    pm.expect(jsonData.ownership.access.user).to.eql([]);\r",
+									"    pm.expect(jsonData.ownership.access.viewer).to.eql([]);\r",
+									"    pm.expect(jsonData.ownership.resourceKey).to.eql(\"agents.\" + pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData.meta.resourceType).to.eql(\"agents\");\r",
+									"    pm.expect(jsonData.meta.ownerType).to.eql(\"user\");\r",
+									"    pm.expect(jsonData.meta.location).to.match(new RegExp(\"/latest/agents/\" + pm.environment.get(\"TEST_AGENT1_ID\")));\r",
+									"    pm.expect(jsonData.meta.version).to.eql(1);\r",
+									"    pm.environment.set('TEST_KNOWLEDGE_BASE1', jsonData.knowledgeBases[0])\r",
+									"    pm.environment.set('TEST_KNOWLEDGE_BASE2', jsonData.knowledgeBases[1])\r",
+									"    pm.environment.set('TEST_KNOWLEDGE_BASE3', jsonData.knowledgeBases[2])\r",
+									"    pm.environment.set('TEST_KNOWLEDGE_BASE4', jsonData.knowledgeBases[3])\r",
+									"    pm.environment.set('TEST_KNOWLEDGE_BASE5', jsonData.knowledgeBases[4])\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Agent 1",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 02:07:50 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "1982"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"meta\": {\n        \"resourceType\": \"agents\",\n        \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/agents/00877f6f73924dd6a764a96aab02e2f1\",\n        \"version\": 1,\n        \"created\": \"2024-07-23T01:32:24.640000Z\",\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"deleted\": null,\n        \"deletedUser\": null,\n        \"archived\": null,\n        \"archivedUser\": null\n    },\n    \"name\": \"Test Bot\",\n    \"description\": \"This is a test\",\n    \"id\": \"00877f6f73924dd6a764a96aab02e2f1\",\n    \"featured\": false,\n    \"clone\": null,\n    \"sharing\": {\n        \"urlPath\": \"00877f6f73924dd6a764a96aab02e2f1\",\n        \"publicUrl\": \"https://sit.aibots.gov.sg/chats/00877f6f73924dd6a764a96aab02e2f1\",\n        \"apiUrl\": \"https://api.sit.aibots.gov.sg/v1.0/chats/00877f6f73924dd6a764a96aab02e2f1\",\n        \"apiKeys\": []\n    },\n    \"ownership\": {\n        \"visibility\": \"private\",\n        \"access\": {\n            \"owner\": [\n                {\n                    \"id\": \"04e058973c6252aa8640ca126441e52c\",\n                    \"type\": \"user\"\n                }\n            ],\n            \"admin\": [],\n            \"editor\": [],\n            \"user\": [],\n            \"viewer\": []\n        },\n        \"resourceKey\": \"agents.00877f6f73924dd6a764a96aab02e2f1\"\n    },\n    \"files\": [],\n    \"agency\": \"govtech\",\n    \"welcomeMessage\": \"Hello! I am your assistant. How can I help you?\",\n    \"templates\": [],\n    \"releaseState\": {\n        \"state\": \"beta\",\n        \"created\": null,\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"denied\": null,\n        \"comments\": []\n    },\n    \"knowledgeBases\": [\n        \"549616ab11a84e47a58fe9e1eaee966d\",\n        \"0ea81e5044d24812b3e030464217dcca\"\n    ],\n    \"defaultPipeline\": null,\n    \"rags\": [\n        \"24f1ef5516cc4b5a942a84cd32aa4743\"\n    ],\n    \"chat\": {\n        \"model\": \"azure~gpt-4o\",\n        \"systemPrompt\": {\n            \"template\": \"You are a personal AI assistant with the personality: ${personality}\\n\\nYour purpose is: ${instructions}\\n\\nYou must abide by the following rules: ${guardrails}\\n\\nYou have knowledge of the following information: ${knowledgeBase}\",\n            \"variables\": {\n                \"personality\": \"helpful, clever, and very friendly\",\n                \"instructions\": \"You serve as a personal assistant to public officers in Singapore\",\n                \"guardrails\": \"You will not answer politically sensitive topics\",\n                \"knowledgeBase\": \"\"\n            },\n            \"placeholders\": [\n                \"personality\",\n                \"instructions\",\n                \"guardrails\",\n                \"knowledgeBase\"\n            ]\n        },\n        \"params\": {},\n        \"properties\": {},\n        \"userPrompt\": null\n    },\n    \"tools\": [],\n    \"settings\": {},\n    \"tags\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Add GovText RAG Config to Agent 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successfully added RAG Configs to Agent 1\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"\r",
+									"    pm.expect(jsonData[0].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].type).to.eql(\"govtext\");\r",
+									"    pm.expect(jsonData[0].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[0].timestamp).to.not.eql(null);\r",
+									"    pm.environment.set(\"TEST_AGENT1_RAG1_ID\", jsonData[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"type\": \"govtext\",\r\n        \"config\": {}\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"rags"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Add GovText RAG Config to Agent 1",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"type\": \"llmstack\",\r\n        \"config\": {}\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"rags"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:19:39 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "163"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"ecce83bf488f48f6813eb9a7bf25ae76\",\n        \"type\": \"llmstack\",\n        \"config\": {},\n        \"agent\": \"04bd319d33a64e979ba851b48af55962\",\n        \"timestamp\": \"2024-07-24T00:19:39.634687+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Retrieve Agent 1 RAG Configs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieved Agent 1 RAG Configs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(2);\r",
+									"\r",
+									"    pm.expect(jsonData[1].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[1].type).to.eql(\"govtext\");\r",
+									"    pm.expect(jsonData[0].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[0].timestamp).to.not.eql(null);\r",
+									"    pm.environment.set(\"TEST_AGENT1_RAG1_ID\", jsonData[1].id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"rags"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Agent 1 RAG Configs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"rags"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:20:07 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "163"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"ecce83bf488f48f6813eb9a7bf25ae76\",\n        \"type\": \"llmstack\",\n        \"config\": {},\n        \"agent\": \"04bd319d33a64e979ba851b48af55962\",\n        \"timestamp\": \"2024-07-24T00:19:39.634000+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Retrieve Agent 1 to Validate all Fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieve Agent 1\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData.name).to.eql(\"Test Bot\");\r",
+									"    pm.expect(jsonData.description).to.eql(\"This is a test\");\r",
+									"    pm.expect(jsonData.featured).to.eql(false); // Fixed the value to be true\r",
+									"    pm.expect(jsonData.clone).to.eql(null);\r",
+									"    pm.expect(jsonData.files).to.eql([]);\r",
+									"    pm.expect(jsonData.agency).to.eql(\"govtech\");\r",
+									"    pm.expect(jsonData.welcomeMessage).to.eql(\"Hello! I am your assistant. How can I help you?\");\r",
+									"    pm.expect(jsonData.templates).to.eql([]);\r",
+									"    pm.expect(jsonData.knowledgeBases.length).to.eql(5);\r",
+									"    pm.expect(jsonData.rags.length).to.eql(2);\r",
+									"    pm.expect(jsonData.releaseState.state).to.eql(\"beta\");\r",
+									"    pm.expect(jsonData.releaseState.created).to.eql(null);\r",
+									"    pm.expect(jsonData.releaseState.lastModified).to.eql(null);\r",
+									"    pm.expect(jsonData.releaseState.lastModifiedUser).to.eql(null);\r",
+									"    pm.expect(jsonData.releaseState.denied).to.eql(null);\r",
+									"    pm.expect(jsonData.releaseState.comments).to.eql([]);\r",
+									"    pm.expect(jsonData.chat.model).to.eql(\"azure~gpt-4o\");\r",
+									"    pm.expect(jsonData.chat.systemPrompt.template).to.match(new RegExp(\"personal AI assistant\"));\r",
+									"    pm.expect(jsonData.chat.systemPrompt.variables.personality).to.eql(\"helpful, clever, and very friendly\");\r",
+									"    pm.expect(jsonData.chat.systemPrompt.variables.instructions).to.eql(\"You serve as a personal assistant to public officers in Singapore\");\r",
+									"    pm.expect(jsonData.chat.systemPrompt.variables.guardrails).to.eql(\"You will not answer politically sensitive topics\");\r",
+									"    pm.expect(jsonData.chat.systemPrompt.variables.knowledgeBase).to.eql(\"\");\r",
+									"    pm.expect(jsonData.chat.systemPrompt.placeholders).to.eql([\"personality\", \"instructions\", \"guardrails\", \"knowledgeBase\"]);\r",
+									"    pm.expect(jsonData.chat.params).to.eql({});\r",
+									"    pm.expect(jsonData.chat.properties).to.eql({});\r",
+									"    pm.expect(jsonData.chat.userPrompt).to.eql(null);\r",
+									"    pm.expect(jsonData.tools).to.eql([]);\r",
+									"    pm.expect(Object.keys(jsonData.settings).length).to.eql(0); // Updated length to be 0\r",
+									"    pm.expect(jsonData.tags).to.eql([]);\r",
+									"    pm.expect(jsonData.sharing.urlPath).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData.sharing.publicUrl).to.match(new RegExp(\"/chats/\" + pm.environment.get(\"TEST_AGENT1_ID\")));\r",
+									"    pm.expect(jsonData.sharing.apiUrl).to.match(new RegExp(\"/v1.0/chats/\" + pm.environment.get(\"TEST_AGENT1_ID\")));\r",
+									"    pm.expect(jsonData.sharing.apiKeys).to.eql([]);\r",
+									"    pm.expect(jsonData.ownership.visibility).to.eql(\"private\");\r",
+									"    pm.expect(jsonData.ownership.access.owner.length).to.eql(1);\r",
+									"    pm.expect(jsonData.ownership.access.admin).to.eql([]);\r",
+									"    pm.expect(jsonData.ownership.access.editor).to.eql([]);\r",
+									"    pm.expect(jsonData.ownership.access.user).to.eql([]);\r",
+									"    pm.expect(jsonData.ownership.access.viewer).to.eql([]);\r",
+									"    pm.expect(jsonData.ownership.resourceKey).to.eql(\"agents.\" + pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData.meta.resourceType).to.eql(\"agents\");\r",
+									"    pm.expect(jsonData.meta.ownerType).to.eql(\"user\");\r",
+									"    pm.expect(jsonData.meta.location).to.match(new RegExp(\"/latest/agents/\" + pm.environment.get(\"TEST_AGENT1_ID\")));\r",
+									"    pm.expect(jsonData.meta.version).to.eql(2);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Agent 1 to Validate all Fields",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 02:07:50 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "1982"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"meta\": {\n        \"resourceType\": \"agents\",\n        \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/agents/00877f6f73924dd6a764a96aab02e2f1\",\n        \"version\": 1,\n        \"created\": \"2024-07-23T01:32:24.640000Z\",\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"deleted\": null,\n        \"deletedUser\": null,\n        \"archived\": null,\n        \"archivedUser\": null\n    },\n    \"name\": \"Test Bot\",\n    \"description\": \"This is a test\",\n    \"id\": \"00877f6f73924dd6a764a96aab02e2f1\",\n    \"featured\": false,\n    \"clone\": null,\n    \"sharing\": {\n        \"urlPath\": \"00877f6f73924dd6a764a96aab02e2f1\",\n        \"publicUrl\": \"https://sit.aibots.gov.sg/chats/00877f6f73924dd6a764a96aab02e2f1\",\n        \"apiUrl\": \"https://api.sit.aibots.gov.sg/v1.0/chats/00877f6f73924dd6a764a96aab02e2f1\",\n        \"apiKeys\": []\n    },\n    \"ownership\": {\n        \"visibility\": \"private\",\n        \"access\": {\n            \"owner\": [\n                {\n                    \"id\": \"04e058973c6252aa8640ca126441e52c\",\n                    \"type\": \"user\"\n                }\n            ],\n            \"admin\": [],\n            \"editor\": [],\n            \"user\": [],\n            \"viewer\": []\n        },\n        \"resourceKey\": \"agents.00877f6f73924dd6a764a96aab02e2f1\"\n    },\n    \"files\": [],\n    \"agency\": \"govtech\",\n    \"welcomeMessage\": \"Hello! I am your assistant. How can I help you?\",\n    \"templates\": [],\n    \"releaseState\": {\n        \"state\": \"beta\",\n        \"created\": null,\n        \"lastModified\": null,\n        \"lastModifiedUser\": null,\n        \"denied\": null,\n        \"comments\": []\n    },\n    \"knowledgeBases\": [\n        \"549616ab11a84e47a58fe9e1eaee966d\",\n        \"0ea81e5044d24812b3e030464217dcca\"\n    ],\n    \"defaultPipeline\": null,\n    \"rags\": [\n        \"24f1ef5516cc4b5a942a84cd32aa4743\"\n    ],\n    \"chat\": {\n        \"model\": \"azure~gpt-4o\",\n        \"systemPrompt\": {\n            \"template\": \"You are a personal AI assistant with the personality: ${personality}\\n\\nYour purpose is: ${instructions}\\n\\nYou must abide by the following rules: ${guardrails}\\n\\nYou have knowledge of the following information: ${knowledgeBase}\",\n            \"variables\": {\n                \"personality\": \"helpful, clever, and very friendly\",\n                \"instructions\": \"You serve as a personal assistant to public officers in Singapore\",\n                \"guardrails\": \"You will not answer politically sensitive topics\",\n                \"knowledgeBase\": \"\"\n            },\n            \"placeholders\": [\n                \"personality\",\n                \"instructions\",\n                \"guardrails\",\n                \"knowledgeBase\"\n            ]\n        },\n        \"params\": {},\n        \"properties\": {},\n        \"userPrompt\": null\n    },\n    \"tools\": [],\n    \"settings\": {},\n    \"tags\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Trigger Rag Pipeline",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Retrieved Agent 1 RAG Configs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData.config.knowledge_bases).to.include(pm.environment.get(\"TEST_KNOWLEDGE_BASE1\"));\r",
+									"    pm.expect(jsonData.config.knowledge_bases).to.include(pm.environment.get(\"TEST_KNOWLEDGE_BASE2\"));\r",
+									"    pm.expect(jsonData.config.knowledge_bases).to.include(pm.environment.get(\"TEST_KNOWLEDGE_BASE3\"));\r",
+									"    pm.expect(jsonData.config.knowledge_bases).to.include(pm.environment.get(\"TEST_KNOWLEDGE_BASE4\"));\r",
+									"    pm.expect(jsonData.config.knowledge_bases).to.include(pm.environment.get(\"TEST_KNOWLEDGE_BASE5\"));\r",
+									"    pm.expect(jsonData.config.pipelines).to.include(pm.environment.get(\"TEST_AGENT1_RAG1_ID\"));\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pipelines\": [\"{{TEST_AGENT1_RAG1_ID}}\"],\r\n    \"knowledge_bases\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/rags/:id/pipelines",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"rags",
+								":id",
+								"pipelines"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Trigger Rag Pipeline",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"defaultPipeline\": \"{{TEST_AGENT1_RAG1_ID}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/default/pipelines",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"default",
+										"pipelines"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:33:32 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Retrieve Agent 1 RAG Configs after triggering pipeline",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieved Agent 1 RAG Configs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(2);\r",
+									"\r",
+									"    pm.expect(jsonData[1].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[1].type).to.eql(\"govtext\");\r",
+									"    pm.expect(jsonData[1].current.state).to.eql(\"running\");\r",
+									"    pm.expect(jsonData[1].previous.state).to.eql(\"pending\");\r",
+									"    pm.expect(jsonData[0].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[0].timestamp).to.not.eql(null);\r",
+									"    pm.environment.set(\"TEST_AGENT1_RAG1_ID\", jsonData[1].id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"rags"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Agent 1 RAG Configs after triggering pipeline",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"rags"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:20:07 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "163"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"ecce83bf488f48f6813eb9a7bf25ae76\",\n        \"type\": \"llmstack\",\n        \"config\": {},\n        \"agent\": \"04bd319d33a64e979ba851b48af55962\",\n        \"timestamp\": \"2024-07-24T00:19:39.634000+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Retrieve Agent 1 Knowledge Bases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieved Agent 1 Knowledge Bases\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(5);\r",
+									"\r",
+									"    pm.expect(jsonData[0].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].name).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE1_NAME\"));\r",
+									"    pm.expect(jsonData[0].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[0].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[0].content).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE1_ID\"));\r",
+									"    pm.expect(jsonData[0].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[0].storage.type).to.eql(\"aibots\");\r",
+									"    pm.expect(jsonData[0].storage.value).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}\\+\\d{2}:\\d{2}$/);\r",
+									"    pm.expect(Object.keys(jsonData[0].embeddings).length).to.eql(1);\r",
+									"\r",
+									"    pm.expect(jsonData[1].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[1].name).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE2_NAME\"));\r",
+									"    pm.expect(jsonData[1].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[1].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[1].content).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE2_ID\"));\r",
+									"    pm.expect(jsonData[1].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[1].storage.type).to.eql(\"aibots\");\r",
+									"    pm.expect(jsonData[1].timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}\\+\\d{2}:\\d{2}$/);\r",
+									"    pm.expect(Object.keys(jsonData[0].embeddings).length).to.eql(1);\r",
+									"\r",
+									"    pm.expect(jsonData[2].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[2].name).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE3_NAME\"));\r",
+									"    pm.expect(jsonData[2].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[2].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[2].content).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE3_ID\"));\r",
+									"    pm.expect(jsonData[2].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[2].storage.type).to.eql(\"aibots\");\r",
+									"    pm.expect(jsonData[2].storage.value).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[2].timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}\\+\\d{2}:\\d{2}$/);\r",
+									"    pm.expect(Object.keys(jsonData[0].embeddings).length).to.eql(1);\r",
+									"\r",
+									"    pm.expect(jsonData[3].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[3].name).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE4_NAME\"));\r",
+									"    pm.expect(jsonData[3].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[3].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[3].content).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE4_ID\"));\r",
+									"    pm.expect(jsonData[3].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[3].storage.type).to.eql(\"aibots\");\r",
+									"    pm.expect(jsonData[3].storage.value).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[3].timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}\\+\\d{2}:\\d{2}$/);\r",
+									"    pm.expect(Object.keys(jsonData[0].embeddings).length).to.eql(1);\r",
+									"\r",
+									"    pm.expect(jsonData[4].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[4].name).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE5_NAME\"));\r",
+									"    pm.expect(jsonData[4].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[4].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[4].content).to.eql(pm.environment.get(\"TEST_DOCUMENT_FILE5_ID\"));\r",
+									"    pm.expect(jsonData[4].agent).to.eql(pm.environment.get(\"TEST_AGENT1_ID\"));\r",
+									"    pm.expect(jsonData[4].storage.type).to.eql(\"aibots\");\r",
+									"    pm.expect(jsonData[4].storage.value).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[4].timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}\\+\\d{2}:\\d{2}$/);\r",
+									"    pm.expect(Object.keys(jsonData[0].embeddings).length).to.eql(1);\r",
+									"\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"knowledge",
+								"bases"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Agent 1 Knowledge Bases",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"knowledge",
+										"bases"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 19 Jul 2024 17:47:44 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "513"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"f2699b126d2e4e71ab5062f26d6472a2\",\n        \"name\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n        \"description\": \"\",\n        \"type\": \"file\",\n        \"content\": \"5addb71d08af42aea96396646272e38f\",\n        \"metadata\": {\n            \"hello\": \"world\"\n        },\n        \"agent\": \"c2c3b43d31b543898a3ed06889404189\",\n        \"storage\": {\n            \"type\": \"aibots\",\n            \"location\": \"https://public.sit.aibots.gov.sg/files/5addb71d08af42aea96396646272e38f/FAQ%20for%20Parents%20%285D4N%202023%20MOE-OBS%29.pdf\",\n            \"value\": \"5addb71d08af42aea96396646272e38f\"\n        },\n        \"embeddings\": {},\n        \"timestamp\": \"2024-07-20T01:46:09.073000+08:00\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Test GovText Pipeline Query",
+			"item": [
+				{
+					"name": "Create Chat 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Retrieved Agent 1 RAG Configs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.environment.set('TEST_CHAT1_ID', jsonData.id)\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pipelines\": [\"{{TEST_AGENT1_RAG1_ID}}\"],\r\n    \"knowledge_bases\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/:id",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"chats",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Chat 1",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"defaultPipeline\": \"{{TEST_AGENT1_RAG1_ID}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/chats/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"chats",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:33:32 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Trigger GovText Query",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(() => {}, [30000])"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Triggered GovText Query\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.model).to.eql(\"azure~gpt-4o\");\r",
+									"    pm.expect(jsonData.query.content).to.eql(\"what do you know?\");\r",
+									"    pm.expect(jsonData.response[\"content\"]);\r",
+									"    pm.expect(jsonData.rag.type).to.eql(\"govtext\");\r",
+									"    pm.expect(jsonData.rag.chunks[0][\"source\"]).to.eql(\"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\")\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "content",
+									"value": "what do you know?",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/:id/messages",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"chats",
+								":id",
+								"messages"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_CHAT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Trigger GovText Query",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "content",
+											"value": "What do you know?",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/default/pipelines",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"default",
+										"pipelines"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:33:32 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Trigger GovText Query Empty Content",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Triggered GovText Query\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Validation error\");\r",
+									"    pm.expect(jsonData.details.errors[0].type).to.eql(\"missing\");\r",
+									"    pm.expect(jsonData.details.errors[0].loc[1]).to.eql(\"content\");\r",
+									"    pm.expect(jsonData.details.errors[0].msg).to.eql(\"Field required\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "content",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/:id/messages",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"chats",
+								":id",
+								"messages"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_CHAT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Trigger GovText Query Empty Content",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "content",
+											"value": "",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/default/pipelines",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"default",
+										"pipelines"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:33:32 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Trigger GovText Delete Embedding",
+			"item": [
+				{
+					"name": "Delete Agent 1 Knowledge Base 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases?ids={{TEST_KNOWLEDGE_BASE1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"knowledge",
+								"bases"
+							],
+							"query": [
+								{
+									"key": "ids",
+									"value": "{{TEST_KNOWLEDGE_BASE1}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete Agent 1 Knowledge Base 1",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases?ids={{TEST_KNOWLEDGE_BASE1}}",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"knowledge",
+										"bases"
+									],
+									"query": [
+										{
+											"key": "ids",
+											"value": "{{TEST_KNOWLEDGE_BASE1}}"
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 19 Jul 2024 18:30:58 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Trigger GovText Query",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Triggered GovText Query\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.model).to.eql(\"azure~gpt-4o\");\r",
+									"    pm.expect(jsonData.response[\"content\"]);\r",
+									"    pm.expect(jsonData.rag.type).to.eql(\"govtext\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(() => {}, [10000])"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "content",
+									"value": "What do you know?",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/:id/messages",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"chats",
+								":id",
+								"messages"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_CHAT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Trigger GovText Query",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"defaultPipeline\": \"{{TEST_AGENT1_RAG1_ID}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/default/pipelines",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"default",
+										"pipelines"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:33:32 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Delete Agent 1 Knowledge Base 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases?ids={{TEST_KNOWLEDGE_BASE2}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"knowledge",
+								"bases"
+							],
+							"query": [
+								{
+									"key": "ids",
+									"value": "{{TEST_KNOWLEDGE_BASE2}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete Agent 1 Knowledge Base 2",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases?ids={{TEST_KNOWLEDGE_BASE2}}",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"knowledge",
+										"bases"
+									],
+									"query": [
+										{
+											"key": "ids",
+											"value": "{{TEST_KNOWLEDGE_BASE2}}"
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 19 Jul 2024 18:30:58 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Retrieve Agent 1 Knowledge Bases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieved Agent 1 Knowledge Bases\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(3);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"knowledge",
+								"bases"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Agent 1 Knowledge Bases",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"knowledge",
+										"bases"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 19 Jul 2024 17:47:44 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "513"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"f2699b126d2e4e71ab5062f26d6472a2\",\n        \"name\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n        \"description\": \"\",\n        \"type\": \"file\",\n        \"content\": \"5addb71d08af42aea96396646272e38f\",\n        \"metadata\": {\n            \"hello\": \"world\"\n        },\n        \"agent\": \"c2c3b43d31b543898a3ed06889404189\",\n        \"storage\": {\n            \"type\": \"aibots\",\n            \"location\": \"https://public.sit.aibots.gov.sg/files/5addb71d08af42aea96396646272e38f/FAQ%20for%20Parents%20%285D4N%202023%20MOE-OBS%29.pdf\",\n            \"value\": \"5addb71d08af42aea96396646272e38f\"\n        },\n        \"embeddings\": {},\n        \"timestamp\": \"2024-07-20T01:46:09.073000+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Delete Agent 1 RAG Configs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"rags"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete Agent 1 RAG Configs",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"rags"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 17:16:12 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Trigger GovText Query",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Triggered GovText Query\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(jsonData.model).to.eql(\"azure~gpt-4o\");\r",
+									"    pm.expect(jsonData.query.content).to.eql(\"what do you know?\");\r",
+									"    pm.expect(jsonData.response[\"content\"]);\r",
+									"    pm.expect(jsonData.rag.type).to.eql(null);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "content",
+									"value": "what do you know?",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/:id/messages",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"chats",
+								":id",
+								"messages"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_CHAT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Trigger GovText Query",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"defaultPipeline\": \"{{TEST_AGENT1_RAG1_ID}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/default/pipelines",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"default",
+										"pipelines"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:33:32 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Delete Agent 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_AGENT1_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete Agent 1",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT2_ID}}"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 17:56:50 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	]
+}

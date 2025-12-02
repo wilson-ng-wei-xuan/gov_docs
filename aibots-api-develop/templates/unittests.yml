@@ -1,0 +1,7 @@
+
+.unittests:
+  before_script:
+    - pip install poetry nox nox-poetry && export PATH="$PATH:/tmp/.local/bin" PYTHONPATH="$PYTHONPATH:/tmp/.local/bin"
+  script:
+    - cd $COMPONENT_PATH
+    - nox -t unittests

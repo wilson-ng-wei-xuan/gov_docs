@@ -1,0 +1,75 @@
+
+services:
+  aibots-mongo:
+    image: "${ATLAS_REGISTRY:-}${MONGO_IMAGE:-atlas-mongo/auth}:${TAG:-latest}"
+    container_name: aibots-mongo
+    environment:
+      MONGO_INITDB_DATABASE: "${ATLAS_ADMIN_DB:-admin}"
+      MONGO_INITDB_ROOT_USERNAME: "${DB_USER:-admin}"
+      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD:-dsa1d-st}"
+    expose:
+      - 27017
+    ports:
+      - "27018:27017"
+    networks:
+      - aibots
+    restart: unless-stopped
+
+  nous:
+    image: "${MOONSHOT_REGISTRY}nous/nous-api:${NOUS_TAG:-sit}"
+    ports:
+      - "${EXTERNAL_PORT:-20001}:${INTERNAL_PORT:-443}"
+    container_name: nous
+    environment:
+      COMPONENT: "${COMPONENT:-nous}"
+      HOST: "${HOST:-0.0.0.0}"
+      PORT: "${INTERNAL_PORT:-443}"
+      DB_USER: "${DB_USER:-admin}"
+      DB_PASSWORD: "${DB_PASSWORD:-dsa1d-st}"
+      DB_URL: "${DB_URL:-mongodb://nous-mongo:27017}"
+      DB_TLS: "${DB_TLS:-0}"
+      USE_AWS: "${USE_AWS:-0}"
+      USE_SSL: "${USE_SSL:-1}"
+      DEBUG: "${DEBUG:-1}"
+      PROJECT_AOAI__PARAM: "${PROJECT_AOAI__PARAM:-param-sitezapp-sharedsvc-nous-api-aoai}"
+      AWS_ACCESS_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_SESSION_TOKEN: "${AWS_SESSION_TOKEN}"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+        reservations:
+          memory: 100m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50M"
+        max-file: "1"
+    networks:
+      - nous
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    expose:
+      - "80"
+      - "443"
+
+  nous-mongo:
+    image: "${ATLAS_REGISTRY:-}${MONGO_IMAGE:-atlas-mongo/auth}:${TAG:-latest}"
+    container_name: nous-mongo
+    environment:
+      MONGO_INITDB_DATABASE: "${ATLAS_ADMIN_DB:-admin}"
+      MONGO_INITDB_ROOT_USERNAME: "${DB_USER:-admin}"
+      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD:-dsa1d-st}"
+    expose:
+      - 27017
+    ports:
+      - "27017:27017"
+    networks:
+      - nous
+    restart: unless-stopped
+
+networks:
+  aibots:
+  nous:

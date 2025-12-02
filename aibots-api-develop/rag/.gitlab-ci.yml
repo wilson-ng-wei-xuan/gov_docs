@@ -1,0 +1,101 @@
+
+variables:
+  ATLAS_IMAGE: registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base
+  ATLAS_USER: $ATLAS_REGISTRY_USER
+  ATLAS_TOKEN: $ATLAS_REGISTRY_TOKEN
+  COMPONENT_PATH: "rag"
+
+include:
+  - template: Security/Container-Scanning.gitlab-ci.yml
+  - local: '/templates/build-docker.yml'
+  - local: '/templates/lint.yml'
+  - local: '/templates/unittests.yml'
+
+stages:
+  - test
+  - build
+  - scan
+  - deploy
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_BRANCH == "sit"
+      variables:
+        AIBOTS_ENVIRONMENT: SIT
+        DEPLOY: true
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_BRANCH == "uat"
+      variables:
+        AIBOTS_ENVIRONMENT: UAT
+        DEPLOY: true
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_BRANCH == "main"
+      variables:
+        AIBOTS_ENVIRONMENT: Production
+        DEPLOY: true
+    - if: $CI_COMMIT_TAG
+      variables:
+        AIBOTS_ENVIRONMENT: Production
+        DEPLOY: true
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      variables:
+        DEPLOY: false
+    - when: always
+
+lint_job:
+  stage: test
+  image: python:3.11.8-slim-bookworm
+  extends: .lint
+
+unittests_job:
+  stage: test
+  image: python:3.11.8-slim-bookworm
+  extends: .unittests
+
+build_docker_status_govtext_job:
+  stage: build
+  extends: .build_image
+  variables:
+    ATLAS_BUILD_ARGS: "--target production --build-arg platforms=linux/arm64 --build-arg RAG_COMPONENT_PATH=${COMPONENT_PATH}/status/govtext"
+  needs:
+    - lint_job
+    - unittests_job
+
+push_gitlab_status_govtext_job:
+  stage: build
+  extends: .push_image
+  variables:
+    DOCKER_TARGET_IMAGE: "$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/status/govtext:$CI_COMMIT_REF_SLUG"
+  needs:
+    - build_docker_status_govtext_job
+
+login_ecr:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $DEPLOY == "true"
+  variables:
+    VAR_FILE_NAME: "$COMPONENT_PATH.gpg"
+    PIPELINE_GPG_KEY: "$VAR_FILE_NAME.gpg"
+  extends: .generate_aws_ecr_auth
+  environment: $AIBOTS_ENVIRONMENT
+
+push_ecr_status_govtext_job:
+  stage: deploy
+  extends: .push_ecr
+  variables:
+    DOCKER_TARGET_IMAGE: "$GOVTEXT_RAG_STATUS_IMAGE:latest"
+    VAR_FILE_NAME: "$COMPONENT_PATH.gpg"
+    PIPELINE_GPG_KEY: "$VAR_FILE_NAME.gpg"
+  environment: $AIBOTS_ENVIRONMENT
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $DEPLOY == "true"
+    - if: $CI_COMMIT_TAG
+      variables:
+        DOCKER_TARGET_IMAGE: "$GOVTEXT_RAG_STATUS_IMAGE:$CI_COMMIT_TAG"
+  needs:
+    - build_docker_status_govtext_job
+    - login_ecr
+
+container_scanning:
+  stage: scan
+  variables:
+    CS_IMAGE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/status/govtext:$CI_COMMIT_REF_SLUG"
+    CS_DOCKERFILE_PATH: "$COMPONENT_PATH/Dockerfile"

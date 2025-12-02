@@ -1,0 +1,38 @@
+# data "aws_ssm_parameter" "whatever" {
+#   name = aws_ssm_parameter.secret.name
+# }
+# # this is how you use it.
+# resource "something" "name" {
+#   "element_1" = jsondecode(data.aws_ssm_parameter.whatever.value)["key_1"]
+#   "element_2" = jsondecode(data.aws_ssm_parameter.whatever.value)["key_2"]
+# }
+
+resource "aws_iam_access_key" "ssm_smtp_user" {
+  user = aws_iam_user.smtp_user.name
+}
+
+resource "aws_ssm_parameter" "smtp_user" {
+  # lifecycle {
+  #   ignore_changes = [
+  #     value,
+  #   ]
+  # }
+
+  name        = "${local.para_store_name}-${local.smtp_user_name}"
+  description = "The smtp_user ID PW ${local.smtp_user_name}"
+  type        = "SecureString"
+  value       = jsonencode(
+    {
+      SMTP_FROM = "${var.from}@${var.domain}",
+      SMTP_USER = aws_iam_access_key.ssm_smtp_user.id,
+      SMTP_PASSWORD = aws_iam_access_key.ssm_smtp_user.ses_smtp_password_v4
+    }
+  )
+
+  tags = merge(
+    local.tags,
+    {
+      "Name" = "${local.para_store_name}-${local.smtp_user_name}"
+    }
+  )
+}

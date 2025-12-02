@@ -1,0 +1,15 @@
+## Use this payload to test from SQS console
+## to test directly in lambda console, copy from cloudwatch.
+{
+  "bot_id"    : "1",
+  "doc_id"    : "2",
+  "action"    : "3",
+  "rag_extstack": {
+    "govtext": {
+      "config": {},
+      "result": {
+        "remark": "optional in case source-url needs to pass in some sort of results."
+      }
+    }
+  }
+}

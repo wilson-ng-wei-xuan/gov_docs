@@ -1,0 +1,249 @@
+{
+	"info": {
+		"_postman_id": "48aa1b52-8194-45d1-84cf-26c07abe6ff7",
+		"name": "[AIBots] Heartbeat (Chats API)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27973896",
+		"_collection_link": "https://launchpad-dsaid.postman.co/workspace/Moonshot-Workspace~9c1f39db-dd94-4f31-8ace-bbaf5da2b4f2/collection/27973896-48aa1b52-8194-45d1-84cf-26c07abe6ff7?action=share&source=collection_link&creator=27973896"
+	},
+	"item": [
+		{
+			"name": "Retrieve Heartbeat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function() {}, [5000]);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SCHEME}}://{{CHATS_URL}}/heartbeat",
+					"protocol": "{{SCHEME}}",
+					"host": [
+						"{{CHATS_URL}}"
+					],
+					"path": [
+						"heartbeat"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Retrieve Heartbeat",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/heartbeat",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"heartbeat"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "date",
+							"value": "Thu, 20 Jun 2024 03:58:23 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "transfer-encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Retrieve Heartbeat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){}, [1000]);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SCHEME}}://{{CHATS_URL}}/heartbeat",
+					"protocol": "{{SCHEME}}",
+					"host": [
+						"{{CHATS_URL}}"
+					],
+					"path": [
+						"heartbeat"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Retrieve Heartbeat",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/heartbeat",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"heartbeat"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "date",
+							"value": "Thu, 20 Jun 2024 03:58:33 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "transfer-encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Retrieve Heartbeat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){}, [1000]);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{SCHEME}}://{{CHATS_URL}}/heartbeat",
+					"protocol": "{{SCHEME}}",
+					"host": [
+						"{{CHATS_URL}}"
+					],
+					"path": [
+						"heartbeat"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Retrieve Heartbeat",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/heartbeat",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"heartbeat"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "date",
+							"value": "Thu, 20 Jun 2024 03:58:43 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "transfer-encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}

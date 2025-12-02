@@ -1,0 +1,1839 @@
+{
+	"info": {
+		"_postman_id": "37e39cfe-5209-4b45-b275-e56e7e7f0850",
+		"name": "[AIBots] RAG Pipeline Status",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15499661",
+		"_collection_link": "https://lively-trinity-802253.postman.co/workspace/Joen~e904f178-b272-4546-b4cb-0f733cf02ab5/collection/15499661-37e39cfe-5209-4b45-b275-e56e7e7f0850?action=share&source=collection_link&creator=15499661"
+	},
+	"item": [
+		{
+			"name": "Login to AIBots",
+			"item": [
+				{
+					"name": "Request Email OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Request Email OTP",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Sun, 23 Jun 2024 11:20:49 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Retrieve Email OTPs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieve Email OTPs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var last = jsonData.length - 1\r",
+									"    pm.expect(jsonData.length).to.be.gte(1);\r",
+									"    pm.expect(jsonData[last].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[last].user).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[last].email).to.eql(pm.environment.get(\"TEST_EMAIL_ADDRESS1\"));\r",
+									"    const required_keys = [\"otp\", \"timestamp\", \"expiry\"];\r",
+									"    pm.expect(required_keys.every((v) => Object.keys(jsonData[last]).includes(v))).to.eql(true);\r",
+									"    pm.environment.set(\"TEST_OTP\", jsonData[last].otp);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Email OTPs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Thu, 04 Jul 2024 03:30:26 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "225"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"c765426efe15482b852c583a8e0a8efb\",\n        \"user\": \"04e058973c6252aa8640ca126441e52c\",\n        \"email\": \"davidtwlee@dsaid.gov.sg\",\n        \"otp\": \"132753\",\n        \"timestamp\": \"2024-07-04T11:30:17.930000+08:00\",\n        \"expiry\": \"2024-07-04T11:30:29.930000+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Login via Email OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successful Login via Email OTP\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"TEST_EMAIL_ADDRESS1\"));\r",
+									"    pm.expect(jsonData.newUser).to.eql(true);\r",
+									"    pm.expect(jsonData.refreshCount).to.eql(0);\r",
+									"    pm.expect(jsonData.maxRefresh).to.eql(5);\r",
+									"    pm.expect(jsonData.scopes).to.eql([\"*\"]);\r",
+									"    pm.expect(jsonData.itemScopes.length).to.eql(3);\r",
+									"    pm.expect(jsonData.superuser).to.eql(true);\r",
+									"    const required_keys = [\"name\", \"timestamp\", \"token\", \"refreshToken\", \"expiry\", \"issuer\", \"product\", \"refreshCount\", \"maxRefresh\", \"role\"];\r",
+									"    pm.expect(required_keys.every((v) => Object.keys(jsonData).includes(v))).to.eql(true);\r",
+									"    pm.environment.set(\"REFRESH_TOKEN\", jsonData.refreshToken);\r",
+									"    pm.environment.set(\"TEST_USER1_NAME\", jsonData.name);\r",
+									"    pm.environment.set(\"TEST_USER1_ID\", jsonData.id);\r",
+									"});\r",
+									"pm.test(\"Authorization header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Authorization\");\r",
+									"    pm.environment.set(\"AUTH_TOKEN\", pm.response.headers.get('Authorization').split(' ')[1]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\",\r\n    \"otp\": \"{{TEST_OTP}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails/logins",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails",
+								"logins"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login via Email OTP",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\",\r\n    \"otp\": \"{{TEST_OTP}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails/logins",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails",
+										"logins"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Thu, 04 Jul 2024 06:48:49 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "authorization",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDA3NTcyOSwiaWF0IjoxNzIwMDc1NzI5LCJleHAiOjE3MjAwODI5MjksImp0aSI6IjFmYTRjMWE0NjEzYjQyMGNhNzNjMGU3OTM5MjFmNmZiIiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiI5MDQ0NTg1MzlkMzc0N2IyOWZiZTQ0NmRkYWEwNDY1MiIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJjVU1hSkJWX1lDVEU0dlRjNWlubzlRIn0.p4BMOVsk65Ak8C_CPDQFq64yoXfwImN7ff83mazH0cM"
+								},
+								{
+									"key": "content-length",
+									"value": "1247"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"Davidtwlee\",\n    \"id\": \"04e058973c6252aa8640ca126441e52c\",\n    \"issuer\": \"GovTech\",\n    \"product\": \"sit.aibots.gov.sg\",\n    \"refreshToken\": \"87539203cac8471ad0b63abf85589522\",\n    \"refreshCount\": 0,\n    \"maxRefresh\": 5,\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTczYzYyNTJhYTg2NDBjYTEyNjQ0MWU1MmMiLCJhdWQiOiJzaXQuYWlib3RzLmdvdi5zZyIsIm5iZiI6MTcyMDA3NTcyOSwiaWF0IjoxNzIwMDc1NzI5LCJleHAiOjE3MjAwODI5MjksImp0aSI6IjFmYTRjMWE0NjEzYjQyMGNhNzNjMGU3OTM5MjFmNmZiIiwibmFtZSI6IkRhdmlkdHdsZWUiLCJlbWFpbCI6ImRhdmlkdHdsZWVAZHNhaWQuZ292LnNnIiwibmV3X3VzZXIiOnRydWUsInJvbGUiOiI5MDQ0NTg1MzlkMzc0N2IyOWZiZTQ0NmRkYWEwNDY1MiIsInN1cGVydXNlciI6dHJ1ZSwiYWdlbmN5IjoiZ292dGVjaCIsImF0X2hhc2giOiJjVU1hSkJWX1lDVEU0dlRjNWlubzlRIn0.p4BMOVsk65Ak8C_CPDQFq64yoXfwImN7ff83mazH0cM\",\n    \"scopes\": [\n        \"*\"\n    ],\n    \"itemScopes\": [\n        \"agents.804885b4423e485cb21592c7dfa8baa8:read,allow\",\n        \"chats.804885b4423e485cb21592c7dfa8baa8:create,read,update,delete\",\n        \"messages.804885b4423e485cb21592c7dfa8baa8:create,read,update,delete\"\n    ],\n    \"expiry\": \"2024-07-04T16:48:49.967109+08:00\",\n    \"startUse\": \"2024-07-04T14:48:49.967106+08:00\",\n    \"timestamp\": \"2024-07-04T14:48:49.967168+08:00\",\n    \"email\": \"davidtwlee@dsaid.gov.sg\",\n    \"newUser\": true,\n    \"role\": \"904458539d3747b29fbe446ddaa04652\",\n    \"superuser\": true,\n    \"agency\": \"govtech\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Create Agent",
+			"item": [
+				{
+					"name": "Create RAG Files",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successfully uploaded RAG Files\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData.length).to.eql(2);\r",
+									"    pm.environment.set(\"TEST_RAG_STATUS_FILE1_NAME\", jsonData[0].name);\r",
+									"    pm.environment.set(\"TEST_RAG_STATUS_FILE1_ID\", jsonData[0].id);\r",
+									"    pm.environment.set(\"TEST_RAG_STATUS_FILE2_NAME\", jsonData[1].name);\r",
+									"    pm.environment.set(\"TEST_RAG_STATUS_FILE2_ID\", jsonData[1].id);\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": [
+										"/Users/dsaid/Documents/aibots-api/agents-api/postman_tests/postman/aibots/version/latest/test_agents_rag_status/A Sample HTML Document (Test File).html",
+										"/Users/dsaid/Documents/aibots-api/agents-api/postman_tests/postman/aibots/version/latest/test_agents_rag_status/FAQ for Parents (5D4N 2023 MOE-OBS).pdf"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"files"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create RAG Files",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": [
+												"FAQ for Parents (5D4N 2023 MOE-OBS).pdf",
+												"A Sample HTML Document (Test File).html",
+												"alzheimers.txt",
+												"computer.pdf",
+												"Letter to Parents Template (5D4N 2023 MOE-OBS PN20220727).docx",
+												"registration.txt",
+												"Safe management measures.doc",
+												"story.txt",
+												"username.csv",
+												"wealthiest_people.docx"
+											]
+										}
+									]
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 19 Jul 2024 17:18:04 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "7167"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/4e674d3094da4ef2b04e0ec04cba3e68\",\n            \"version\": 1,\n            \"created\": \"2024-07-19T17:18:05.881621Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"4e674d3094da4ef2b04e0ec04cba3e68\",\n        \"name\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n            \"checksum\": \"b00e2315d7f3a031aac2d3d97615230dfefecc5721391455e2d9942ae1018571ae8ac93e8e891ead2f3b650900056bfc\",\n            \"content_type\": \"application/pdf\"\n        },\n        \"fullPath\": \"/FAQ for Parents (5D4N 2023 MOE-OBS)1.pdf\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/2f3681b9229846e7b81a2e9fa26966c1\",\n            \"version\": 1,\n            \"created\": \"2024-07-19T17:18:06.385211Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"2f3681b9229846e7b81a2e9fa26966c1\",\n        \"name\": \"A Sample HTML Document (Test File).html\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"A Sample HTML Document (Test File).html\",\n            \"checksum\": \"24f2ebdabea4fcdfd90fbf62609272b6de117c1c60affb1d11679f1be49ec64040f68ef355ed7853e25f1103571d4471\",\n            \"content_type\": \"text/html\"\n        },\n        \"fullPath\": \"/A Sample HTML Document (Test File)1.html\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/3316b6b7afa8460bb28243a21ada7393\",\n            \"version\": 1,\n            \"created\": \"2024-07-19T17:18:06.441094Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"3316b6b7afa8460bb28243a21ada7393\",\n        \"name\": \"alzheimers.txt\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"alzheimers.txt\",\n            \"checksum\": \"d9c408bb54516654914cc6c6e24fd7aec17b5a8be9017dbbe0cc5bca24418a9768d3790af450d0cae21a5fd69cb2d84f\",\n            \"content_type\": \"text/plain\"\n        },\n        \"fullPath\": \"/alzheimers1.txt\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/b01f05b356224976a5863ef1d2ddda1a\",\n            \"version\": 1,\n            \"created\": \"2024-07-19T17:18:06.533886Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"b01f05b356224976a5863ef1d2ddda1a\",\n        \"name\": \"computer.pdf\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"computer.pdf\",\n            \"checksum\": \"aa865d34246a9b21ba2d22419d17076e5552f4e0160a32ca5e58d417368021b14bb067df3ad28138eda78e855aea01d1\",\n            \"content_type\": \"application/pdf\"\n        },\n        \"fullPath\": \"/computer1.pdf\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/f984d3f231ef4765a63b661e4bd45614\",\n            \"version\": 1,\n            \"created\": \"2024-07-19T17:18:06.768912Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"f984d3f231ef4765a63b661e4bd45614\",\n        \"name\": \"Letter to Parents Template (5D4N 2023 MOE-OBS PN20220727).docx\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"Letter to Parents Template (5D4N 2023 MOE-OBS PN20220727).docx\",\n            \"checksum\": \"535d34a2bc1ce1fdbbbf64f44c99a9f019c20df5e33756fe04481fbfbb4b4b75374f98f36fe253e6aba3c475ef76ba23\",\n            \"content_type\": \"application/vnd.openxmlformats-officedocument.wordprocessingml.document\"\n        },\n        \"fullPath\": \"/Letter to Parents Template (5D4N 2023 MOE-OBS PN20220727)1.docx\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/2a1061edc02b4db78d845d4bb3173644\",\n            \"version\": 1,\n            \"created\": \"2024-07-19T17:18:06.831840Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"2a1061edc02b4db78d845d4bb3173644\",\n        \"name\": \"registration.txt\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"registration.txt\",\n            \"checksum\": \"59d9987f9b579a71489a2e73c11cb99f6afeedc2269098683cf3801dfc065bb2569f626199df15537405254870962c28\",\n            \"content_type\": \"text/plain\"\n        },\n        \"fullPath\": \"/registration1.txt\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/443cce7f627647e983832dbf8dd10dfb\",\n            \"version\": 1,\n            \"created\": \"2024-07-19T17:18:06.877947Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"443cce7f627647e983832dbf8dd10dfb\",\n        \"name\": \"Safe management measures.doc\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"Safe management measures.doc\",\n            \"checksum\": \"847b70cc92bbd3fc50eb4a192b84ffd5f8bd1083333c9ab16407213978f8ba8e9186849b316997ce42a905f8cb1ea574\",\n            \"content_type\": \"application/msword\"\n        },\n        \"fullPath\": \"/Safe management measures1.doc\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/74a7746bc9d14885b9465fb453dcb829\",\n            \"version\": 1,\n            \"created\": \"2024-07-19T17:18:06.998088Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"74a7746bc9d14885b9465fb453dcb829\",\n        \"name\": \"story.txt\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"story.txt\",\n            \"checksum\": \"b2e217f48e2e36be734ce539138a2c07b2342fefa6fe575530860e1e66cde3a1bd964dc9124701427c33e32d0d2464ce\",\n            \"content_type\": \"text/plain\"\n        },\n        \"fullPath\": \"/story1.txt\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/b2f3fe6862bd42b1b00acce925de3302\",\n            \"version\": 1,\n            \"created\": \"2024-07-19T17:18:07.095701Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"b2f3fe6862bd42b1b00acce925de3302\",\n        \"name\": \"username.csv\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"username.csv\",\n            \"checksum\": \"8b27045b4ceb5e0fbf3666b8abc5ae3d4eb2f428b12cb0c3d864365b44265db151f193e08da93bc3462ceb1727ebe511\",\n            \"content_type\": \"text/csv\"\n        },\n        \"fullPath\": \"/username1.csv\"\n    },\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e058973c6252aa8640ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/23a595867bea4deba4b031f4cf428ced\",\n            \"version\": 1,\n            \"created\": \"2024-07-19T17:18:07.141727Z\",\n            \"lastModified\": null,\n            \"lastModifiedUser\": null,\n            \"deleted\": null,\n            \"deletedUser\": null,\n            \"archived\": null,\n            \"archivedUser\": null\n        },\n        \"id\": \"23a595867bea4deba4b031f4cf428ced\",\n        \"name\": \"wealthiest_people.docx\",\n        \"versions\": [\n            1\n        ],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"filename\": \"wealthiest_people.docx\",\n            \"checksum\": \"80a17d2236662b24e9895f46a0f77c0779cc2eed16b22d71fea45e54ceb92af61ec37d19d93d8a2946cfbae68fa8bd6b\",\n            \"content_type\": \"application/vnd.openxmlformats-officedocument.wordprocessingml.document\"\n        },\n        \"fullPath\": \"/wealthiest_people1.docx\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Create RAG Status Agent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successfully created an Agent\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.environment.set('TEST_RAG_STATUS_AGENT_ID1', jsonData.id)\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test Bot For RAG Status\",\n    \"description\": \"This is a test\",\n    \"agency\": \"govtech\",\n    \"knowledgeBases\": [\n        \n    ],\n    \"rags\": [\n    ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Agent 7 with Knowledge Bases and RAG config",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Test Bot\",\n    \"description\": \"This is a test\",\n    \"agency\": \"govtech\",\n    \"knowledgeBases\": [\n        {\n            \"name\": \"{{TEST_DOCUMENT_FILE2_NAME}}\",\n            \"description\": \"\",\n            \"type\": \"file\",\n            \"content\": \"{{TEST_DOCUMENT_FILE2_ID}}\",\n            \"metadata\": {\n                \"hello\": \"world\"\n            }\n        },\n        {\n            \"name\": \"{{TEST_DOCUMENT_FILE2_NAME}}\",\n            \"description\": \"\",\n            \"type\": \"file\",\n            \"content\": \"{{TEST_DOCUMENT_FILE2_ID}}\"\n        }\n    ],\n    \"rags\": [\n        {\n            \"type\": \"aibots\",\n            \"config\": {}\n        }\n    ]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Wed, 17 Jul 2024 03:08:13 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "41"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"90eed1f93db545b4a523d2b96adc51c1\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Add RAG Configs to RAG Status Agent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successfully added RAG Configs to Agent 1\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"\r",
+									"    pm.expect(jsonData[0].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].type).to.eql(\"govtext\");\r",
+									"    pm.expect(jsonData[0].agent).to.eql(pm.environment.get(\"TEST_RAG_STATUS_AGENT_ID1\"));\r",
+									"    pm.expect(jsonData[0].timestamp).to.not.eql(null);\r",
+									"    pm.environment.set(\"TEST_RAG_STATUS_AGENT1_RAG1_ID\", jsonData[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"type\": \"govtext\",\r\n        \"config\": {}\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"rags"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_RAG_STATUS_AGENT_ID1}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Add RAG Configs to Agent 1",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"type\": \"llmstack\",\r\n        \"config\": {}\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"rags"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:19:39 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "163"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"ecce83bf488f48f6813eb9a7bf25ae76\",\n        \"type\": \"llmstack\",\n        \"config\": {},\n        \"agent\": \"04bd319d33a64e979ba851b48af55962\",\n        \"timestamp\": \"2024-07-24T00:19:39.634687+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Add Knowledge Bases to RAG Status Agent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successfully added Knowledge Bases to Agent 1\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"\r",
+									"    pm.expect(jsonData[0].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].name).to.eql(pm.environment.get(\"TEST_RAG_STATUS_FILE1_NAME\"));\r",
+									"    pm.expect(jsonData[0].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[0].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[0].content).to.eql(pm.environment.get(\"TEST_RAG_STATUS_FILE1_ID\"));\r",
+									"    pm.expect(jsonData[0].metadata).to.eql({\"hello\": \"world\"});\r",
+									"    pm.expect(jsonData[0].agent).to.eql(pm.environment.get(\"TEST_RAG_STATUS_AGENT_ID1\"));\r",
+									"    pm.expect(jsonData[0].storage.type).to.eql(\"aibots\");\r",
+									"    // pm.expect(jsonData[0].storage.location).to.match(new RegExp(\"/files/\" + pm.environment.get(\"TEST_RAG_STATUS_FILE1_ID\")));\r",
+									"    // pm.expect(jsonData[0].storage.value).to.eql(pm.environment.get(\"TEST_RAG_STATUS_FILE1_ID\"));\r",
+									"    pm.expect(jsonData[0].embeddings).to.eql({});\r",
+									"    pm.environment.set(\"TEST_AGENT1_RAG_STATUS_KB1_ID\", jsonData[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " [\r\n    {\r\n        \"name\": \"{{TEST_RAG_STATUS_FILE1_NAME}}\",\r\n        \"description\": \"\",\r\n        \"type\": \"file\",\r\n        \"content\": \"{{TEST_RAG_STATUS_FILE1_ID}}\",\r\n        \"metadata\": {\r\n            \"hello\": \"world\"\r\n        }\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"knowledge",
+								"bases"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_RAG_STATUS_AGENT_ID1}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Add Knowledge Bases to Agent 1",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": " [\r\n    {\r\n        \"name\": \"{{TEST_RAG_FILE1_NAME}}\",\r\n        \"description\": \"\",\r\n        \"type\": \"file\",\r\n        \"content\": \"{{TEST_RAG_FILE1_ID}}\",\r\n        \"metadata\": {\r\n            \"hello\": \"world\"\r\n        }\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"knowledge",
+										"bases"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 19 Jul 2024 17:46:08 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "513"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"f2699b126d2e4e71ab5062f26d6472a2\",\n        \"name\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n        \"description\": \"\",\n        \"type\": \"file\",\n        \"content\": \"5addb71d08af42aea96396646272e38f\",\n        \"metadata\": {\n            \"hello\": \"world\"\n        },\n        \"agent\": \"c2c3b43d31b543898a3ed06889404189\",\n        \"storage\": {\n            \"type\": \"aibots\",\n            \"location\": \"https://public.sit.aibots.gov.sg/files/5addb71d08af42aea96396646272e38f/FAQ%20for%20Parents%20%285D4N%202023%20MOE-OBS%29.pdf\",\n            \"value\": \"5addb71d08af42aea96396646272e38f\"\n        },\n        \"embeddings\": {},\n        \"timestamp\": \"2024-07-20T01:46:09.073587+08:00\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Attempt to update Knowledge Base Status with wrong API key",
+			"item": [
+				{
+					"name": "Update Knowledge Base with wrong API key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Response message checksum doesn't match\", function(){",
+									"    var data = pm.response.json()",
+									"    pm.expect(data[\"message\"]).to.be.eql(\"API key checksum does not match\")",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-ATLAS-Key",
+								"value": "aibots_prod_bcae99f2b51c2a0820fe76748bf264c9_f92bb3065c"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state\":\"pending\",\n    \"details\":{}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/{{TEST_RAG_STATUS_AGENT_ID1}}/knowledge/bases/{{TEST_AGENT1_RAG_STATUS_KB1_ID}}/statuses?ragConfig={{TEST_RAG_STATUS_AGENT1_RAG1_ID}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								"{{TEST_RAG_STATUS_AGENT_ID1}}",
+								"knowledge",
+								"bases",
+								"{{TEST_AGENT1_RAG_STATUS_KB1_ID}}",
+								"statuses"
+							],
+							"query": [
+								{
+									"key": "ragConfig",
+									"value": "{{TEST_RAG_STATUS_AGENT1_RAG1_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Attempts to update Knowledge Base Status",
+			"item": [
+				{
+					"name": "Knowledge Base Not Found",
+					"item": [
+						{
+							"name": "Update Knowledge Base Embedding With Not Existent Knowledge Base",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Message in the response JSON is equal to 'Knowledge base not found in agent'\", function () {",
+											"    var responseData = pm.response.json();",
+											"    pm.expect(responseData.message).to.equal('Knowledge base not found in agent');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-ATLAS-Key",
+										"value": "{{TEST_RAG_STATUS_AGENT_API_KEY1}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"state\":\"pending\",\n    \"details\":{}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/{{TEST_RAG_STATUS_AGENT_ID1}}/knowledge/bases/38df535e5c9b471ab9917b5a093ae45a/statuses?ragConfig={{TEST_RAG_STATUS_AGENT1_RAG1_ID}}",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										"{{TEST_RAG_STATUS_AGENT_ID1}}",
+										"knowledge",
+										"bases",
+										"38df535e5c9b471ab9917b5a093ae45a",
+										"statuses"
+									],
+									"query": [
+										{
+											"key": "ragConfig",
+											"value": "{{TEST_RAG_STATUS_AGENT1_RAG1_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "*TODO Agent of Knowledge Base Not Found",
+					"item": [
+						{
+							"name": "Update Knowledge Base With Non-Existent Agent",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Message under the response JSON equals 'Agent does not exist'\", function () {",
+											"    pm.expect(pm.response.json().message).to.equal('Agent does not exist');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-ATLAS-Key",
+										"value": "{{TEST_RAG_STATUS_AGENT_API_KEY1}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"state\":\"pending\",\n    \"details\":{}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/38df535e5c9b471ab9917b5a093ae45a/knowledge/bases/{{TEST_AGENT1_RAG_STATUS_KB1_ID}}/statuses?ragConfig={{TEST_RAG_STATUS_AGENT1_RAG1_ID}}",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										"38df535e5c9b471ab9917b5a093ae45a",
+										"knowledge",
+										"bases",
+										"{{TEST_AGENT1_RAG_STATUS_KB1_ID}}",
+										"statuses"
+									],
+									"query": [
+										{
+											"key": "ragConfig",
+											"value": "{{TEST_RAG_STATUS_AGENT1_RAG1_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Test Updating Knowledge Base",
+			"item": [
+				{
+					"name": "(Before) Update Knowledge Base Embedding Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-ATLAS-Key",
+								"value": "{{TEST_RAG_STATUS_AGENT_API_KEY1}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state\":\"pending\",\n    \"details\":{}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/{{TEST_RAG_STATUS_AGENT_ID1}}/knowledge/bases/{{TEST_AGENT1_RAG_STATUS_KB1_ID}}/statuses?ragConfig={{TEST_RAG_STATUS_AGENT1_RAG1_ID}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								"{{TEST_RAG_STATUS_AGENT_ID1}}",
+								"knowledge",
+								"bases",
+								"{{TEST_AGENT1_RAG_STATUS_KB1_ID}}",
+								"statuses"
+							],
+							"query": [
+								{
+									"key": "ragConfig",
+									"value": "{{TEST_RAG_STATUS_AGENT1_RAG1_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "(Before) Retrieve RAG Status Agent Knowledge Bases Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieved RAG Status Agent Knowledge Bases\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"\r",
+									"    pm.expect(jsonData[0].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].name).to.eql(pm.environment.get(\"TEST_RAG_STATUS_FILE1_NAME\"));\r",
+									"    pm.expect(jsonData[0].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[0].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[0].content).to.eql(pm.environment.get(\"TEST_RAG_STATUS_FILE1_ID\"));\r",
+									"    pm.environment.set(\"TEST_AGENT1_RAG_STATUS_KB1_ID\", jsonData[0].id);\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Set embed status\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    // make sure to clear db so that there is only one kb\r",
+									"    var embed_metadata = jsonData[0].embeddings[pm.environment.get(\"TEST_RAG_STATUS_AGENT1_RAG1_ID\")]\r",
+									"    pm.expect(embed_metadata).to.exist;\r",
+									"    pm.environment.set(\"TEST_KB_EMBED_STATE_BEFORE1\", embed_metadata[\"state\"]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"knowledge",
+								"bases"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_RAG_STATUS_AGENT_ID1}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Agent 1 Knowledge Bases",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"knowledge",
+										"bases"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 19 Jul 2024 17:47:44 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "513"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"f2699b126d2e4e71ab5062f26d6472a2\",\n        \"name\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n        \"description\": \"\",\n        \"type\": \"file\",\n        \"content\": \"5addb71d08af42aea96396646272e38f\",\n        \"metadata\": {\n            \"hello\": \"world\"\n        },\n        \"agent\": \"c2c3b43d31b543898a3ed06889404189\",\n        \"storage\": {\n            \"type\": \"aibots\",\n            \"location\": \"https://public.sit.aibots.gov.sg/files/5addb71d08af42aea96396646272e38f/FAQ%20for%20Parents%20%285D4N%202023%20MOE-OBS%29.pdf\",\n            \"value\": \"5addb71d08af42aea96396646272e38f\"\n        },\n        \"embeddings\": {},\n        \"timestamp\": \"2024-07-20T01:46:09.073000+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "(After) Update Knowledge Base Embedding Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-ATLAS-Key",
+								"value": "{{TEST_RAG_STATUS_AGENT_API_KEY1}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state\":\"scheduled\",\n    \"details\":{}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/{{TEST_RAG_STATUS_AGENT_ID1}}/knowledge/bases/{{TEST_AGENT1_RAG_STATUS_KB1_ID}}/statuses?ragConfig={{TEST_RAG_STATUS_AGENT1_RAG1_ID}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								"{{TEST_RAG_STATUS_AGENT_ID1}}",
+								"knowledge",
+								"bases",
+								"{{TEST_AGENT1_RAG_STATUS_KB1_ID}}",
+								"statuses"
+							],
+							"query": [
+								{
+									"key": "ragConfig",
+									"value": "{{TEST_RAG_STATUS_AGENT1_RAG1_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "(After) Retrieve RAG Status Agent Knowledge Bases",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieved Agent 1 Knowledge Bases\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"\r",
+									"    pm.expect(jsonData[0].id).to.match(/^[a-fA-F0-9]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].name).to.eql(pm.environment.get(\"TEST_RAG_STATUS_FILE1_NAME\"));\r",
+									"    pm.expect(jsonData[0].description).to.eql(\"\");\r",
+									"    pm.expect(jsonData[0].type).to.eql(\"file\");\r",
+									"    pm.expect(jsonData[0].content).to.eql(pm.environment.get(\"TEST_RAG_STATUS_FILE1_ID\"));\r",
+									"    pm.environment.set(\"TEST_AGENT1_KB1_ID\", jsonData[0].id);\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"});\r",
+									"pm.test(\"check embed status\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    // make sure to clear db so that there is only one kb\r",
+									"    var embed_metadata = jsonData[0].embeddings[pm.environment.get(\"TEST_RAG_STATUS_AGENT1_RAG1_ID\")]\r",
+									"    pm.expect(embed_metadata).to.exist;\r",
+									"    pm.expect(embed_metadata[\"state\"]).eql(\"scheduled\")\r",
+									"    pm.environment.set(\"TEST_KB_EMBED_STATE_BEFORE1\", embed_metadata[\"state\"]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								":id",
+								"knowledge",
+								"bases"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{TEST_RAG_STATUS_AGENT_ID1}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Agent 1 Knowledge Bases",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/knowledge/bases",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"knowledge",
+										"bases"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT1_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Fri, 19 Jul 2024 17:47:44 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "513"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"f2699b126d2e4e71ab5062f26d6472a2\",\n        \"name\": \"FAQ for Parents (5D4N 2023 MOE-OBS).pdf\",\n        \"description\": \"\",\n        \"type\": \"file\",\n        \"content\": \"5addb71d08af42aea96396646272e38f\",\n        \"metadata\": {\n            \"hello\": \"world\"\n        },\n        \"agent\": \"c2c3b43d31b543898a3ed06889404189\",\n        \"storage\": {\n            \"type\": \"aibots\",\n            \"location\": \"https://public.sit.aibots.gov.sg/files/5addb71d08af42aea96396646272e38f/FAQ%20for%20Parents%20%285D4N%202023%20MOE-OBS%29.pdf\",\n            \"value\": \"5addb71d08af42aea96396646272e38f\"\n        },\n        \"embeddings\": {},\n        \"timestamp\": \"2024-07-20T01:46:09.073000+08:00\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Attempts to update RAG Config status",
+			"item": [
+				{
+					"name": "RAG Config Not Found",
+					"item": [
+						{
+							"name": "Update RAG Config That is Non-Existent",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Check for the message 'RAG Config(s) do not exist' in the response\", function () {",
+											"    pm.expect(pm.response.json()[\"message\"]).to.include('RAG Config(s) do not exist');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-ATLAS-Key",
+										"value": "{{TEST_RAG_STATUS_AGENT_API_KEY1}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"state\":\"pending\",\n    \"details\":{}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/{{TEST_RAG_STATUS_AGENT_ID1}}/knowledge/bases/{{TEST_AGENT1_RAG_STATUS_KB1_ID}}/statuses?ragConfig=38df535e5c9b471ab9917b5a093ae45a",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										"{{TEST_RAG_STATUS_AGENT_ID1}}",
+										"knowledge",
+										"bases",
+										"{{TEST_AGENT1_RAG_STATUS_KB1_ID}}",
+										"statuses"
+									],
+									"query": [
+										{
+											"key": "ragConfig",
+											"value": "38df535e5c9b471ab9917b5a093ae45a"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Agent of RAG config Not Found",
+					"item": [
+						{
+							"name": "Update RAG Config With Non Existent Agent",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Message under the response JSON equals 'Agent does not exist'\", function () {",
+											"    pm.expect(pm.response.json().message).to.equal('Agent does not exist');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-ATLAS-Key",
+										"value": "{{TEST_RAG_STATUS_AGENT_API_KEY1}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"state\":\"pending\",\n    \"details\":{}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/38df535e5c9b471ab9917b5a093ae45a/knowledge/bases/{{TEST_AGENT1_RAG_STATUS_KB1_ID}}/statuses?ragConfig={{TEST_RAG_STATUS_AGENT1_RAG1_ID}}",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										"38df535e5c9b471ab9917b5a093ae45a",
+										"knowledge",
+										"bases",
+										"{{TEST_AGENT1_RAG_STATUS_KB1_ID}}",
+										"statuses"
+									],
+									"query": [
+										{
+											"key": "ragConfig",
+											"value": "{{TEST_RAG_STATUS_AGENT1_RAG1_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Test Updating RAG Config",
+			"item": [
+				{
+					"name": "(Before) Retrieve RAG Status Agent RAG Configs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieve RAG Status Agent RAG Configs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"\r",
+									"    pm.expect(jsonData[0].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].type).to.eql(\"govtext\");\r",
+									"    pm.expect(jsonData[0].config).to.eql({});\r",
+									"    pm.expect(jsonData[0].timestamp).to.not.eql(null);\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Set embed status\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var current = jsonData[0][\"current\"][\"state\"];\r",
+									"    pm.expect(current).to.eql(\"pending\");\r",
+									"    pm.environment.set(\"TEST_RAGS_EMBED_STATE_BEFORE1\", current);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/{{TEST_RAG_STATUS_AGENT_ID1}}/rags",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								"{{TEST_RAG_STATUS_AGENT_ID1}}",
+								"rags"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Agent 12 RAG Configs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"rags"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT12_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:25:25 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "645"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"f3107117da5b4e698632a3e715a724c3\",\n        \"type\": \"aibots\",\n        \"config\": {},\n        \"agent\": \"907457b2168149df868d1e52a848ce2d\",\n        \"timestamp\": \"2024-07-24T00:11:47.527000+08:00\"\n    },\n    {\n        \"id\": \"0c17975c8e3d4f9ca63f87332bc35bb8\",\n        \"type\": \"llmstack\",\n        \"config\": {},\n        \"agent\": \"907457b2168149df868d1e52a848ce2d\",\n        \"timestamp\": \"2024-07-24T00:11:47.527000+08:00\"\n    },\n    {\n        \"id\": \"91ef675ab2244e81a13b2ed986aa4a2f\",\n        \"type\": \"aibots\",\n        \"config\": {},\n        \"agent\": \"907457b2168149df868d1e52a848ce2d\",\n        \"timestamp\": \"2024-07-24T00:11:47.527000+08:00\"\n    },\n    {\n        \"id\": \"3dce4ee597c54719955efdc3e6cde763\",\n        \"type\": \"llmstack\",\n        \"config\": {},\n        \"agent\": \"907457b2168149df868d1e52a848ce2d\",\n        \"timestamp\": \"2024-07-24T00:21:39.798000+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "(Before) Update RAG Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-ATLAS-Key",
+								"value": "{{TEST_RAG_STATUS_AGENT_API_KEY1}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state\":\"scheduled\",\n    \"details\":{}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/{{TEST_RAG_STATUS_AGENT_ID1}}/rags/{{TEST_RAG_STATUS_AGENT1_RAG1_ID}}/statuses",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								"{{TEST_RAG_STATUS_AGENT_ID1}}",
+								"rags",
+								"{{TEST_RAG_STATUS_AGENT1_RAG1_ID}}",
+								"statuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "(After) Retrieve RAG Status Agent RAG Configs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieve RAG Status Agent RAG Configs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"    pm.expect(jsonData[0].id).to.match(/^[0-9a-fA-F]{32}$/gi);\r",
+									"    pm.expect(jsonData[0].type).to.eql(\"govtext\");\r",
+									"    pm.expect(jsonData[0].config).to.eql({});\r",
+									"    pm.expect(jsonData[0].timestamp).to.not.eql(null);\r",
+									"\r",
+									"\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check embed status\", function () {\r",
+									"    var jsonData=pm.response.json()\r",
+									"    var current = jsonData[0][\"current\"][\"state\"]\r",
+									"    var previous = jsonData[0][\"previous\"][\"state\"]\r",
+									"    pm.expect(current).to.eql(\"scheduled\")\r",
+									"    pm.expect(previous).to.eql(pm.environment.get(\"TEST_RAGS_EMBED_STATE_BEFORE1\"))\r",
+									"    pm.environment.set(\"TEST_RAGS_EMBED_STATE_AFTER1\", current)\r",
+									"\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/{{TEST_RAG_STATUS_AGENT_ID1}}/rags",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents",
+								"{{TEST_RAG_STATUS_AGENT_ID1}}",
+								"rags"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Agent 12 RAG Configs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents/:id/rags",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents",
+										":id",
+										"rags"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{TEST_AGENT12_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 23 Jul 2024 16:25:25 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "645"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"f3107117da5b4e698632a3e715a724c3\",\n        \"type\": \"aibots\",\n        \"config\": {},\n        \"agent\": \"907457b2168149df868d1e52a848ce2d\",\n        \"timestamp\": \"2024-07-24T00:11:47.527000+08:00\"\n    },\n    {\n        \"id\": \"0c17975c8e3d4f9ca63f87332bc35bb8\",\n        \"type\": \"llmstack\",\n        \"config\": {},\n        \"agent\": \"907457b2168149df868d1e52a848ce2d\",\n        \"timestamp\": \"2024-07-24T00:11:47.527000+08:00\"\n    },\n    {\n        \"id\": \"91ef675ab2244e81a13b2ed986aa4a2f\",\n        \"type\": \"aibots\",\n        \"config\": {},\n        \"agent\": \"907457b2168149df868d1e52a848ce2d\",\n        \"timestamp\": \"2024-07-24T00:11:47.527000+08:00\"\n    },\n    {\n        \"id\": \"3dce4ee597c54719955efdc3e6cde763\",\n        \"type\": \"llmstack\",\n        \"config\": {},\n        \"agent\": \"907457b2168149df868d1e52a848ce2d\",\n        \"timestamp\": \"2024-07-24T00:21:39.798000+08:00\"\n    }\n]"
+						}
+					]
+				}
+			]
+		}
+	]
+}

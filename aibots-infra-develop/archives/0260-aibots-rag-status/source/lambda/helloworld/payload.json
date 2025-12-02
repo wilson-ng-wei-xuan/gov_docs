@@ -1,0 +1,171 @@
+## Use this payload if you are testing from Lambda console
+{
+  "Records": [
+    {
+      "messageId": "5927feda-6507-4310-aaf0-f023dd56654a",
+      "receiptHandle": "AQEB43/EFpyySB3spZI4gX0secZjvuWxKFGWEhK9ZKsWiDHwCaWTKGmFsWKB2mollH66wDKiMlAHMkElC6U72EFCkWs0jkiRCeBwplgeg+uc9H1UoCsQpGlU/1To6eputd08vjzh3Y0fUuk/6SNR7S1uWnw1k4iX8UOoM6wAcjxDBeJ4zJQ4iVDwpq/W/9z4n67IBpquTEw1FzQQq1CnU9OGGJNeTP/2J9quEzaTUgfFGlqLqagml+u4V0xnNDe20MbU1rFfM/qkZ6OShxJttur55FYLYYcV5e3+v58bYHqpesvVOFvOz6zwghHdqSKY7RF03Szh6RFWyOu6MyX/vwfv9H7K1CIJnQe8WS/wlykEJL3jERr23gUwbFFs5D7OBwiavI2f5u8PJKpYUVsYEAMpFxrNovFzMASgldLeNb5Q4bs=",
+      "body": "{\"bot_id\": \"1\", \"doc_id\": \"2\", \"action\": \"3\", \"rag_status\": {\"zip\": {\"flow\": \"rag_source\", \"component\": \"zip\", \"dts\": \"2024-07-03T05:23:43\", \"status\": \"success\", \"reason\": \"good job.\"}}}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "AWSTraceHeader": "Root=1-6684e05e-b36f224a124e6cb80d21dd54;Parent=092e94c808a96c08;Sampled=0;Lineage=ac449cae:0",
+        "SentTimestamp": "1719984223719",
+        "SenderId": "AROAW3MD6NKYRHESX3DBJ:lambda-sitezapp-aibots-rag-source-zip",
+        "ApproximateFirstReceiveTimestamp": "1719984223725"
+      },
+      "messageAttributes": {},
+      "md5OfMessageAttributes": null,
+      "md5OfBody": "f4f76ce5285280acb78ae4eae471bdc1",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:ap-southeast-1:471112510129:sqs-sitezapp-aibots-rag-status-zip",
+      "awsRegion": "ap-southeast-1"
+    },
+    {
+      "messageId": "e8d96f71-82b1-4c5b-9d4e-32ef908ec07c",
+      "receiptHandle": "AQEBPcZu23gKNZZU2DREkAz0UAGZDPeQT6EZ3im2q3XpexzVTCuJvIQvE1pi5JzSjRsbGyiiGW7ZQ2aJqEZPj2OwwMH0Fp7mM0HLry5hHEW/nZMkKELOso7lkrCZF6YJ4lswbMLgOL8kJl9niRJg0nKV7tV5wWSSC96NRZ8zMn+zjU6wfhQ2quhg6QwSQ2Y1Dx8TrRSQLz7RN1pSv2McSRSFaXNWc9JBb7p+W8Wlpx7/sSqlv6egjS0GfdG/0fVUimW7Adw6dJyl/hXNSJCdNv0xvev490v14RWQs73TzrSOsSM6vETW/jSz2oMSVowwj1DuC4Vj78Gei3ypMT0TAKW0Yo4fS6HI0VDgnW1PfEombHIDkHsCh/JIVnESERWr1/rLB/0bwcZZktlJ0s98l7FPuDBuZBGmhCHkdzjAdAMCbGM=",
+      "body": "{\"bot_id\": \"1\", \"doc_id\": \"2\", \"action\": \"3\", \"rag_status\": {\"zip\": {\"flow\": \"rag_parse\", \"component\": \"zip\", \"dts\": \"2024-07-03T05:24:05\", \"status\": \"success\", \"reason\": \"good job.\"}}}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "AWSTraceHeader": "Root=1-6684e073-557c38e610246759fc1366fd;Parent=2223a9a3145816d6;Sampled=0;Lineage=ac449cae:0%7Cf2debb76:0",
+        "SentTimestamp": "1719984245010",
+        "SenderId": "AROAW3MD6NKYVAHSIKAH2:lambda-sitezapp-aibots-rag-parse-zip",
+        "ApproximateFirstReceiveTimestamp": "1719984245011"
+      },
+      "messageAttributes": {},
+      "md5OfMessageAttributes": null,
+      "md5OfBody": "121b177c16ef4f0ad62b9828ab1cac81",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:ap-southeast-1:471112510129:sqs-sitezapp-aibots-rag-status-zip",
+      "awsRegion": "ap-southeast-1"
+    },
+    {
+      "messageId": "6236a49f-6c74-4a2a-86ef-c4c345bd2993",
+      "receiptHandle": "AQEBHCkfa2sLp6iGyhddUtpHrjxcMqVXeHshSwpn3JGw3FaotuVzq3+waKTSQgkgncogsculWoQLMcvlXHnJs62qz3Xnn3JTUkWWKew373IPz64Gi1yuNc/A9E+mot9xGrsJSwL6qSmH08c3ZZY3k1njSsAJOOs86I28ZORuboHUsVGj9tBkt6fydBN1r/T263JhcNSE6mtEtruf/sgt/ApDGclhFTyBbedAAWLe8yULUOWsV/3KRpiOG3+FN0uyNY+dn9LqqLuxMqRH4PMa8fOj1HTk66+jYLcroghZX1TUMQSYL8avKoVsjO/52RIc2sqvwggl0aWOo034Sa/tofaToh9pLu77iqKb/wQwUXThdQn1oGwVLVsPqrAyVosRQ2sjgE18zjW92Bvjmxe4KB5hsHqQ+4tsHsC6jBwGie2tWh4=",
+      "body": "{\"bot_id\": \"1\", \"doc_id\": \"2\", \"action\": \"3\", \"rag_status\": {\"zip\": {\"flow\": \"rag_chunk\", \"component\": \"zip\", \"dts\": \"2024-07-03T05:24:26\", \"status\": \"success\", \"reason\": \"good job.\"}}}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "AWSTraceHeader": "Root=1-6684e089-15f0699d3695a9de4a2dc013;Parent=77b7461f338b058e;Sampled=0;Lineage=ac449cae:0%7Cf2debb76:0%7C5ad92459:0",
+        "SentTimestamp": "1719984266221",
+        "SenderId": "AROAW3MD6NKYQ57BWJSOG:lambda-sitezapp-aibots-rag-chunk-zip",
+        "ApproximateFirstReceiveTimestamp": "1719984266227"
+      },
+      "messageAttributes": {},
+      "md5OfMessageAttributes": null,
+      "md5OfBody": "28569ced4a8e6433c301862a946a9c6d",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:ap-southeast-1:471112510129:sqs-sitezapp-aibots-rag-status-zip",
+      "awsRegion": "ap-southeast-1"
+    },
+    {
+      "messageId": "b1b7fe23-ea01-4af7-9b16-6e75be39b339",
+      "receiptHandle": "AQEBJXFyj/rkVMiYbZskU/39hX9vuGF+7pZJWe6YY+V2nGTKZkwTNcniOhKg5swjcU00Hul9Cim92Gskh1fC5TOWH8kg0WLaG/r6ELIJADukuNQsTTXh6Sv/OwfVlDccMB4xd6RHlmxI1V9xKdNWj62dKLSgKHn9ISTOa0AzilABM1N9pxiTH0Yx36cyv6dXX05GO5lVNf32P1P/x30Yk8oYN9XprFW8govnh1A5kh+vNHeRYS4abN24S0BEJzuej1d1ZAUkNiJrehwfUFxRPHqynxAtuCdSizTzEUMQzBHWNpoXW26yLaKyUSoAWtxJ5Jc80Swuss6Q2oHBaJiCC8W7W97HEydNI7FjEftPhx3vbkiGj1S6OUU+qksikOHF0ejgOVNWJQXTMsfMtK4/dILmUo1M3fhLe1vxmnzS6dH4g54=",
+      "body": "{\"bot_id\": \"1\", \"doc_id\": \"2\", \"action\": \"3\", \"rag_status\": {\"zip\": {\"flow\": \"rag_embed\", \"component\": \"zip\", \"dts\": \"2024-07-03T05:24:47\", \"status\": \"success\", \"reason\": \"good job.\"}}}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "AWSTraceHeader": "Root=1-6684e09e-c90cbc8b02c32fe663a4e514;Parent=7c8f85b33ffa1ebf;Sampled=0;Lineage=ac449cae:0%7Cf2debb76:0%7C5ad92459:0%7C6adc3db3:0",
+        "SentTimestamp": "1719984287458",
+        "SenderId": "AROAW3MD6NKYVXYEXOUY6:lambda-sitezapp-aibots-rag-embed-zip",
+        "ApproximateFirstReceiveTimestamp": "1719984287459"
+      },
+      "messageAttributes": {},
+      "md5OfMessageAttributes": null,
+      "md5OfBody": "259ff9a0a72bb8094dd306786a3ecb71",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:ap-southeast-1:471112510129:sqs-sitezapp-aibots-rag-status-zip",
+      "awsRegion": "ap-southeast-1"
+    },
+    {
+      "messageId": "24888044-42ea-499d-9c9c-8f5ea7eed81b",
+      "receiptHandle": "AQEBxdxTaS7w0wNSdKprN82AN9hM0ts031ibZpcJJfjhjg5YEWbwA5o4yujgrMNujuaTMD3H4EYaC0Poizi2G0Y5R4YMdtxggiVFVEmGjEBSq8/oQI8GYaaujafoHIIlwM1CtpkvkKJwwxHN08crfzq+o3knycW7a3Z0iBTKfJPZU8l+nLDjAFR/K7BvUZkwskYxSueDOU10gzVvpgSRJJzAoctEyMtRQyLlGbqbJyvMoQg+FhA/yUmIS+C76ry5MPuKRBZqcVKHx585XwrYbjWQvnBxZZ4iYTkj70rHsGqbtfu2Pr3Qa8RkODniyEop8pQHpRBT+bpmMxBuedaEoDk4Nd6GFLlDIUKL3ySmvGuo6lc+ZSlMMwvUD/q/cH3Vfvo3cQE64wxZO9ir1DivPCcJVvXLGNOtraSqevkD+9orbFc=",
+      "body": "{\"bot_id\": \"1\", \"doc_id\": \"2\", \"action\": \"3\", \"rag_status\": {\"zip\": {\"flow\": \"rag_store\", \"component\": \"zip\", \"dts\": \"2024-07-03T05:25:09\", \"status\": \"success\", \"reason\": \"good job.\"}}}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "AWSTraceHeader": "Root=1-6684e0b3-28de1abdfbd2d6d9cf2ed6be;Parent=3c7f4792680bf518;Sampled=0;Lineage=ac449cae:0%7Cf2debb76:0%7C5ad92459:0%7C6adc3db3:0%7C37b8e2ac:0",
+        "SentTimestamp": "1719984309413",
+        "SenderId": "AROAW3MD6NKY7O6BXNPJT:lambda-sitezapp-aibots-rag-store-zip",
+        "ApproximateFirstReceiveTimestamp": "1719984309420"
+      },
+      "messageAttributes": {},
+      "md5OfMessageAttributes": null,
+      "md5OfBody": "e7c35b2d751f56dede8d8e2814c36c8e",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:ap-southeast-1:471112510129:sqs-sitezapp-aibots-rag-status-zip",
+      "awsRegion": "ap-southeast-1"
+    }
+  ]
+}
+
+## Use this payload if you are testing from SQS console
+{
+  "bot_id": "1",
+  "doc_id": "2",
+  "action": "3",
+  "rag_status": {
+    "zip": {
+      "flow": "rag_source",
+      "component": "zip",
+      "dts": "2024-07-03T05:23:43",
+      "status": "success",
+      "reason": "good job."
+    }
+  }
+}
+
+{
+  "bot_id": "1",
+  "doc_id": "2",
+  "action": "3",
+  "rag_status": {
+    "zip": {
+      "flow": "rag_parse",
+      "component": "zip",
+      "dts": "2024-07-03T05:24:05",
+      "status": "success",
+      "reason": "good job."
+    }
+  }
+}
+
+{
+  "bot_id": "1",
+  "doc_id": "2",
+  "action": "3",
+  "rag_status": {
+    "zip": {
+      "flow": "rag_chunk",
+      "component": "zip",
+      "dts": "2024-07-03T05:24:26",
+      "status": "success",
+      "reason": "good job."
+    }
+  }
+}
+
+{
+  "bot_id": "1",
+  "doc_id": "2",
+  "action": "3",
+  "rag_status": {
+    "zip": {
+      "flow": "rag_embed",
+      "component": "zip",
+      "dts": "2024-07-03T05:24:47",
+      "status": "success",
+      "reason": "good job."
+    }
+  }
+}
+
+{
+  "bot_id": "1",
+  "doc_id": "2",
+  "action": "3",
+  "rag_status": {
+    "zip": {
+      "flow": "rag_store",
+      "component": "zip",
+      "dts": "2024-07-03T05:25:09",
+      "status": "success",
+      "reason": "good job."
+    }
+  }
+}

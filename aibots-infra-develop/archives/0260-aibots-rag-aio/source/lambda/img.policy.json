@@ -1,0 +1,70 @@
+{
+  "Version" : "2012-10-17",
+  "Statement" : [
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "s3:ListBucket",
+				"s3:PutObject",
+        "sqs:ChangeMessageVisibility",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:ReceiveMessage"
+      ],
+      "Resource" : [
+        "${PROJECT__BUCKET_ARN}",
+        "${PROJECT__BUCKET_ARN}/*",
+        "${ANALYTICS__BUCKET_ARN}",
+        "${ANALYTICS__BUCKET_ARN}/*",
+        "${SQS_SOURCE}"
+      ]
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "s3:GetObject",
+				"s3:DeleteObject"
+      ],
+      "Resource" : [
+        "${PROJECT__BUCKET_ARN}",
+        "${PROJECT__BUCKET_ARN}/*"
+      ]
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "aoss:BatchGetCollection",
+        "aoss:ListCollection",
+        "aoss:APIAccessAll"
+      ],
+      "Resource" : [
+        "*"
+      ]
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "secretsmanager:GetSecretValue",
+        "ssm:GetParameter",
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Resource" : [
+        "${CLOUDFRONT__BUCKET_ARN}",
+        "${CLOUDFRONT__BUCKET_ARN}/*",
+        "${CLOUDFRONT__SECRET_ARN}",
+        "${CLOUDFRONT__PARAM_ARN}",
+        "${PROJECT_RAG_AOSS__PARAM_ARN}"
+      ]
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "bedrock:InvokeModel"
+      ],
+      "Resource" : [
+        "*"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+
+services:
+  agents:
+    image: "${REGISTRY}aibots/agents-api:${MAIN_TAG:-main}"
+    ports:
+      - "${EXTERNAL_PORT:-20002}:${INTERNAL_PORT:-443}"
+    container_name: agents
+    environment:
+      EMAIL_SEND__BUCKET: "${EMAIL_SEND__BUCKET:-s3-sitez-sharedsvc-471112510129-email}"
+      HOST: "${HOST:-0.0.0.0}"
+      PROJECT__SECRET: "${PROJECT__SECRET:-secret-sitezapp-aibots-main-api}"
+      PROJECT_DB__SECRET: "${PROJECT_DB__SECRET:-secret-sitezdb-aibots-main}"
+      CLOUDFRONT__PARAM: "${CLOUDFRONT__PARAM:-param-sitezingress-aibots-cloudfront-publickey}"
+      ANALYTICS__PATH: "${ANALYTICS__PATH:-aibots/}"
+      LLMSTACK__PARAM: "${LLMSTACK__PARAM:-param-sitez-aibots-llmstack}"
+      USE_SSL: "${USE_SSL:-1}"
+      EMAIL_SEND__PTE_URL: "${EMAIL_SEND__PTE_URL:-https://email.internal.sit.aibots.gov.sg/send}"
+      SUPERUSERS: "${SUPERUSERS:-[]}"
+      PROJECT_API__PTE_URL: "${PROJECT_API__PTE_URL:-https://api.internal.sit.aibots.gov.sg}"
+      AWS_ID: "${AWS_ID:-471112510129}"
+      PROJECT__BUCKET: "${PROJECT__BUCKET:-s3-sitezapp-aibots-471112510129-project}"
+      AWS_REGION: "${AWS_REGION:-ap-southeast-1}"
+      PORT: "${PORT:-443}"
+      EMAIL_SEND__PATH: "${EMAIL_SEND__PATH:-aibots/}"
+      DEBUG: "${DEBUG:-0}"
+      CLOUDFRONT__BUCKET: "${CLOUDFRONT__BUCKET:-s3-sitezingress-aibots-471112510129-cloudfront}"
+      EMAIL_SEND__SECRET: "${EMAIL_SEND__SECRET:-secret-sitezapp-aibots-smtp-user-no-reply}"
+      CLOUDFRONT__SECRET: "${CLOUDFRONT__SECRET:-secret-sitezingress-aibots-cloudfront}"
+      PROJECT__PUB_URL: "${PROJECT__PUB_URL:-https://sit.aibots.gov.sg}"
+      ANALYTICS__BUCKET: "${ANALYTICS__BUCKET:-s3-sitez-sharedsvc-471112510129-analytics}"
+      NOUS_API__PTE_URL: "${NOUS_API__PTE_URL:-https://nous-api.internal.sit.aibots.gov.sg}"
+      PROJECT_API__PUB_URL: "${PROJECT_API__PUB_URL:-https://api.sit.aibots.gov.sg}"
+      CLOUDFRONT__PUB_URL: "${CLOUDFRONT__PUB_URL:-https://public.sit.aibots.gov.sg}"
+      COMPONENT: "${COMPONENT:-aibots-main-api}"
+
+      DB_USER: "${DB_USER:-admin}"
+      DB_PASSWORD: "${DB_PASSWORD:-dsa1d-st}"
+      DB_URL: "${DB_URL:-mongodb://aibots-mongo:27017}"
+      DB_TLS: "${DB_TLS:-0}"
+      USE_AWS: "${USE_AWS:-0}"
+      AWS_ACCESS_ID: "${AWS_ACCESS_ID}"
+      AWS_SECRET_KEY: "${AWS_SECRET_KEY}"
+      AWS_SESSION_TOKEN: "${AWS_SESSION_TOKEN}"
+      EXPIRY__OTP: "${EXPIRY__OTP:-10.0}"
+      NOUS_API__URL: "${NOUS_API__URL:-https://nous}"
+      JWT: "${JWT:-db1eb1d0c1d843b4972cf9b2c14667f0}"
+      USERS: "${USERS:-[]}"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+        reservations:
+          memory: 100m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50M"
+        max-file: "1"
+    depends_on:
+      - aibots-mongo
+      - nous
+    networks:
+      - aibots
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    expose:
+      - "80"
+      - "443"
+
+  aibots-mongo:
+    image: "${ATLAS_REGISTRY:-}${MONGO_IMAGE:-atlas-mongo/auth}:${TAG:-latest}"
+    container_name: aibots-mongo
+    environment:
+      MONGO_INITDB_DATABASE: "${ATLAS_ADMIN_DB:-admin}"
+      MONGO_INITDB_ROOT_USERNAME: "${DB_USER:-admin}"
+      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD:-dsa1d-st}"
+    expose:
+      - 27017
+    ports:
+      - "27017:27017"
+    networks:
+      - aibots
+    restart: unless-stopped
+
+networks:
+  aibots:
+  nous:

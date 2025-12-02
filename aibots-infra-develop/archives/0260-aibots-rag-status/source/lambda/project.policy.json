@@ -1,0 +1,36 @@
+{
+  "Version" : "2012-10-17",
+  "Statement" : [
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "secretsmanager:GetSecretValue",
+        "s3:ListBucket",
+        "s3:GetObject",
+				"s3:PutObject",
+        "sqs:ChangeMessageVisibility",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:ReceiveMessage"
+      ],
+      "Resource" : [
+        "${PROJECT_DB__ARN}",
+        "${PROJECT__BUCKET_ARN}",
+        "${PROJECT__BUCKET_ARN}/*",
+        "${ANALYTICS__BUCKET_ARN}",
+        "${ANALYTICS__BUCKET_ARN}/*",
+        "${SQS_SOURCE}"
+      ]
+    },
+    {
+      "Effect" : "Allow",
+      "Action" : [
+        "s3:DeleteObject"
+      ],
+      "Resource" : [
+        "${PROJECT__BUCKET_ARN}",
+        "${PROJECT__BUCKET_ARN}/*"
+      ]
+    }
+  ]
+}

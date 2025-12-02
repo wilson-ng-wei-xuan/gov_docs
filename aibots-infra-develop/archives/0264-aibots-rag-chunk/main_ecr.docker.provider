@@ -1,0 +1,85 @@
+# note that this does not push the docker image into the ECR.
+# You will need to manually push the image.
+# Recommendation: when you push the image, push 2 times, 1 with version, 1 with latest.
+# terraform can just use latest, so that you do not need to keep changing the image_tag
+resource "aws_ecr_repository" "project" {
+  for_each  = { for entry in var.process: "${entry.name}" => entry if entry.package_type == "Image" }
+
+  name                 = "${local.ecr_name}-${each.value.name}"
+
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  encryption_configuration {
+    encryption_type = "KMS"
+  }
+}
+
+resource "aws_ecr_lifecycle_policy" "project" {
+  for_each  = { for entry in var.process: "${entry.name}" => entry if entry.package_type == "Image" }
+
+  repository = aws_ecr_repository.project[each.value.name].name
+
+  policy = <<EOF
+{
+    "rules": [
+        {
+            "rulePriority": 1,
+            "description": "Expire untagged images older than 14 days",
+            "selection": {
+                "tagStatus": "untagged",
+                "countType": "sinceImagePushed",
+                "countUnit": "days",
+                "countNumber": 14
+            },
+            "action": {
+                "type": "expire"
+            }
+        }
+    ]
+}
+EOF
+}
+
+################################################################################
+# This part onwards is the image
+################################################################################
+# configure docker provider
+provider "docker" {
+  registry_auth {
+      address = data.aws_ecr_authorization_token.project.proxy_endpoint
+      username = data.aws_ecr_authorization_token.project.user_name
+      password  = data.aws_ecr_authorization_token.project.password
+    }
+}
+
+# get authorization credentials to push to ecr
+data "aws_ecr_authorization_token" "project" {}
+
+# build docker image
+resource "docker_image" "project" {
+  for_each  = { for entry in var.process: "${entry.name}" => entry if entry.package_type == "Image" }
+
+  name = "${data.aws_ecr_authorization_token.project.proxy_endpoint}/${local.ecr_name}-${each.value.name}"
+  # name = "public.ecr.aws/lambda/python:3.12"
+
+  build {
+    from    = "public.ecr.aws/lambda/python:3.12"
+    context = "."
+    tag     = ["latest"]
+    # build_arg = {
+    #   foo : "zoo"
+    # }
+    # label = {
+    #   author : "zoo"
+    # }
+  }
+}
+
+# push image to ecr repo
+resource "docker_registry_image" "project" {
+  name = docker_image.project.name
+}

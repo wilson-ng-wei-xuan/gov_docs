@@ -1,0 +1,69 @@
+services:
+  aibots-mongo:
+    image: "${ATLAS_REGISTRY:-}${MONGO_IMAGE:-atlas-mongo/auth}:${TAG:-latest}"
+    container_name: aibots-mongo
+    environment:
+      MONGO_INITDB_DATABASE: "${ATLAS_ADMIN_DB:-admin}"
+      MONGO_INITDB_ROOT_USERNAME: "${DB_USER:-admin}"
+      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD:-dsa1d-st}"
+    expose:
+      - 27017
+    ports:
+      - "27018:27017"
+    networks:
+      - aibots
+    restart: unless-stopped
+
+  nous:
+    image: "${MOONSHOT_REGISTRY}nous/nous-api:${TAG:-main}"
+    ports:
+      - "${EXTERNAL_PORT:-20001}:${INTERNAL_PORT:-443}"
+    container_name: nous
+    environment:
+      COMPONENT: "${COMPONENT:-nous}"
+      HOST: "${HOST:-0.0.0.0}"
+      PORT: "${INTERNAL_PORT:-443}"
+      DB_USER: "${DB_USER:-admin}"
+      DB_PASSWORD: "${DB_PASSWORD:-dsa1d-st}"
+      DB_URL: "${DB_URL:-mongodb://nous-mongo:27017}"
+      DB_TLS: "${DB_TLS:-0}"
+      USE_AWS: "${USE_AWS:-0}"
+      USE_SSL: "${USE_SSL:-1}"
+      DEBUG: "${DEBUG:-1}"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+        reservations:
+          memory: 100m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50M"
+        max-file: "1"
+    networks:
+      - aibots
+      - nous
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    expose:
+      - "80"
+      - "443"
+
+  nous-mongo:
+    image: "${ATLAS_REGISTRY:-}${MONGO_IMAGE:-atlas-mongo/auth}:${TAG:-latest}"
+    container_name: nous-mongo
+    environment:
+      MONGO_INITDB_DATABASE: "${ATLAS_ADMIN_DB:-admin}"
+      MONGO_INITDB_ROOT_USERNAME: "${DB_USER:-admin}"
+      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD:-dsa1d-st}"
+    expose:
+      - 27017
+    networks:
+      - aibots
+    restart: unless-stopped
+
+networks:
+  aibots:
+  nous:

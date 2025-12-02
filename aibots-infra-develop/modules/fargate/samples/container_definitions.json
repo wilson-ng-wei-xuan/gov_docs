@@ -1,0 +1,33 @@
+container_definitions    = jsonencode([
+  {
+    name  = local.ecs_task_name,
+    image = "${aws_ecr_repository.ecr_repository[0].repository_url}:latest",
+    essential = true
+    portMappings = [
+      {
+        protocol      = "tcp"
+        containerPort = var.port
+        hostPort      = var.port
+      }
+    ]
+    secrets = [
+      { name = "db_password", valueFrom = "${aws_secretsmanager_secret.fargate_task.arn}:db_password::"}
+    ]
+    environment = [
+      { name = "var1", value = "value1"},
+      { name = "var2", value = "value2"}
+    ]
+    healthCheck = {
+      retries =  3
+      # command = [ "CMD-SHELL", "curl -k -f http://localhost:${var.ecs_port}${var.lb_target_group_health_check_path} || exit 1" ]
+      # you need to install curl in your container to run the above proper healthcheck.
+      # -k for ignore SSL certs
+      # -f for fail fast with no output on server errors
+      command = [ "CMD-SHELL", "ls || exit 1" ]
+      timeout =  5
+      interval =  15
+      startPeriod = null
+    }
+    # logConfiguration will be provided by the module as the cloudwatch logs is created in module.
+  }
+])

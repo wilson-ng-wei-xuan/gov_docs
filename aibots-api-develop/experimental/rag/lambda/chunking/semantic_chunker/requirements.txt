@@ -1,0 +1,2 @@
+langchain-community==0.2.5
+langchain-experimental==0.0.61

@@ -1,0 +1,65 @@
+include:
+  # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Jobs/
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Jobs/SAST-IaC.gitlab-ci.yml
+  - template: Jobs/Dependency-Scanning.latest.gitlab-ci.yml
+
+.custom-runner:
+  tags:
+    - cstack
+    - non_privileged
+    - no_root
+
+stages:
+  - test
+
+secret_detection:
+  extends:
+    - .custom-runner
+    - .secret-analyzer
+  stage: test
+  variables:
+    SECRET_DETECTION_HISTORIC_SCAN: "false"
+
+# gitlab default
+kics-iac-sast:
+  extends:
+    - .custom-runner
+    - iac-sast
+
+gemnasium-dependency_scanning:
+  extends:
+    - .custom-runner
+    - .ds-analyzer
+    - .cyclonedx-reports
+  variables:
+    DS_ANALYZER_NAME: "gemnasium"
+    GEMNASIUM_LIBRARY_SCAN_ENABLED: "true"
+    DS_MAX_DEPTH: 10
+
+# not working
+#default:
+#  image:
+#    name: hashicorp/terraform # TODO: Remove this image and create a custom base image.
+#    entrypoint:
+#        - '/usr/bin/env'
+#        - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+#
+#.global_before_script:
+#  before_script:
+#    # - export TF_TOKEN_sgts_gitlab__dedicated_com=$CI_JOB_TOKEN # this is in SAO
+#    - terraform --version
+#    - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+#    - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+#    # - export ENV=$CI_COMMIT_REF_NAME
+#    # - rm -rf .terraform # this is done in the project folder
+#    # - terraform init # this is done in the project folder
+#
+#terraform_plan:
+#  stage: plan
+#  before_script:
+#    - echo "[INFO] Running before_script for stage: '$CI_JOB_STAGE'"
+#    - !reference [.global_before_script, before_script]
+#  script:
+#    - echo "[INFO] Running script for stage: '$CI_JOB_STAGE'"
+#    - ./all.sh plan ? sit

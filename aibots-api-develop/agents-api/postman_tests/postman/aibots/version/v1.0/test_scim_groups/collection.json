@@ -1,0 +1,828 @@
+{
+	"info": {
+		"_postman_id": "e8646c54-d998-42b9-af4a-74857d5fb9db",
+		"name": "[AIBots] SCIM Groups",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15499661",
+		"_collection_link": "https://lively-trinity-802253.postman.co/workspace/Joen~e904f178-b272-4546-b4cb-0f733cf02ab5/collection/15499661-e8646c54-d998-42b9-af4a-74857d5fb9db?action=share&source=collection_link&creator=15499661"
+	},
+	"item": [
+		{
+			"name": "Create Groups With Invalid Sub-Groups/Members",
+			"item": [
+				{
+					"name": "Create Group With Invalid Members",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:Group\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:Group\"\n    ],\n    \"meta\": {\n        \"resource_type\": \"groups\",\n        \"owner\": \"6126033d-61c7-4773-b719-6f5b540bc25f\",\n        \"owner_type\": \"system\",\n        \"location\": \"https://aibots.gov.sg/latest/scim/v2/groups/e2e2492c-2323-43a3-8eea-77a75d38fd8d\",\n        \"version\": null,\n        \"created\": \"2024-06-08T02:06:18.469838Z\",\n        \"last_modified\": null,\n        \"deleted\": null,\n        \"archived\": null\n    },\n    \"display_name\": \"New Invalid Group (Test)\",\n    \"members\": [\n        {\n            \"type\": \"users\",\n            \"$ref\": \"None/scim/v2/Users/0f746538-73f9-4e2d-b787-0b43aa769406\",\n            \"display\": \"This person does not exists\",\n            \"value\": \"0f746538-73f9-4e2d-b787-0b43aa769406\"\n        }\n    ],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"ng\",\n        \"api_keys\": [],\n        \"default\": true,\n        \"parent\": null,\n        \"children\": [],\n        \"administrators\": [],\n        \"details\": {},\n        \"allow\": true,\n        \"domains\": [\n            \"ng.gov.sg\"\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Group With Invalid Children",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Message contains 'Group with ID: <UUID> does not exist'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Group with ID:\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:Group\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:Group\"\n    ],\n    \"meta\": {\n        \"resource_type\": \"groups\",\n        \"owner\": \"6126033d-61c7-4773-b719-6f5b540bc25f\",\n        \"owner_type\": \"system\",\n        \"location\": \"https://aibots.gov.sg/latest/scim/v2/groups/e2e2492c-2323-43a3-8eea-77a75d38fd8d\",\n        \"version\": null,\n        \"created\": \"2024-06-08T02:06:18.469838Z\",\n        \"last_modified\": null,\n        \"deleted\": null,\n        \"archived\": null\n    },\n    \"display_name\": \"New Invalid Group (Test)\",\n    \"members\": [],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"ng\",\n        \"api_keys\": [],\n        \"default\": true,\n        \"parent\": null,\n        \"children\": [\n            {\n                \"type\": \"groups\",\n                \"$ref\": \"None/scim/v2/Groups/2c1588de-af8f-4904-8a05-7e5291c8a5f2\",\n                \"display\": \"Dewan Rakyat\",\n                \"value\": \"2c1588de-af8f-4904-8a05-7e5291c8a5f2\"\n            }\n        ],\n        \"administrators\": [],\n        \"details\": {},\n        \"allow\": true,\n        \"domains\": [\n            \"ng.gov.sg\"\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Group With Invalid Parents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Message contains 'Group with ID: <UUID> does not exist'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Group member with ID:\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:Group\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:Group\"\n    ],\n    \"meta\": {\n        \"resource_type\": \"groups\",\n        \"owner\": \"6126033d-61c7-4773-b719-6f5b540bc25f\",\n        \"owner_type\": \"system\",\n        \"location\": \"https://aibots.gov.sg/latest/scim/v2/groups/e2e2492c-2323-43a3-8eea-77a75d38fd8d\",\n        \"version\": null,\n        \"created\": \"2024-06-08T02:06:18.469838Z\",\n        \"last_modified\": null,\n        \"deleted\": null,\n        \"archived\": null\n    },\n    \"display_name\": \"New Invalid Group (Test)\",\n    \"members\": [\n        {\n            \"type\": \"users\",\n            \"$ref\": \"None/scim/v2/Users/0f746538-73f9-4e2d-b787-0b43aa769406\",\n            \"display\": \"This person does not exists\",\n            \"value\": \"0f746538-73f9-4e2d-b787-0b43aa769406\"\n        }\n    ],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"ng\",\n        \"api_keys\": [],\n        \"default\": true,\n        \"parent\":   {\n            \"type\": \"groups\",\n            \"$ref\": \"None/scim/v2/Groups/2c1588de-af8f-4904-8a05-7e5291c8a5f2\",\n            \"display\": \"Dewan Rakyat\",\n            \"value\": \"2c1588de-af8f-4904-8a05-7e5291c8a5f2\"\n        },\n        \"children\": [],\n        \"administrators\": [],\n        \"details\": {},\n        \"allow\": true,\n        \"domains\": [\n            \"ng.gov.sg\"\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Group With Invalid Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Message contains 'Group member with ID: <UUID> does not exist'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Group member with ID:\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:Group\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:Group\"\n    ],\n    \"meta\": {\n        \"resource_type\": \"groups\",\n        \"owner\": \"6126033d-61c7-4773-b719-6f5b540bc25f\",\n        \"owner_type\": \"system\",\n        \"location\": \"https://aibots.gov.sg/latest/scim/v2/groups/e2e2492c-2323-43a3-8eea-77a75d38fd8d\",\n        \"version\": null,\n        \"created\": \"2024-06-08T02:06:18.469838Z\",\n        \"last_modified\": null,\n        \"deleted\": null,\n        \"archived\": null\n    },\n    \"display_name\": \"New Invalid Group (Test)\",\n    \"members\": [\n       \n    ],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"ng\",\n        \"api_keys\": [],\n        \"default\": true,\n        \"parent\": null,\n        \"children\": [],\n        \"administrators\": [ {\n            \"type\": \"users\",\n            \"$ref\": \"None/scim/v2/Users/0f746538-73f9-4e2d-b787-0b43aa769406\",\n            \"display\": \"This person does not exists\",\n            \"value\": \"0f746538-73f9-4e2d-b787-0b43aa769406\"\n        }],\n        \"details\": {},\n        \"allow\": true,\n        \"domains\": [\n            \"ng.gov.sg\"\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create SCIM Group",
+			"item": [
+				{
+					"name": "Create New SCIM Group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Id is a valid UUID\", function () {",
+									"    const responseBody = pm.response.json();",
+									"    const id = responseBody.id;",
+									"    pm.expect(id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);",
+									"    pm.environment.set('TEST_SCIM_GROUP1', id);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:Group\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:Group\"\n    ],\n   \n    \"display_name\": \"New Group (Test) 2\",\n    \"members\": [\n        \n    ],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"ng\",\n        \"api_keys\": [],\n        \"default\": true,\n        \"parent\": null,\n        \"children\": [],\n        \"administrators\": [],\n        \"details\": {},\n        \"allow\": true,\n        \"domains\": [\n            \"ng.gov.sg\"\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/Groups",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"Groups"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Retrieve SCIM Groups",
+			"item": [
+				{
+					"name": "Get List of SCIM Groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"const expectedUserListStructure ={",
+									"    schemas:\"array\",",
+									"    totalResults: \"number\",",
+									"    startIndex: \"number\",",
+									"    itemsPerPage: \"number\",",
+									"    resources:\"array\"",
+									"}",
+									"// Function to validate the structure and types",
+									"function validateStructure(obj, structure) {",
+									"    for (let key in structure) {",
+									"        pm.test(`Check if ${key} exists and is of type ${structure[key]}`, function () {",
+									"            pm.expect(obj).to.have.property(key);",
+									"            const expectedTypes = Array.isArray(structure[key]) ? structure[key] : [structure[key]];",
+									"            const actualType = obj[key] === null ? 'null' : (Array.isArray(obj[key]) ? 'array' : typeof obj[key]);",
+									"            pm.expect(expectedTypes).to.include(actualType);",
+									"        });",
+									"    }",
+									"}",
+									"",
+									"// Parse the response body",
+									"const response = pm.response.json();",
+									"",
+									"validateStructure(response, expectedUserListStructure)",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get SCIM Group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Id is a valid UUID\", function () {",
+									"    const responseBody = pm.response.json();",
+									"    const id = responseBody.id;",
+									"    pm.expect(id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);",
+									"    pm.environment.set('TEST_SCIM_USER1', id);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups/{{TEST_SCIM_GROUP1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups",
+								"{{TEST_SCIM_GROUP1}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update Groups With Invalid Sub-Groups/Members",
+			"item": [
+				{
+					"name": "Update Group With Invalid Members",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:Group\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:Group\"\n    ],\n    \"display_name\": \"New Group (Test Again 2)\",\n    \"members\": [ {\n            \"type\": \"users\",\n            \"$ref\": \"None/scim/v2/Users/0f746538-73f9-4e2d-b787-0b43aa769406\",\n            \"display\": \"This person does not exists\",\n            \"value\": \"0f746538-73f9-4e2d-b787-0b43aa769406\"\n        }],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"ng\",\n        \"domain\": null,\n        \"api_keys\": [],\n        \"default\": true,\n        \"parent\": null,\n        \"children\": [],\n        \"administrators\": [],\n        \"details\": {},\n        \"default_role\": null,\n        \"allow\": true,\n        \"domains\": [\n            \"ng.gov.sg\"\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups/{{TEST_SCIM_GROUP1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups",
+								"{{TEST_SCIM_GROUP1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Group With Invalid Children",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Message contains 'Group with ID: <UUID> does not exist'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Group with ID:\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:Group\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:Group\"\n    ],\n    \"display_name\": \"New Group (Test Again 2)\",\n    \"members\": [],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"ng\",\n        \"domain\": null,\n        \"api_keys\": [],\n        \"default\": true,\n        \"parent\": null,\n        \"children\": [ {\n                \"type\": \"groups\",\n                \"$ref\": \"None/scim/v2/Groups/2c1588de-af8f-4904-8a05-7e5291c8a5f2\",\n                \"display\": \"Dewan Rakyat\",\n                \"value\": \"2c1588de-af8f-4904-8a05-7e5291c8a5f2\"\n            }],\n        \"administrators\": [],\n        \"details\": {},\n        \"default_role\": null,\n        \"allow\": true,\n        \"domains\": [\n            \"ng.gov.sg\"\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups/{{TEST_SCIM_GROUP1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups",
+								"{{TEST_SCIM_GROUP1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Group With Invalid Parents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Message contains 'Group with ID: <UUID> does not exist'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Group with ID:\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:Group\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:Group\"\n    ],\n    \"display_name\": \"New Group (Test Again 2)\",\n    \"members\": [],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"ng\",\n        \"domain\": null,\n        \"api_keys\": [],\n        \"default\": true,\n        \"parent\":  {\n                \"type\": \"groups\",\n                \"$ref\": \"None/scim/v2/Groups/2c1588de-af8f-4904-8a05-7e5291c8a5f2\",\n                \"display\": \"Dewan Rakyat\",\n                \"value\": \"2c1588de-af8f-4904-8a05-7e5291c8a5f2\"\n            },\n        \"children\": [],\n        \"administrators\": [],\n        \"details\": {},\n        \"default_role\": null,\n        \"allow\": true,\n        \"domains\": [\n            \"ng.gov.sg\"\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups/{{TEST_SCIM_GROUP1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups",
+								"{{TEST_SCIM_GROUP1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Group With Invalid Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Message contains 'Group member with ID: <UUID> does not exist'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include(\"Group member with ID:\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:Group\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:Group\"\n    ],\n    \"display_name\": \"New Group (Test Again 2)\",\n    \"members\": [],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"ng\",\n        \"domain\": null,\n        \"api_keys\": [],\n        \"default\": true,\n        \"parent\": null,\n        \"children\": [],\n        \"administrators\": [ {\n            \"type\": \"users\",\n            \"$ref\": \"None/scim/v2/Users/0f746538-73f9-4e2d-b787-0b43aa769406\",\n            \"display\": \"This person does not exists\",\n            \"value\": \"0f746538-73f9-4e2d-b787-0b43aa769406\"\n        }],\n        \"details\": {},\n        \"default_role\": null,\n        \"allow\": true,\n        \"domains\": [\n            \"ng.gov.sg\"\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups/{{TEST_SCIM_GROUP1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups",
+								"{{TEST_SCIM_GROUP1}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update SCIM Group Details",
+			"item": [
+				{
+					"name": "Update SCIM Group Details",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"meta\": {\n        \"resource_type\": \"groups\",\n        \"owner\": \"6126033d-61c7-4773-b719-6f5b540bc25f\",\n        \"owner_type\": \"system\",\n        \"location\": \"https://aibots.gov.sg/latest/scim/v2/groups/e2e2492c-2323-43a3-8eea-77a75d38fd8d\",\n        \"version\": null,\n        \"created\": \"2024-06-08T02:06:18.469000Z\",\n        \"last_modified\": null,\n        \"deleted\": null,\n        \"archived\": null\n    },\n    \"modifications\": {},\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:core:2.0:Group\",\n        \"urn:ietf:params:scim:schemas:extensions:atlas:2.0:Group\"\n    ],\n    \"display_name\": \"New Group (Test Again)\",\n    \"members\": [ {\n                \"type\": \"users\",\n                \"ref\": \"https://sit.aibots.gov.sg/scim/v2/Users/e291372d-d33d-5f51-9403-943dec\",\n                \"display\": \"Joen Tan\",\n                \"value\": \"e291372d-d33d-5f51-9403-943dec5587b8\"\n            }],\n    \"atlas_extensions\": {\n        \"description\": \"\",\n        \"agency\": \"ng\",\n        \"domain\": null,\n        \"api_keys\": [],\n        \"default\": true,\n        \"parent\": null,\n        \"children\": [],\n        \"administrators\": [],\n        \"details\": {},\n        \"default_role\": null,\n        \"allow\": true,\n        \"domains\": [\n            \"ng.gov.sg\"\n        ]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/Groups/{{TEST_SCIM_GROUP1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"Groups",
+								"{{TEST_SCIM_GROUP1}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete SCIM Group",
+			"item": [
+				{
+					"name": "Delete SCIM Group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups/{{TEST_SCIM_GROUP1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups",
+								"{{TEST_SCIM_GROUP1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete SCIM Group Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups/{{TEST_SCIM_GROUP1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups",
+								"{{TEST_SCIM_GROUP1}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Retrieve Non-Existent Group",
+			"item": [
+				{
+					"name": "Get Shallow-Deleted SCIM Group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "{{SCHEME}}://{{SERVICE_URL}}/{{API_VERSION}}/scim/v2/groups/{{TEST_SCIM_GROUP1}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"scim",
+								"v2",
+								"groups",
+								"{{TEST_SCIM_GROUP1}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

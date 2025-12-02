@@ -1,0 +1,107 @@
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-srP"
+testpaths = [
+    "postman_tests",
+    "integration_tests",
+    "tests",
+]
+log_cli = true
+env = [
+    "D:DATABASE_HOST=mongodb://localhost:27017",
+    "D:AWS_ID=1400465454",
+    "D:MESSAGE_FOLDER=messages"
+]
+asyncio_mode = "auto"
+
+[tool.ruff]
+extend-exclude = [
+    "*test*.py",
+    "noxfile.py",
+    ".gitignore",
+    ".dockerignore",
+]
+line-length = 79
+target-version = "py311"
+
+[tool.ruff.extend-per-file-ignores]
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle
+    "F", # Pyflakes
+    "B", # flake8-bugbear
+    "SIM", # flake8-simplify
+    "I", # isort
+    "Q", # flake8-quotes
+    "YTT", # flake8-2020
+    "ASYNC", # flake8-async
+    "S", # flake8-bandit
+    "COM", # flake8-commas
+    "C4", # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "T20", # flake8-print
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "PTH", # flake8-use-pathlib
+]
+ignore = ['E231', 'E241', 'W291', 'W293', 'S105', 'S101', 'COM812']
+
+[tool.ruff.isort]
+required-imports = ["from __future__ import annotations"]
+
+[tool.coverage.run]
+branch = true
+source = ["."]
+omit = ["noxfile.py"]
+
+[tool.coverage.report]
+ignore_errors = true
+omit = [
+    "*/postman_tests/*",
+    "*/integration_tests/*",
+    "*/postman_tests/*",
+    "*/tests/*",
+    "noxfile.py"
+]
+
+[tool.poetry]
+name = "pdf"
+version = "1.0.0"
+description = "Contains source code for AIBots RAG .pdf Parser"
+authors = ["Wilson Ng <wilson_ng@tech.gov.sg>"]
+exclude = [
+    "tests",
+]
+
+[tool.poetry.dependencies]
+python = "^3.11,<3.12"
+aibots = { path = "../../../aibots", develop = false }
+boto3 = "^1.34.44"
+opensearch-py = "^2.5.0"
+
+[tool.poetry.group.dev.dependencies]
+# Linters
+ruff = "^0.1.4"
+
+# Automation Tools
+nox = "^2024.3.2"
+nox-poetry = "^1.0.3"
+
+# Testing
+pytest = "^8.1.1"
+pytest-mock = "^3.14.0"
+pytest-env = "^1.1.3"
+pytest-asyncio = "^0.23.6"
+coverage = "^7.4.4"
+mongomock-motor = "^0.0.29"
+setuptools = { version = "^70.0.0", python = ">=3.12" }
+
+[[tool.poetry.source]]
+name = "atlas"
+url = "https://sgts.gitlab-dedicated.com/api/v4/groups/39960/-/packages/pypi/simple"
+priority = "supplemental"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

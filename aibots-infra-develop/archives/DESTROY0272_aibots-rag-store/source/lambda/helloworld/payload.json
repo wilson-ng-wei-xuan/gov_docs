@@ -1,0 +1,99 @@
+## Use this payload if you are testing from Lambda console
+{
+  "Records": [
+    {
+      "messageId": "1b84aec5-0a77-4eba-a453-8d2b19f9be6e",
+      "receiptHandle": "AQEByqKfFY/O/8CJgKDOqJNvZ6RgVHVvjlONTQFNNTB7n7czpmhzW+kzrEzokdVgYWMy4Vl7rRgdGhknaazdZyg6+ySaMNLLwBpk1PVbM3gzWdj9+PhO/K7M/JYmomBeYrHvrQ3AjoR0oaKz0c1XTQ7y8b59D4j1k+LAlVB8wNRogD46qlcpR7/fxzCm33VNFB67uGg9/eC75TjH0xQZkB2LshJcMFZ8dvnHpALFv+2fuzAk7aoOrr3PTNHq+hZcHxxkXQIyxA69/4Vt5hpd0S22j6pVY62KUN2sQL9TFArJlkIN6wnVFlpLKSKbFuhZ+gUnLJf5iMEcpqs/vow/KR9pvQ2bSnpSCPS4j6FNaYywdkGJ9au5VOw3ws2bkSKSGyhAsrnUhocbT2D93HAFyO1uyZzqrS5opUt8buG6HraNakY=",
+      "body": "{\"bot_id\": \"1\", \"doc_id\": \"2\", \"action\": \"3\", \"rag_source\": {\"zip\": {\"config\": {}, \"result\": {\"remark\": \"optional in case source-url needs to pass in some sort of results.\"}}}, \"rag_parse\": {\"zip\": {\"config\": {}, \"result\": {\"from_rag_flow\": \"rag_source\", \"from_rag_flow_component\": \"zip\"}}}, \"rag_chunk\": {\"zip\": {\"config\": {}, \"result\": {\"from_rag_flow\": \"rag_parse\", \"from_rag_flow_component\": \"zip\"}}}, \"rag_embed\": {\"zip\": {\"config\": {}, \"result\": {\"from_rag_flow\": \"rag_chunk\", \"from_rag_flow_component\": \"zip\"}}}, \"rag_store\": {\"zip\": {\"config\": {\"document\": [{\"text\": \"abc\", \"embedding\": [0.01, 0.02], \"metadata\": {\"source\": \"xyz.pdf\", \"page_number\": 1, \"last_update_date\": \"2023-01-01\", \"chunk\": 0}}], \"host\": \"not use, pull from env var >> not-in-use.ap-southeast-1.aoss.amazonaws.com\", \"index_name\": \"bot3\", \"embedding_type\": \"example\", \"query\": \"What is xyz?\", \"embedding\": [0.01, 0.2], \"k\": 1}, \"result\": {\"from_rag_flow\": \"rag_embed\", \"from_rag_flow_component\": \"zip\"}}}}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "AWSTraceHeader": "Root=1-6684e09e-c90cbc8b02c32fe663a4e514;Parent=7c8f85b33ffa1ebf;Sampled=0;Lineage=ac449cae:0%7Cf2debb76:0%7C5ad92459:0%7C6adc3db3:0",
+        "SentTimestamp": "1719984287435",
+        "SenderId": "AROAW3MD6NKYVXYEXOUY6:lambda-sitezapp-aibots-rag-embed-zip",
+        "ApproximateFirstReceiveTimestamp": "1719984287448"
+      },
+      "messageAttributes": {},
+      "md5OfMessageAttributes": null,
+      "md5OfBody": "a2b75142c766c926b7f58668b1cfb24c",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:ap-southeast-1:471112510129:sqs-sitezapp-aibots-rag-store-zip",
+      "awsRegion": "ap-southeast-1"
+    }
+  ]
+}
+
+## Use this payload if you are testing from SQS console
+{
+  "bot_id": "1",
+  "doc_id": "2",
+  "action": "3",
+  "rag_source": {
+    "zip": {
+      "config": {},
+      "result": {
+        "remark": "optional in case source-url needs to pass in some sort of results."
+      }
+    }
+  },
+  "rag_parse": {
+    "zip": {
+      "config": {},
+      "result": {
+        "from_rag_flow": "rag_source",
+        "from_rag_flow_component": "zip"
+      }
+    }
+  },
+  "rag_chunk": {
+    "zip": {
+      "config": {},
+      "result": {
+        "from_rag_flow": "rag_parse",
+        "from_rag_flow_component": "zip"
+      }
+    }
+  },
+  "rag_embed": {
+    "zip": {
+      "config": {},
+      "result": {
+        "from_rag_flow": "rag_chunk",
+        "from_rag_flow_component": "zip"
+      }
+    }
+  },
+  "rag_store": {
+    "zip": {
+      "config": {
+        "document": [
+          {
+            "text": "abc",
+            "embedding": [
+              0.01,
+              0.02
+            ],
+            "metadata": {
+              "source": "xyz.pdf",
+              "page_number": 1,
+              "last_update_date": "2023-01-01",
+              "chunk": 0
+            }
+          }
+        ],
+        "host": "not use, pull from env var >> not-in-use.ap-southeast-1.aoss.amazonaws.com",
+        "index_name": "bot3",
+        "embedding_type": "example",
+        "query": "What is xyz?",
+        "embedding": [
+          0.01,
+          0.2
+        ],
+        "k": 1
+      },
+      "result": {
+        "from_rag_flow": "rag_embed",
+        "from_rag_flow_component": "zip"
+      }
+    }
+  }
+}

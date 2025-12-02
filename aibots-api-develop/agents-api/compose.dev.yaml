@@ -1,0 +1,20 @@
+
+services:
+  aibots-mongo:
+    image: "${ATLAS_REGISTRY:-}${MONGO_IMAGE:-atlas-mongo/auth}:${TAG:-latest}"
+    container_name: aibots-mongo
+    environment:
+      MONGO_INITDB_DATABASE: "${ATLAS_ADMIN_DB:-admin}"
+      MONGO_INITDB_ROOT_USERNAME: "${DB_USER:-admin}"
+      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD:-dsa1d-st}"
+    expose:
+      - 27017
+    ports:
+      - "27018:27017"
+    networks:
+      - aibots
+    restart: unless-stopped
+
+networks:
+  aibots:
+  nous:

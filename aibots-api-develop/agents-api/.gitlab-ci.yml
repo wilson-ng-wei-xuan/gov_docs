@@ -1,0 +1,97 @@
+
+variables:
+  ATLAS_IMAGE: registry.sgts.gitlab-dedicated.com/wog/gvt/dsaid-st/atlas/python/atlas/atlas-base
+  ATLAS_USER: $ATLAS_REGISTRY_USER
+  ATLAS_TOKEN: $ATLAS_REGISTRY_TOKEN
+  COMPONENT_PATH: "agents-api"
+
+include:
+  - template: Security/Container-Scanning.gitlab-ci.yml
+  - local: '/templates/build-docker.yml'
+  - local: '/templates/lint.yml'
+  - local: '/templates/unittests.yml'
+
+stages:
+  - test
+  - build
+  - scan
+  - deploy
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_BRANCH == "sit"
+      variables:
+        AIBOTS_ENVIRONMENT: SIT
+        DEPLOY: true
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_BRANCH == "uat"
+      variables:
+        AIBOTS_ENVIRONMENT: UAT
+        DEPLOY: true
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_BRANCH == "main"
+      variables:
+        AIBOTS_ENVIRONMENT: Production
+        DEPLOY: true
+    - if: $CI_COMMIT_TAG
+      variables:
+        AIBOTS_ENVIRONMENT: Production
+        DEPLOY: true
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+      variables:
+        DEPLOY: false
+    - when: always
+
+lint_job:
+  stage: test
+  image: python:3.11.8-slim-bookworm
+  extends: .lint
+
+unittests_job:
+  stage: test
+  image: python:3.11.8-slim-bookworm
+  extends: .unittests
+
+build_docker_job:
+  stage: build
+  extends: .build_image
+  needs:
+    - lint_job
+    - unittests_job
+
+push_docker_job:
+  stage: build
+  extends: .push_image
+  needs:
+    - build_docker_job
+
+login_ecr:
+  stage: deploy
+  variables:
+    VAR_FILE_NAME: "$COMPONENT_PATH.gpg"
+    PIPELINE_GPG_KEY: "$VAR_FILE_NAME.gpg"
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $DEPLOY == "true"
+  extends: .generate_aws_ecr_auth
+  environment: $AIBOTS_ENVIRONMENT
+
+push_ecr_job:
+  stage: deploy
+  extends: .push_ecr
+  variables:
+    DOCKER_TARGET_IMAGE: "$AGENTS_API_IMAGE:latest"
+    VAR_FILE_NAME: "$COMPONENT_PATH.gpg"
+    PIPELINE_GPG_KEY: "$VAR_FILE_NAME.gpg"
+  environment: $AIBOTS_ENVIRONMENT
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $DEPLOY == "true"
+    - if: $CI_COMMIT_TAG
+      variables:
+        DOCKER_TARGET_IMAGE: "$AGENTS_API_IMAGE:$CI_COMMIT_TAG"
+  needs:
+    - build_docker_job
+    - login_ecr
+
+container_scanning:
+  stage: scan
+  variables:
+    CS_IMAGE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$COMPONENT_PATH/agents-api:$CI_COMMIT_REF_SLUG"
+    CS_DOCKERFILE_PATH: "$COMPONENT_PATH/Dockerfile"

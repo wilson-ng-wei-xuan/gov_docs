@@ -1,0 +1,39 @@
+# # you might need to add in the access to main_fargate.tf
+# # module "project_pte" {
+# #   task_role_inline_policy
+# # }
+
+# resource "aws_opensearchserverless_access_policy" "project_pub" {
+#   count = var.pub.host != null ? 1 : 0
+
+#   name        = "${local.opensearch_data_access_name}-${var.pub.name}"
+#   type        = "data"
+#   description = "read and write permissions"
+#   policy = jsonencode([
+#     {
+#       Rules = [
+#         {
+#           ResourceType = "index",
+#           Resource = [
+#             "index/${data.aws_opensearchserverless_collection.aibots_rag.name}/*"
+#           ],
+#           Permission = [
+#             "aoss:*"
+#           ]
+#         },
+#         {
+#           ResourceType = "collection",
+#           Resource = [
+#             "collection/${data.aws_opensearchserverless_collection.aibots_rag.name}"
+#           ],
+#           Permission = [
+#             "aoss:*"
+#           ]
+#         }
+#       ],
+#       Principal = [
+#         module.project_pte[0].task_role.arn
+#       ]
+#     }
+#   ])
+# }

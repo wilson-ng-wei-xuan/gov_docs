@@ -1,0 +1,540 @@
+{
+	"info": {
+		"_postman_id": "465ad0b5-adc2-4ec4-a311-303511268a97",
+		"name": "[AIBots] Schemas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11079569"
+	},
+	"item": [
+		{
+			"name": "Login to AIBots",
+			"item": [
+				{
+					"name": "Request Email OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Request Email OTP",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 15:06:24 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Retrieve Email OTPs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieve Email OTPs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var last = jsonData.length - 1\r",
+									"    pm.expect(jsonData.length).to.be.gte(1);\r",
+									"    pm.expect(jsonData[last].id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"    pm.expect(jsonData[last].user).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"    pm.expect(jsonData[last].email).to.eql(pm.environment.get(\"TEST_EMAIL_ADDRESS1\"));\r",
+									"    const required_keys = [\"otp\", \"timestamp\", \"expiry\"];\r",
+									"    pm.expect(required_keys.every((v) => Object.keys(jsonData[last]).includes(v))).to.eql(true);\r",
+									"    pm.environment.set(\"TEST_OTP\", jsonData[last].otp);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Email OTPs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 15:06:29 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "233"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"49d0d8d2-a6aa-4596-a629-5fba1da2f779\",\n        \"user\": \"04e05897-3c62-52aa-8640-ca126441e52c\",\n        \"email\": \"davidtwlee@dsaid.gov.sg\",\n        \"otp\": \"373298\",\n        \"timestamp\": \"2024-06-18T23:06:24.255000+08:00\",\n        \"expiry\": \"2024-06-18T23:06:36.254000+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Login via Email OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successful Login via Email OTP\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"TEST_EMAIL_ADDRESS1\"));\r",
+									"    const required_keys = [\"name\", \"timestamp\", \"expiry\", \"scopes\"];\r",
+									"    pm.expect(required_keys.every((v) => Object.keys(jsonData).includes(v))).to.eql(true);\r",
+									"    pm.environment.set(\"REFRESH_TOKEN\", jsonData.refreshToken);\r",
+									"});\r",
+									"pm.test(\"Authorization header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Authorization\");\r",
+									"    pm.environment.set(\"AUTH_TOKEN\", pm.response.headers.get('Authorization').split(' ')[1]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\",\r\n    \"otp\": \"{{TEST_OTP}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails/logins",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails",
+								"logins"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login via Email OTP",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\",\r\n    \"otp\": \"{{TEST_OTP}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails/logins",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails",
+										"logins"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 15:06:32 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "authorization",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTctM2M2Mi01MmFhLTg2NDAtY2ExMjY0NDFlNTJjIiwiYXVkIjoic2l0LmFpYm90cy5nb3Yuc2ciLCJuYmYiOjE3MTg3MjMxOTMsImlhdCI6MTcxODcyMzE5MywiZXhwIjoxNzE4NzMwMzkzLCJqdGkiOiI0MjNkYWVlNy0yYjI4LTQyMWItYTZiMy03NGNmYzY4OGQwYmYiLCJuYW1lIjoiRGF2aWR0d2xlZSIsImVtYWlsIjoiZGF2aWR0d2xlZUBkc2FpZC5nb3Yuc2ciLCJuZXdfdXNlciI6dHJ1ZSwic2NvcGVzIjpbIioiXSwiaXRlbV9zY29wZXMiOlsiYWdlbnRzLjgwNDg4NWI0LTQyM2UtNDg1Yy1iMjE1LTkyYzdkZmE4YmFhODpyZWFkLGFsbG93IiwiY2hhdHMuODA0ODg1YjQtNDIzZS00ODVjLWIyMTUtOTJjN2RmYThiYWE4OmNyZWF0ZSxyZWFkLHVwZGF0ZSxkZWxldGUiLCJtZXNzYWdlcy44MDQ4ODViNC00MjNlLTQ4NWMtYjIxNS05MmM3ZGZhOGJhYTg6Y3JlYXRlLHJlYWQsdXBkYXRlLGRlbGV0ZSJdLCJyb2xlIjoiODMwNTQ3M2EtMDE2Zi00OTMxLTgwMGQtNjBmNGFhMTQzN2MwIiwic3VwZXJ1c2VyIjp0cnVlLCJhZ2VuY3kiOiJnb3Z0ZWNoIiwiYXRfaGFzaCI6IlNjanlod1hHYU0zVWFKQXFtaGpYSmcifQ.2aV5WsmfEZOk0qJDDHcwmSaDu2SUqseuh3vUfCzcDNk"
+								},
+								{
+									"key": "content-length",
+									"value": "1594"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"Davidtwlee\",\n    \"id\": \"04e05897-3c62-52aa-8640-ca126441e52c\",\n    \"issuer\": \"GovTech\",\n    \"product\": \"sit.aibots.gov.sg\",\n    \"refreshToken\": \"615bf4f349060de0707b662513bd8fad\",\n    \"refreshCount\": 0,\n    \"maxRefresh\": 5,\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTctM2M2Mi01MmFhLTg2NDAtY2ExMjY0NDFlNTJjIiwiYXVkIjoic2l0LmFpYm90cy5nb3Yuc2ciLCJuYmYiOjE3MTg3MjMxOTMsImlhdCI6MTcxODcyMzE5MywiZXhwIjoxNzE4NzMwMzkzLCJqdGkiOiI0MjNkYWVlNy0yYjI4LTQyMWItYTZiMy03NGNmYzY4OGQwYmYiLCJuYW1lIjoiRGF2aWR0d2xlZSIsImVtYWlsIjoiZGF2aWR0d2xlZUBkc2FpZC5nb3Yuc2ciLCJuZXdfdXNlciI6dHJ1ZSwic2NvcGVzIjpbIioiXSwiaXRlbV9zY29wZXMiOlsiYWdlbnRzLjgwNDg4NWI0LTQyM2UtNDg1Yy1iMjE1LTkyYzdkZmE4YmFhODpyZWFkLGFsbG93IiwiY2hhdHMuODA0ODg1YjQtNDIzZS00ODVjLWIyMTUtOTJjN2RmYThiYWE4OmNyZWF0ZSxyZWFkLHVwZGF0ZSxkZWxldGUiLCJtZXNzYWdlcy44MDQ4ODViNC00MjNlLTQ4NWMtYjIxNS05MmM3ZGZhOGJhYTg6Y3JlYXRlLHJlYWQsdXBkYXRlLGRlbGV0ZSJdLCJyb2xlIjoiODMwNTQ3M2EtMDE2Zi00OTMxLTgwMGQtNjBmNGFhMTQzN2MwIiwic3VwZXJ1c2VyIjp0cnVlLCJhZ2VuY3kiOiJnb3Z0ZWNoIiwiYXRfaGFzaCI6IlNjanlod1hHYU0zVWFKQXFtaGpYSmcifQ.2aV5WsmfEZOk0qJDDHcwmSaDu2SUqseuh3vUfCzcDNk\",\n    \"expiry\": \"2024-06-19T01:06:33.298009+08:00\",\n    \"startUse\": \"2024-06-18T23:06:33.298003+08:00\",\n    \"timestamp\": \"2024-06-18T23:06:33.298183+08:00\",\n    \"email\": \"davidtwlee@dsaid.gov.sg\",\n    \"newUser\": true,\n    \"scopes\": [\n        \"*\"\n    ],\n    \"itemScopes\": [\n        \"agents.804885b4-423e-485c-b215-92c7dfa8baa8:read,allow\",\n        \"chats.804885b4-423e-485c-b215-92c7dfa8baa8:create,read,update,delete\",\n        \"messages.804885b4-423e-485c-b215-92c7dfa8baa8:create,read,update,delete\"\n    ],\n    \"role\": \"8305473a-016f-4931-800d-60f4aa1437c0\",\n    \"superuser\": true,\n    \"agency\": \"govtech\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Test Get Schemas",
+			"item": [
+				{
+					"name": "Retrieve All AI Models",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Retrieved Chat Item\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    for (const model of jsonData) {\r",
+									"        pm.expect(model).to.have.property('name');\r",
+									"        pm.expect(model).to.have.property('description');\r",
+									"        pm.expect(model).to.have.property('id');\r",
+									"        pm.expect(model).to.have.property('type');\r",
+									"        pm.expect(model).to.have.property('internal');\r",
+									"        pm.expect(model).to.have.property('security_classification');\r",
+									"        pm.expect(model).to.have.property('params');\r",
+									"        pm.expect(model).to.have.property('streaming');\r",
+									"        pm.expect(model).to.have.property('specs');\r",
+									"        pm.expect(model.specs).to.have.property('context_size');\r",
+									"        pm.expect(model.specs.context_size).to.have.property('type');\r",
+									"        pm.expect(model.specs.context_size).to.have.property('default');\r",
+									"        pm.expect(model.specs.context_size).to.have.property('advanced');\r",
+									"    };\r",
+									"\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/schemas/ai/llms",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"schemas",
+								"ai",
+								"llms"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve All AI Models",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/schemas/ai/llms",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{CHATS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"schemas",
+										"ai",
+										"llms"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Thu, 20 Jun 2024 08:28:01 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "1097"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"name\": \"OpenAI GPT-4\",\n        \"description\": \"OpenAI GPT 4 on Azure\",\n        \"id\": \"azure~gpt-4\",\n        \"type\": \"text_gen\",\n        \"internal\": false,\n        \"security_classification\": \"restricted\",\n        \"specs\": {\n            \"context_size\": {\n                \"type\": \"list\",\n                \"default\": [\n                    8192\n                ],\n                \"advanced\": true\n            }\n        },\n        \"params\": {},\n        \"streaming\": true\n    },\n    {\n        \"name\": \"OpenAI GPT-4-Turbo\",\n        \"description\": \"OpenAI GPT-4-Turbo on Azure\",\n        \"id\": \"azure~gpt-4-turbo\",\n        \"type\": \"text_gen\",\n        \"internal\": false,\n        \"security_classification\": \"restricted\",\n        \"specs\": {\n            \"context_size\": {\n                \"type\": \"list\",\n                \"default\": [\n                    128000,\n                    4096\n                ],\n                \"advanced\": true\n            }\n        },\n        \"params\": {},\n        \"streaming\": true\n    },\n    {\n        \"name\": \"OpenAI GPT-4o\",\n        \"description\": \"OpenAI GPT-4o on Azure\",\n        \"id\": \"azure~gpt-4o\",\n        \"type\": \"text_gen\",\n        \"internal\": false,\n        \"security_classification\": \"restricted\",\n        \"specs\": {\n            \"context_size\": {\n                \"type\": \"list\",\n                \"default\": [\n                    128000,\n                    4096\n                ],\n                \"advanced\": true\n            }\n        },\n        \"params\": {},\n        \"streaming\": true\n    },\n    {\n        \"name\": \"OpenAI GPT-3.5-Turbo\",\n        \"description\": \"OpenAI GPT-3.5-Turbo on Azure\",\n        \"id\": \"azure~gpt-35-turbo\",\n        \"type\": \"text_gen\",\n        \"internal\": false,\n        \"security_classification\": \"restricted\",\n        \"specs\": {\n            \"context_size\": {\n                \"type\": \"list\",\n                \"default\": [\n                    16385,\n                    4096\n                ],\n                \"advanced\": true\n            }\n        },\n        \"params\": {},\n        \"streaming\": true\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Retrieve AI Model by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Retrieved Chat Item\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData).to.have.property('description');\r",
+									"    pm.expect(jsonData.id).to.eq(pm.environment.get(\"DEFAULT_LLM_MODEL\"));\r",
+									"    pm.expect(jsonData).to.have.property('type');\r",
+									"    pm.expect(jsonData).to.have.property('internal');\r",
+									"    pm.expect(jsonData).to.have.property('security_classification');\r",
+									"    pm.expect(jsonData).to.have.property('params');\r",
+									"    pm.expect(jsonData).to.have.property('streaming');\r",
+									"    pm.expect(jsonData).to.have.property('specs');\r",
+									"    pm.expect(jsonData.specs).to.have.property('context_size');\r",
+									"    pm.expect(jsonData.specs.context_size).to.have.property('type');\r",
+									"    pm.expect(jsonData.specs.context_size).to.have.property('default');\r",
+									"    pm.expect(jsonData.specs.context_size).to.have.property('advanced');\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/schemas/ai/llms/{{DEFAULT_LLM_MODEL}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"schemas",
+								"ai",
+								"llms",
+								"{{DEFAULT_LLM_MODEL}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve AI Model by ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/schemas/ai/llms/{{DEFAULT_LLM_MODEL}}",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{CHATS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"schemas",
+										"ai",
+										"llms",
+										"{{DEFAULT_LLM_MODEL}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Thu, 20 Jun 2024 08:28:03 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "267"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"OpenAI GPT-4o\",\n    \"description\": \"OpenAI GPT-4o on Azure\",\n    \"id\": \"azure~gpt-4o\",\n    \"type\": \"text_gen\",\n    \"internal\": false,\n    \"security_classification\": \"restricted\",\n    \"specs\": {\n        \"context_size\": {\n            \"type\": \"list\",\n            \"default\": [\n                128000,\n                4096\n            ],\n            \"advanced\": true\n        }\n    },\n    \"params\": {},\n    \"streaming\": true\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}

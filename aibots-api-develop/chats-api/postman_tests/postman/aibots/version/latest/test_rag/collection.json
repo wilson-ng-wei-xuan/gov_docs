@@ -1,0 +1,1403 @@
+{
+	"info": {
+		"_postman_id": "b39d4427-ad6e-4819-bf34-abc6212ed5c5",
+		"name": "[AIBots] RAG Pipelines",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11079569"
+	},
+	"item": [
+		{
+			"name": "Login to AIBots",
+			"item": [
+				{
+					"name": "Request Email OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Request Email OTP",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 15:06:24 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Retrieve Email OTPs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Retrieve Email OTPs\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    var last = jsonData.length - 1\r",
+									"    pm.expect(jsonData.length).to.be.gte(1);\r",
+									"    pm.expect(jsonData[last].id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"    pm.expect(jsonData[last].user).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"    pm.expect(jsonData[last].email).to.eql(pm.environment.get(\"TEST_EMAIL_ADDRESS1\"));\r",
+									"    const required_keys = [\"otp\", \"timestamp\", \"expiry\"];\r",
+									"    pm.expect(required_keys.every((v) => Object.keys(jsonData[last]).includes(v))).to.eql(true);\r",
+									"    pm.environment.set(\"TEST_OTP\", jsonData[last].otp);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Email OTPs",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 15:06:29 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "233"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"49d0d8d2-a6aa-4596-a629-5fba1da2f779\",\n        \"user\": \"04e05897-3c62-52aa-8640-ca126441e52c\",\n        \"email\": \"davidtwlee@dsaid.gov.sg\",\n        \"otp\": \"373298\",\n        \"timestamp\": \"2024-06-18T23:06:24.255000+08:00\",\n        \"expiry\": \"2024-06-18T23:06:36.254000+08:00\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Login via Email OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successful Login via Email OTP\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"    pm.expect(jsonData.email).to.eql(pm.environment.get(\"TEST_EMAIL_ADDRESS1\"));\r",
+									"    const required_keys = [\"name\", \"timestamp\", \"expiry\", \"scopes\"];\r",
+									"    pm.expect(required_keys.every((v) => Object.keys(jsonData).includes(v))).to.eql(true);\r",
+									"    pm.environment.set(\"REFRESH_TOKEN\", jsonData.refreshToken);\r",
+									"});\r",
+									"pm.test(\"Authorization header is present\", function () {\r",
+									"    pm.response.to.have.header(\"Authorization\");\r",
+									"    pm.environment.set(\"AUTH_TOKEN\", pm.response.headers.get('Authorization').split(' ')[1]);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\",\r\n    \"otp\": \"{{TEST_OTP}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails/logins",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"otp",
+								"emails",
+								"logins"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login via Email OTP",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{TEST_EMAIL_ADDRESS1}}\",\r\n    \"otp\": \"{{TEST_OTP}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/otp/emails/logins",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"otp",
+										"emails",
+										"logins"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 15:06:32 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "authorization",
+									"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTctM2M2Mi01MmFhLTg2NDAtY2ExMjY0NDFlNTJjIiwiYXVkIjoic2l0LmFpYm90cy5nb3Yuc2ciLCJuYmYiOjE3MTg3MjMxOTMsImlhdCI6MTcxODcyMzE5MywiZXhwIjoxNzE4NzMwMzkzLCJqdGkiOiI0MjNkYWVlNy0yYjI4LTQyMWItYTZiMy03NGNmYzY4OGQwYmYiLCJuYW1lIjoiRGF2aWR0d2xlZSIsImVtYWlsIjoiZGF2aWR0d2xlZUBkc2FpZC5nb3Yuc2ciLCJuZXdfdXNlciI6dHJ1ZSwic2NvcGVzIjpbIioiXSwiaXRlbV9zY29wZXMiOlsiYWdlbnRzLjgwNDg4NWI0LTQyM2UtNDg1Yy1iMjE1LTkyYzdkZmE4YmFhODpyZWFkLGFsbG93IiwiY2hhdHMuODA0ODg1YjQtNDIzZS00ODVjLWIyMTUtOTJjN2RmYThiYWE4OmNyZWF0ZSxyZWFkLHVwZGF0ZSxkZWxldGUiLCJtZXNzYWdlcy44MDQ4ODViNC00MjNlLTQ4NWMtYjIxNS05MmM3ZGZhOGJhYTg6Y3JlYXRlLHJlYWQsdXBkYXRlLGRlbGV0ZSJdLCJyb2xlIjoiODMwNTQ3M2EtMDE2Zi00OTMxLTgwMGQtNjBmNGFhMTQzN2MwIiwic3VwZXJ1c2VyIjp0cnVlLCJhZ2VuY3kiOiJnb3Z0ZWNoIiwiYXRfaGFzaCI6IlNjanlod1hHYU0zVWFKQXFtaGpYSmcifQ.2aV5WsmfEZOk0qJDDHcwmSaDu2SUqseuh3vUfCzcDNk"
+								},
+								{
+									"key": "content-length",
+									"value": "1594"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"Davidtwlee\",\n    \"id\": \"04e05897-3c62-52aa-8640-ca126441e52c\",\n    \"issuer\": \"GovTech\",\n    \"product\": \"sit.aibots.gov.sg\",\n    \"refreshToken\": \"615bf4f349060de0707b662513bd8fad\",\n    \"refreshCount\": 0,\n    \"maxRefresh\": 5,\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJHb3ZUZWNoIiwic3ViIjoiMDRlMDU4OTctM2M2Mi01MmFhLTg2NDAtY2ExMjY0NDFlNTJjIiwiYXVkIjoic2l0LmFpYm90cy5nb3Yuc2ciLCJuYmYiOjE3MTg3MjMxOTMsImlhdCI6MTcxODcyMzE5MywiZXhwIjoxNzE4NzMwMzkzLCJqdGkiOiI0MjNkYWVlNy0yYjI4LTQyMWItYTZiMy03NGNmYzY4OGQwYmYiLCJuYW1lIjoiRGF2aWR0d2xlZSIsImVtYWlsIjoiZGF2aWR0d2xlZUBkc2FpZC5nb3Yuc2ciLCJuZXdfdXNlciI6dHJ1ZSwic2NvcGVzIjpbIioiXSwiaXRlbV9zY29wZXMiOlsiYWdlbnRzLjgwNDg4NWI0LTQyM2UtNDg1Yy1iMjE1LTkyYzdkZmE4YmFhODpyZWFkLGFsbG93IiwiY2hhdHMuODA0ODg1YjQtNDIzZS00ODVjLWIyMTUtOTJjN2RmYThiYWE4OmNyZWF0ZSxyZWFkLHVwZGF0ZSxkZWxldGUiLCJtZXNzYWdlcy44MDQ4ODViNC00MjNlLTQ4NWMtYjIxNS05MmM3ZGZhOGJhYTg6Y3JlYXRlLHJlYWQsdXBkYXRlLGRlbGV0ZSJdLCJyb2xlIjoiODMwNTQ3M2EtMDE2Zi00OTMxLTgwMGQtNjBmNGFhMTQzN2MwIiwic3VwZXJ1c2VyIjp0cnVlLCJhZ2VuY3kiOiJnb3Z0ZWNoIiwiYXRfaGFzaCI6IlNjanlod1hHYU0zVWFKQXFtaGpYSmcifQ.2aV5WsmfEZOk0qJDDHcwmSaDu2SUqseuh3vUfCzcDNk\",\n    \"expiry\": \"2024-06-19T01:06:33.298009+08:00\",\n    \"startUse\": \"2024-06-18T23:06:33.298003+08:00\",\n    \"timestamp\": \"2024-06-18T23:06:33.298183+08:00\",\n    \"email\": \"davidtwlee@dsaid.gov.sg\",\n    \"newUser\": true,\n    \"scopes\": [\n        \"*\"\n    ],\n    \"itemScopes\": [\n        \"agents.804885b4-423e-485c-b215-92c7dfa8baa8:read,allow\",\n        \"chats.804885b4-423e-485c-b215-92c7dfa8baa8:create,read,update,delete\",\n        \"messages.804885b4-423e-485c-b215-92c7dfa8baa8:create,read,update,delete\"\n    ],\n    \"role\": \"8305473a-016f-4931-800d-60f4aa1437c0\",\n    \"superuser\": true,\n    \"agency\": \"govtech\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Test RAG LLMStack Pipeline",
+			"item": [
+				{
+					"name": "Upload RAG Document File",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successfully uploaded Document Files\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"    pm.expect(jsonData[0].id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"    pm.expect(jsonData[0].name).to.eql(\"alzheimers.txt\");\r",
+									"    pm.expect(jsonData[0].metadata.type).to.eql(\"document\");\r",
+									"    pm.expect(jsonData[0].metadata.content_type).to.eql(\"text/plain\");\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE1_ID\", jsonData[0].id);\r",
+									"    pm.environment.set(\"TEST_DOCUMENT_FILE1_NAME\", jsonData[0].name);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": "alzheimers.txt"
+								},
+								{
+									"key": "details",
+									"value": "{\"alzheimers.txt\": {\"metadata\": {\"type\": \"document\"}}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"files"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Upload RAG Document File",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": "alzheimers.txt"
+										},
+										{
+											"key": "details",
+											"value": "{\"alzheimers.txt\": {\"metadata\": {\"type\": \"document\"}}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/files",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"files"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 17:33:59 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "665"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"meta\": {\n            \"resourceType\": \"files\",\n            \"owner\": \"04e05897-3c62-52aa-8640-ca126441e52c\",\n            \"ownerType\": \"user\",\n            \"location\": \"https://sit.aibots.gov.sg/latest/files/cdn/ab2faf23-3660-479d-b726-2e0fa4ae4024\",\n            \"version\": 1,\n            \"created\": \"2024-06-18T17:33:59.764072Z\",\n            \"lastModified\": null,\n            \"deleted\": null,\n            \"archived\": null\n        },\n        \"id\": \"ab2faf23-3660-479d-b726-2e0fa4ae4024\",\n        \"name\": \"alzheimers.txt\",\n        \"versions\": [],\n        \"folder\": \"/\",\n        \"ownership\": null,\n        \"metadata\": {\n            \"type\": \"document\",\n            \"filename\": \"alzheimers.txt\",\n            \"checksum\": \"18ad3cc829f10b8382d747350e96f43dc8ec443e2af09541e4fbc2189680a93213b4a898bf5a559895056ed7e0265e55\",\n            \"content_type\": \"text/plain\"\n        },\n        \"full_path\": \"/alzheimers.txt\",\n        \"fullPath\": \"/alzheimers.txt\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Create RAG Knowledge Base",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Successfully created Knowledge Base Items\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    jsonData.forEach(function(item) {\r",
+									"        pm.expect(item.id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"    });\r",
+									"    pm.environment.set('TEST_KNOWLEDGE_BASE1', jsonData[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"content\": \"{{TEST_DOCUMENT_FILE1_ID}}\",\n        \"name\" : \"{{TEST_DOCUMENT_FILE1_NAME}}\",\n        \"type\": \"file\",\n        \"metadata\": {\n            \"additionalProp1\": {}\n        }\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/knowledge/bases",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"knowledge",
+								"bases"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create RAG Knowledge Base",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n    {\n        \"content\": \"{{TEST_DOCUMENT_FILE1_ID}}\",\n        \"name\" : \"{{TEST_DOCUMENT_FILE1_NAME}}\",\n        \"type\": \"file\",\n        \"metadata\": {\n            \"additionalProp1\": {}\n        }\n    }\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/knowledge/bases",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"knowledge",
+										"bases"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 17:34:03 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "380"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"e74a8d14-9ee3-4861-90b1-e00e8c6efceb\",\n        \"name\": \"alzheimers.txt\",\n        \"description\": \"\",\n        \"type\": \"file\",\n        \"content\": \"ab2faf23-3660-479d-b726-2e0fa4ae4024\",\n        \"metadata\": {\n            \"additionalProp1\": {}\n        },\n        \"agents\": [],\n        \"storage\": {\n            \"type\": \"cms\",\n            \"location\": null\n        },\n        \"embeddings\": {\n            \"retrieval\": {},\n            \"chunks\": []\n        },\n        \"createdTimestamp\": \"2024-06-19T01:30:08.670542+08:00\",\n        \"user\": \"04e05897-3c62-52aa-8640-ca126441e52c\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Create RAG Agent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"pm.test(\"Successfully created a Agent Item\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"    pm.environment.set('TEST_RAG_AGENT_ID', jsonData.id)\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test RAG Agent 1\",\n    \"description\" : \"Test RAG Agent 1\",\n    \"agency\": \"govtech\",\n    \"knowledgeBases\": [\"{{TEST_KNOWLEDGE_BASE1}}\"]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{AGENTS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"agents"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create RAG Agent",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Test RAG Agent 1\",\n    \"description\" : \"Test RAG Agent 1\",\n    \"agency\": \"govtech\",\n    \"knowledgeBases\": [\"{{TEST_KNOWLEDGE_BASE1}}\"]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{AGENTS_URL}}/{{API_VERSION}}/agents",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{AGENTS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"agents"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 17:35:21 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "45"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"e08331a1-b614-48f1-ad49-81b483f3d086\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Run LLMStack Pipeline",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Successfully run LLMStack Pipeline\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    // pm.expect(jsonData.id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"    // pm.environment.set('TEST_CHAT1', jsonData.id)\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"agent\":\"{{TEST_RAG_AGENT_ID}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/rags/pipelines",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"rags",
+								"pipelines"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Run LLMStack Pipeline",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"agent\":\"{{TEST_RAG_AGENT_ID}}\"}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/rags/pipelines",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{CHATS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"rags",
+										"pipelines"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 22 Jun 2024 07:49:16 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "3091"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"retrieval\": {},\n    \"chunks\": [],\n    \"collection\": \"bc36aec0-88a7-40c8-924b-0c8bcf294a66\",\n    \"metadata\": {\n        \"key\": \"Client_launchpad__all_env/Flow_LLMS_Vector_Store_Upsert_Documents_83d6fc4e/alzheimers.txt\",\n        \"AWSAccessKeyId\": \"ASIARMV6MGMFOIQRV2Z5\",\n        \"x-amz-security-token\": \"IQoJb3JpZ2luX2VjEMj//////////wEaDmFwLXNvdXRoZWFzdC0xIkcwRQIhAIRhyERmPhutbhjexEvcaTaEva3L0kvW45qTKEO4XfvUAiB/MX6Uo/fz/9eu4qkubWaP830d4FVOp7fses089S2dbSq8AwhxEAAaDDA5NTk2MjI4MDcxNCIMB9E/0p34y1t8qoTrKpkD0Q0W2eZ8gVbrOGV7K0f+iEP4D8KKyEU6zHNj7c1Dws/iFRKsXIaoVFF3oWyvk9x/KWGiqdmNlvN62msgqv4/uRJ6B6Rj14bO146DghrW+hqs/NgQuQe9h4oiTtkY+X7ZWTEdDLj5sxDAllteWrvsgEp4dRT9pXklll5kg19YPiWMCD6JqbgHImPMLq2nE2P+kPYVkbwwc6cVdnm2V+X8ouI7TSfXkjBtU3xE9hpJyh9lRNWiJVcdp0e/nup11FSfe3bbRLfbEFJ3PVOWRPoReSkvhKTaNiNa411ZK2IxabtaM31Ct8oaKEtoYqao32YjIIiFO4QKbn63bNu5Ql253RsoeIzoaA4+XyYPRFtHKKfJOYPuMTBtO8c9jcfBoXgFHCeB0cfzA4Uo+9YNKntYQmmcklA7w7h5eJgrDUdwZtrrst1Y+/e1iiE7XCxNFI/kA/bI5VDrnI8iHe/uDuy6sEnAQeDmpitBhOnhHu+ctu0f++3MyDyG1PHKs+IJL0TG7+gfCPh3Kyw35k2SQjFuuzxwpVYgep8L8zD/g9qzBjqeASQItpo6lsw/RP6vZStZBPKkGVwutSfCawYJ7EY5ZXHFnHwUpCle+LLkvCxkwgTshKU4KeQXJAZ0nscKSHCjyffDrbmIpKVyHNiP/mk3qp2fkxcbQ3sIPQTUPjQmU9mVUd3UMvFNzSLN7xS1qMSAJSCvMcFIfhfpXLDoUqQKQFYdC3D70+XRlpWS6zOY7YS0iRbW2gMEYGC2XPmG4+2b\",\n        \"policy\": \"eyJleHBpcmF0aW9uIjogIjIwMjQtMDYtMjJUMDg6NDk6MjBaIiwgImNvbmRpdGlvbnMiOiBbeyJidWNrZXQiOiAibGxtLXN0YWNrLXN0Zy0wOTU5NjIyODA3MTQtdnNtLXVwbG9hZHMifSwgeyJrZXkiOiAiQ2xpZW50X2xhdW5jaHBhZF9fYWxsX2Vudi9GbG93X0xMTVNfVmVjdG9yX1N0b3JlX1Vwc2VydF9Eb2N1bWVudHNfODNkNmZjNGUvYWx6aGVpbWVycy50eHQifSwgeyJ4LWFtei1zZWN1cml0eS10b2tlbiI6ICJJUW9KYjNKcFoybHVYMlZqRU1qLy8vLy8vLy8vL3dFYURtRndMWE52ZFhSb1pXRnpkQzB4SWtjd1JRSWhBSVJoeUVSbVBodXRiaGpleEV2Y2FUYUV2YTNMMGt2VzQ1cVRLRU80WGZ2VUFpQi9NWDZVby9mei85ZXU0cWt1YldhUDgzMGQ0RlZPcDdmc2VzMDg5UzJkYlNxOEF3aHhFQUFhRERBNU5UazJNakk0TURjeE5DSU1COUUvMHAzNHkxdDhxb1RyS3BrRDBRMFcyZVo4Z1Zick9HVjdLMGYraUVQNEQ4S0t5RVU2ekhOajdjMUR3cy9pRlJLc1hJYW9WRkYzb1d5dms5eC9LV0dpcWRtTmx2TjYybXNncXY0L3VSSjZCNlJqMTRiTzE0NkRnaHJXK2hxcy9OZ1F1UWU5aDRvaVR0a1krWDdaV1RFZERMajVzeERBbGx0ZVdydnNnRXA0ZFJUOXBYa2xsbDVrZzE5WVBpV01DRDZKcWJnSEltUE1McTJuRTJQK2tQWVZrYnd3YzZjVmRubTJWK1g4b3VJN1RTZlhrakJ0VTN4RTlocEp5aDlsUk5XaUpWY2RwMGUvbnVwMTFGU2ZlM2JiUkxmYkVGSjNQVk9XUlBvUmVTa3ZoS1RhTmlOYTQxMVpLMkl4YWJ0YU0zMUN0OG9hS0V0b1lxYW8zMllqSUlpRk80UUtibjYzYk51NVFsMjUzUnNvZUl6b2FBNCtYeVlQUkZ0SEtLZkpPWVB1TVRCdE84YzlqY2ZCb1hnRkhDZUIwY2Z6QTRVbys5WU5LbnRZUW1tY2tsQTd3N2g1ZUpnckRVZHdadHJyc3QxWSsvZTFpaUU3WEN4TkZJL2tBL2JJNVZEcm5JOGlIZS91RHV5NnNFbkFRZURtcGl0QmhPbmhIdStjdHUwZisrM015RHlHMVBIS3MrSUpMMFRHNytnZkNQaDNLeXczNWsyU1FqRnV1enh3cFZZZ2VwOEw4ekQvZzlxekJqcWVBU1FJdHBvNmxzdy9SUDZ2WlN0WkJQS2tHVnd1dFNmQ2F3WUo3RVk1WlhIRm5Id1VwQ2xlK0xMa3ZDeGt3Z1RzaEtVNEtlUVhKQVowbnNjS1NIQ2p5ZmZEcmJtSXBLVnlITmlQL21rM3FwMmZreGNiUTNzSVBRVFVQalFtVTltVlVkM1VNdkZOelNMTjd4UzFxTVNBSlNDdk1jRklmaGZwWExEb1VxUUtRRllkQzNENzArWFJscFdTNnpPWTdZUzBpUmJXMmdNRVlHQzJYUG1HNCsyYiJ9XX0=\",\n        \"signature\": \"gS2Ay55PI2KrZpEz3SD1AadYLMc=\",\n        \"documents\": [\n            {\n                \"id\": \"alzheimers.txt #1\",\n                \"content\": \"Celebrities who had Alzheimer's:\\r\\nRonald Reagan\\r\\nSeth Rogen\\r\\nMargaret Thatcher\",\n                \"content_type\": \"text\",\n                \"metadata\": {\n                    \"source\": \"alzheimers.txt\"\n                }\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Test RAG Agent Chat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Successfully created a Chat Item\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"    pm.environment.set('TEST_CHAT_RAG', jsonData.id)\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"agents\":[\"{{TEST_RAG_AGENT_ID}}\"]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"chats"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Test RAG Agent Chat",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"agents\":[\"{{TEST_RAG_AGENT_ID}}\"]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{CHATS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"chats"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 17:43:49 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "45"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"b97f0c5e-7279-4e09-93f9-84ed360ba3ef\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Test RAG Agent Streaming Chat Message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Successfully created a Chat Message\", function () {\r",
+									"    var finish_reason = null\r",
+									"    console.log(pm.response.text());\r",
+									"    chunks = pm.response.text().split('\\n').filter(line => line.trim() !== '');\r",
+									"    for (const c of chunks) {\r",
+									"        chunk = JSON.parse(c);\r",
+									"        console.log(chunk);\r",
+									"\r",
+									"        if (!finish_reason) {\r",
+									"            pm.expect(chunk).to.have.property('role');\r",
+									"            pm.expect(chunk).to.have.property('content');\r",
+									"            pm.expect(chunk).to.have.property('finish_reason');\r",
+									"\r",
+									"            if (chunk.finish_reason){\r",
+									"                finish_reason = chunk.finish_reason\r",
+									"                pm.expect(finish_reason).to.be.oneOf([\"stop\",\r",
+									"                                                    \"length\",\r",
+									"                                                    \"tool_calls\",\r",
+									"                                                    \"content_filter\",\r",
+									"                                                    \"function_call\"]);\r",
+									"                \r",
+									"            }\r",
+									"        } else {\r",
+									"            pm.expect(chunk.id).to.match(/^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi);\r",
+									"            pm.expect(chunk.chat).to.eql(pm.environment.get(\"TEST_CHAT_RAG\"));\r",
+									"            pm.expect(chunk.model).to.eql(\"azure~gpt-4o\");\r",
+									"            pm.expect(chunk.systemPrompt.role).to.eql(\"system\");\r",
+									"            pm.expect(chunk.systemPrompt.content).to.contain(\"File:alzheimers.txt #1:\");\r",
+									"            pm.expect(chunk.systemPrompt.name).to.eql(null);\r",
+									"            pm.expect(chunk.systemPrompt.timestamp).to.eql(null);\r",
+									"            pm.expect(chunk.params).to.eql({});\r",
+									"            pm.expect(chunk.properties).to.eql({});\r",
+									"            pm.expect(chunk.query.role).to.eql('user');\r",
+									"            pm.expect(chunk.query.content).to.eql('Who has alzhemiers');\r",
+									"            pm.expect(chunk.query.timestamp).to.not.eql(null);\r",
+									"            pm.expect(chunk.response.role).eq('assistant');\r",
+									"            pm.expect(chunk.response.content).contains(\"Alzheimer's\");\r",
+									"            pm.expect(chunk.response.content).contains(\"Ronald Reagan\");\r",
+									"            pm.expect(chunk.response.timestamp).to.not.eql(null);\r",
+									"            pm.expect(Date.parse(chunk.response.timestamp)).to.gt(Date.parse(chunk.query.timestamp))\r",
+									"            pm.expect(chunk.tokens.query).to.eql(6);\r",
+									"            pm.expect(chunk.tokens.systemPrompt).to.eql(88);\r",
+									"            pm.expect(chunk.tokens.queryWithContext).to.eql(108);\r",
+									"            pm.expect(chunk.tokens.response).to.be.at.least(5);\r",
+									"            pm.environment.set('TEST_CHATMESSAGE_RAG', chunk.id)\r",
+									"        }\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "content",
+									"value": "Who has alzhemiers",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/{{TEST_CHAT_RAG}}/messages?streaming=true&cloak=false",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"chats",
+								"{{TEST_CHAT_RAG}}",
+								"messages"
+							],
+							"query": [
+								{
+									"key": "streaming",
+									"value": "true"
+								},
+								{
+									"key": "cloak",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Test RAG Agent Streaming Chat Message",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "content",
+											"value": "Who has alzhemiers",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/{{TEST_CHAT_RAG}}/messages?streaming=true&cloak=false",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{CHATS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"chats",
+										"{{TEST_CHAT_RAG}}",
+										"messages"
+									],
+									"query": [
+										{
+											"key": "streaming",
+											"value": "true"
+										},
+										{
+											"key": "cloak",
+											"value": "false"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 22 Jun 2024 07:57:45 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-type",
+									"value": "text/event-stream; charset=utf-8"
+								},
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\"role\":\"assistant\",\"content\":\"\",\"finish_reason\":null}\n{\"role\":null,\"content\":\"Some\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" well\",\"finish_reason\":null}\n{\"role\":null,\"content\":\"-known\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" celebrities\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" who\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" had\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" Alzheimer's\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" disease\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" include\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" Ronald\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" Reagan\",\"finish_reason\":null}\n{\"role\":null,\"content\":\",\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" Seth\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" R\",\"finish_reason\":null}\n{\"role\":null,\"content\":\"ogen\",\"finish_reason\":null}\n{\"role\":null,\"content\":\",\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" and\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" Margaret\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" Thatcher\",\"finish_reason\":null}\n{\"role\":null,\"content\":\".\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" It\",\"finish_reason\":null}\n{\"role\":null,\"content\":\"’s\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" a\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" challenging\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" condition\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" that\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" affects\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" memory\",\"finish_reason\":null}\n{\"role\":null,\"content\":\",\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" thinking\",\"finish_reason\":null}\n{\"role\":null,\"content\":\",\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" and\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" behavior\",\"finish_reason\":null}\n{\"role\":null,\"content\":\".\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" If\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" you're\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" looking\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" for\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" more\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" information\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" or\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" resources\",\"finish_reason\":null}\n{\"role\":null,\"content\":\",\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" I'd\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" be\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" happy\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" to\",\"finish_reason\":null}\n{\"role\":null,\"content\":\" help\",\"finish_reason\":null}\n{\"role\":null,\"content\":\"!\",\"finish_reason\":null}\n{\"role\":null,\"content\":null,\"finish_reason\":\"stop\"}\n{\"model\":\"azure~gpt-4o\",\"systemPrompt\":{\"role\":\"system\",\"content\":\"You are a personal AI assistant with the personality: helpful, clever, and very friendly\\n\\nYour purpose is: You serve as a personal assistant to public officers in singapore\\n\\nYou must abide by the following rules: You will not answer politically sensitive topics\\n\\nYou have knowledge of the following information: File:alzheimers.txt #1:\\nCelebrities who had Alzheimer's:\\r\\nRonald Reagan\\r\\nSeth Rogen\\r\\nMargaret Thatcher\\n\\n\",\"name\":null,\"timestamp\":null,\"options\":null},\"params\":{},\"properties\":{},\"id\":\"07acfa40-d8f2-490c-8229-f9a77eb9b6de\",\"chat\":\"ad310b56-b273-40a0-99f6-3fdffb925ac7\",\"query\":{\"role\":\"user\",\"content\":\"Who has alzhemiers\",\"name\":null,\"timestamp\":\"2024-06-22T07:57:46.440748Z\",\"options\":null},\"response\":{\"role\":\"assistant\",\"content\":\"Some well-known celebrities who had Alzheimer's disease include Ronald Reagan, Seth Rogen, and Margaret Thatcher. It’s a challenging condition that affects memory, thinking, and behavior. If you're looking for more information or resources, I'd be happy to help!\",\"name\":null,\"timestamp\":\"2024-06-22T07:57:49.274555Z\",\"options\":null,\"finish_reason\":\"stop\"},\"tokens\":{\"query\":6,\"systemPrompt\":88,\"queryWithContext\":108,\"response\":52},\"liked\":null,\"pinned\":false,\"chunks\":[]}\n"
+						}
+					]
+				},
+				{
+					"name": "Retrieve Test RAG Agent Chat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Retrieved Chat Item\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_CHAT_RAG\"));\r",
+									"    pm.expect(jsonData.name).to.eql(\"Who Has Alzhemiers\");\r",
+									"    pm.expect(jsonData.agents).to.include(pm.environment.get(\"TEST_RAG_AGENT_ID\"));\r",
+									"    pm.expect(jsonData.model).to.eql(\"azure~gpt-35-turbo\");\r",
+									"    pm.expect(jsonData.systemPrompt.template).to.eql(\"You are a personal AI assistant with the personality: ${personality}\\n\\nYour purpose is: ${instructions}\\n\\nYou must abide by the following rules: ${guardrails}\\n\\nYou have knowledge of the following information: ${knowledgeBase}\");\r",
+									"    pm.expect(jsonData.systemPrompt.variables.personality).to.eql(\"helpful, clever, and very friendly\");\r",
+									"    pm.expect(jsonData.systemPrompt.variables.instructions).to.eql(\"You serve as a personal assistant to public officers in singapore\");\r",
+									"    pm.expect(jsonData.systemPrompt.variables.guardrails).to.eql(\"You will not answer politically sensitive topics\");\r",
+									"    pm.expect(jsonData.systemPrompt.variables.knowledgeBase).to.eql(\"\");\r",
+									"    pm.expect(jsonData.systemPrompt.placeholders.length).to.eql(4);\r",
+									"    pm.expect(jsonData.userPrompt.template).to.eql(null);\r",
+									"    pm.expect(jsonData.userPrompt.variables).to.eql({});\r",
+									"    pm.expect(jsonData.userPrompt.placeholders.length).to.eql(0);\r",
+									"    pm.expect(jsonData.params).to.eql({});\r",
+									"    pm.expect(jsonData.properties).to.eql({});\r",
+									"    pm.expect(jsonData.tokens.query).to.eql(6);\r",
+									"    pm.expect(jsonData.tokens.system_prompt).to.eql(88);\r",
+									"    pm.expect(jsonData.tokens.query_with_context).to.eql(108);\r",
+									"    pm.expect(jsonData.tokens.response).to.gte(5);\r",
+									"    pm.expect(jsonData.tokens.queries_total).to.eql(6);\r",
+									"    pm.expect(jsonData.tokens.responses_total).to.gte(5);\r",
+									"    pm.expect(jsonData.messages.length).to.eql(1);\r",
+									"    pm.expect(jsonData.pinned).to.eql(false);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/{{TEST_CHAT_RAG}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"chats",
+								"{{TEST_CHAT_RAG}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Test RAG Agent Chat",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/{{TEST_CHAT_RAG}}",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{CHATS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"chats",
+										"{{TEST_CHAT_RAG}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 17:48:34 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "2416"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"meta\": {\n        \"resourceType\": \"chats\",\n        \"owner\": \"04e05897-3c62-52aa-8640-ca126441e52c\",\n        \"ownerType\": \"user\",\n        \"location\": \"https://sit.aibots.gov.sg/latest/chats/eeedc15a-d5f0-4318-bc30-c32ad5728809\",\n        \"version\": 1,\n        \"created\": \"2024-06-18T17:48:03.713000Z\",\n        \"lastModified\": \"2024-06-18T17:48:12.058000Z\",\n        \"deleted\": null,\n        \"archived\": null\n    },\n    \"name\": \"Who Has Alzhemiers\",\n    \"model\": \"azure~gpt-35-turbo\",\n    \"systemPrompt\": {\n        \"template\": \"You are a personal AI assistant with the personality: ${personality}\\n\\nYour purpose is: ${instructions}\\n\\nYou must abide by the following rules: ${guardrails}\\n\\nYou have knowledge of the following information: ${knowledgeBase}\",\n        \"variables\": {\n            \"personality\": \"helpful, clever, and very friendly\",\n            \"instructions\": \"You serve as a personal assistant to public officers in singapore\",\n            \"guardrails\": \"You will not answer politically sensitive topics\",\n            \"knowledgeBase\": \"\"\n        },\n        \"placeholders\": [\n            \"personality\",\n            \"instructions\",\n            \"guardrails\",\n            \"knowledgeBase\"\n        ]\n    },\n    \"params\": {},\n    \"properties\": {},\n    \"id\": \"eeedc15a-d5f0-4318-bc30-c32ad5728809\",\n    \"userPrompt\": {\n        \"template\": null,\n        \"variables\": {},\n        \"placeholders\": []\n    },\n    \"tokens\": {\n        \"query\": 6,\n        \"system_prompt\": 88,\n        \"query_with_context\": 108,\n        \"response\": 18,\n        \"queries_total\": 6,\n        \"responses_total\": 18\n    },\n    \"messages\": [\n        {\n            \"model\": \"azure~gpt-35-turbo\",\n            \"system_prompt\": {\n                \"role\": \"system\",\n                \"content\": \"You are a personal AI assistant with the personality: helpful, clever, and very friendly\\n\\nYour purpose is: You serve as a personal assistant to public officers in singapore\\n\\nYou must abide by the following rules: You will not answer politically sensitive topics\\n\\nYou have knowledge of the following information: File:alzheimers.txt #1:\\nCelebrities who had Alzheimer's:\\r\\nRonald Reagan\\r\\nSeth Rogen\\r\\nMargaret Thatcher\\n\\n\",\n                \"name\": null,\n                \"timestamp\": null,\n                \"options\": null\n            },\n            \"params\": {},\n            \"properties\": {},\n            \"id\": \"dc75ade0-caa4-4719-98a3-4fe4ec0f1427\",\n            \"chat\": \"eeedc15a-d5f0-4318-bc30-c32ad5728809\",\n            \"query\": {\n                \"role\": \"user\",\n                \"content\": \"Who has alzhemiers\",\n                \"name\": null,\n                \"timestamp\": \"2024-06-18T17:48:10.041000Z\",\n                \"options\": null\n            },\n            \"response\": {\n                \"role\": \"assistant\",\n                \"content\": \"Some celebrities who had Alzheimer's include Ronald Reagan, Seth Rogen, and Margaret Thatcher.\",\n                \"name\": null,\n                \"timestamp\": \"2024-06-18T17:48:12.055000Z\",\n                \"options\": null,\n                \"finish_reason\": \"stop\"\n            },\n            \"tokens\": {\n                \"query\": 6,\n                \"system_prompt\": 88,\n                \"query_with_context\": 108,\n                \"response\": 18\n            },\n            \"liked\": null,\n            \"pinned\": false,\n            \"chunks\": []\n        }\n    ],\n    \"agents\": [\n        \"324d48e2-f761-4fc9-8bd8-9737bc74f0e3\"\n    ],\n    \"pinned\": false\n}"
+						}
+					]
+				},
+				{
+					"name": "Retrieve Test RAG Agent Chat Messages",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Retrieved Chat Messages\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"    pm.expect(pm.environment.get(\"TEST_CHATMESSAGE_RAG\") in jsonData.map((x, i) => {return x.id})).to.eql(false);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/{{TEST_CHAT_RAG}}/messages",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"chats",
+								"{{TEST_CHAT_RAG}}",
+								"messages"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Test RAG Agent Chat Messages",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/{{TEST_CHAT_RAG}}/messages",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{CHATS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"chats",
+										"{{TEST_CHAT_RAG}}",
+										"messages"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 17:48:37 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "1145"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"model\": \"azure~gpt-35-turbo\",\n        \"systemPrompt\": {\n            \"role\": \"system\",\n            \"content\": \"You are a personal AI assistant with the personality: helpful, clever, and very friendly\\n\\nYour purpose is: You serve as a personal assistant to public officers in singapore\\n\\nYou must abide by the following rules: You will not answer politically sensitive topics\\n\\nYou have knowledge of the following information: File:alzheimers.txt #1:\\nCelebrities who had Alzheimer's:\\r\\nRonald Reagan\\r\\nSeth Rogen\\r\\nMargaret Thatcher\\n\\n\",\n            \"name\": null,\n            \"timestamp\": null,\n            \"options\": null\n        },\n        \"params\": {},\n        \"properties\": {},\n        \"id\": \"dc75ade0-caa4-4719-98a3-4fe4ec0f1427\",\n        \"chat\": \"eeedc15a-d5f0-4318-bc30-c32ad5728809\",\n        \"query\": {\n            \"role\": \"user\",\n            \"content\": \"Who has alzhemiers\",\n            \"name\": null,\n            \"timestamp\": \"2024-06-18T17:48:10.041000Z\",\n            \"options\": null\n        },\n        \"response\": {\n            \"role\": \"assistant\",\n            \"content\": \"Some celebrities who had Alzheimer's include Ronald Reagan, Seth Rogen, and Margaret Thatcher.\",\n            \"name\": null,\n            \"timestamp\": \"2024-06-18T17:48:12.055000Z\",\n            \"options\": null,\n            \"finish_reason\": \"stop\"\n        },\n        \"tokens\": {\n            \"query\": 6,\n            \"system_prompt\": 88,\n            \"query_with_context\": 108,\n            \"response\": 18\n        },\n        \"liked\": null,\n        \"pinned\": false,\n        \"chunks\": []\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Retrieve Test RAG Agent Chat Message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Retrieved Chat Message\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"TEST_CHATMESSAGE_RAG\"));\r",
+									"    pm.expect(jsonData.chat).to.eql(pm.environment.get(\"TEST_CHAT_RAG\"));\r",
+									"    pm.expect(jsonData.model).to.eql(\"azure~gpt-35-turbo\");\r",
+									"    pm.expect(jsonData.systemPrompt.role).to.eql(\"system\");\r",
+									"    pm.expect(jsonData.systemPrompt.content).to.eql(\"You are a personal AI assistant with the personality: helpful, clever, and very friendly\\n\\nYour purpose is: You serve as a personal assistant to public officers in singapore\\n\\nYou must abide by the following rules: You will not answer politically sensitive topics\\n\\nYou have knowledge of the following information: File:alzheimers.txt #1:\\nCelebrities who had Alzheimer's:\\r\\nRonald Reagan\\r\\nSeth Rogen\\r\\nMargaret Thatcher\\n\\n\");\r",
+									"    pm.expect(jsonData.systemPrompt.name).to.eql(null);\r",
+									"    pm.expect(jsonData.systemPrompt.timestamp).to.eql(null);\r",
+									"    pm.expect(jsonData.params).to.eql({});\r",
+									"    pm.expect(jsonData.properties).to.eql({});\r",
+									"    pm.expect(jsonData.query.role).to.eql('user');\r",
+									"    pm.expect(jsonData.query.content).to.eql('Who has alzhemiers');\r",
+									"    pm.expect(jsonData.query.timestamp).to.not.eql(null);\r",
+									"    pm.expect(jsonData.response.role).eq('assistant');\r",
+									"    pm.expect(jsonData.response.content).to.include(\"Alzheimer's\");\r",
+									"    pm.expect(jsonData.response.content).to.include(\"Ronald Reagan\");\r",
+									"    pm.expect(jsonData.response.timestamp).to.not.eql(null);\r",
+									"    pm.expect(Date.parse(jsonData.response.timestamp)).to.gt(Date.parse(jsonData.query.timestamp))\r",
+									"    pm.expect(jsonData.tokens.query).to.eql(6);\r",
+									"    pm.expect(jsonData.tokens.system_prompt).to.eql(88);\r",
+									"    pm.expect(jsonData.tokens.query_with_context).to.eql(108);\r",
+									"    pm.expect(jsonData.tokens.response).to.gte(5);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/{{TEST_CHAT_RAG}}/messages/{{TEST_CHATMESSAGE_RAG}}",
+							"protocol": "{{SCHEME}}",
+							"host": [
+								"{{CHATS_URL}}"
+							],
+							"path": [
+								"{{API_VERSION}}",
+								"chats",
+								"{{TEST_CHAT_RAG}}",
+								"messages",
+								"{{TEST_CHATMESSAGE_RAG}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve Test RAG Agent Chat Message",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SCHEME}}://{{CHATS_URL}}/{{API_VERSION}}/chats/{{TEST_CHAT_RAG}}/messages/{{TEST_CHATMESSAGE_RAG}}",
+									"protocol": "{{SCHEME}}",
+									"host": [
+										"{{CHATS_URL}}"
+									],
+									"path": [
+										"{{API_VERSION}}",
+										"chats",
+										"{{TEST_CHAT_RAG}}",
+										"messages",
+										"{{TEST_CHATMESSAGE_RAG}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Tue, 18 Jun 2024 17:48:40 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "1143"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"model\": \"azure~gpt-35-turbo\",\n    \"systemPrompt\": {\n        \"role\": \"system\",\n        \"content\": \"You are a personal AI assistant with the personality: helpful, clever, and very friendly\\n\\nYour purpose is: You serve as a personal assistant to public officers in singapore\\n\\nYou must abide by the following rules: You will not answer politically sensitive topics\\n\\nYou have knowledge of the following information: File:alzheimers.txt #1:\\nCelebrities who had Alzheimer's:\\r\\nRonald Reagan\\r\\nSeth Rogen\\r\\nMargaret Thatcher\\n\\n\",\n        \"name\": null,\n        \"timestamp\": null,\n        \"options\": null\n    },\n    \"params\": {},\n    \"properties\": {},\n    \"id\": \"dc75ade0-caa4-4719-98a3-4fe4ec0f1427\",\n    \"chat\": \"eeedc15a-d5f0-4318-bc30-c32ad5728809\",\n    \"query\": {\n        \"role\": \"user\",\n        \"content\": \"Who has alzhemiers\",\n        \"name\": null,\n        \"timestamp\": \"2024-06-18T17:48:10.041000Z\",\n        \"options\": null\n    },\n    \"response\": {\n        \"role\": \"assistant\",\n        \"content\": \"Some celebrities who had Alzheimer's include Ronald Reagan, Seth Rogen, and Margaret Thatcher.\",\n        \"name\": null,\n        \"timestamp\": \"2024-06-18T17:48:12.055000Z\",\n        \"options\": null,\n        \"finish_reason\": \"stop\"\n    },\n    \"tokens\": {\n        \"query\": 6,\n        \"system_prompt\": 88,\n        \"query_with_context\": 108,\n        \"response\": 18\n    },\n    \"liked\": null,\n    \"pinned\": false,\n    \"chunks\": []\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
