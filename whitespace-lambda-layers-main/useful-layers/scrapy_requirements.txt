@@ -1,0 +1,2 @@
+Scrapy==2.6.1
+newspaper3k==0.2.8
