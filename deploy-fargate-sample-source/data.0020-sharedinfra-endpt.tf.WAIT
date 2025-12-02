@@ -1,0 +1,90 @@
+data "aws_vpc_endpoint" "ec2messages" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.ec2messages"]
+    }
+}
+
+data "aws_vpc_endpoint" "ecr_api" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.ecr.api"]
+    }
+}
+
+data "aws_vpc_endpoint" "ecr_dkr" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.ecr.dkr"]
+    }
+}
+
+data "aws_vpc_endpoint" "email-smtp" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.email-smtp"]
+    }
+}
+
+data "aws_vpc_endpoint" "execute-api" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.execute-api"]
+    }
+}
+
+data "aws_vpc_endpoint" "logs" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.logs"]
+    }
+}
+
+data "aws_vpc_endpoint" "sagemaker_runtime" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.sagemaker.runtime"]
+    }
+}
+
+data "aws_vpc_endpoint" "secretsmanager" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.secretsmanager"]
+    }
+}
+
+data "aws_vpc_endpoint" "sns" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.sns"]
+    }
+}
+
+data "aws_vpc_endpoint" "sqs" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.sqs"]
+    }
+}
+
+data "aws_vpc_endpoint" "ssm" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.ssm"]
+    }
+}
+
+data "aws_vpc_endpoint" "ssmmessages" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.ssmmessages"]
+    }
+}
+
+data "aws_vpc_endpoint" "sts" {
+    filter {
+        name     = "tag:Name"
+        values = ["${local.vpce_prefix}-${terraform.workspace}ez-sharedinfra-com.amazonaws.ap-southeast-1.sts"]
+    }
+}
