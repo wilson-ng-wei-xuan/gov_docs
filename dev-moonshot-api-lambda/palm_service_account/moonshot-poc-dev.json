@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "moonshot-poc-dev",
+  "private_key_id": "d6f0b48a810ae85d8149c9e9ee8a2442a79780ad",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDduB9H6e47/Tru\nZpTDmk3MKkeX7LQbu65sbO8xZk64p7MSyNWDsv14wxqaaKXLSoXMlT8MDMlHhaS1\nC9j65+YlXfzt9UVvFB2w06a3Na1XsfRyJva0PMwPyqQ5UGbhWDcZQPVooNcw1Z7m\nivhPpebDrFMwUtqlfaMeHGEEA/ptagJr0sC8AC45W1NrioKcbziipOKaLHQwmSHy\nua8ufABKH7Qw274fTnZJA6KpqYIGIZtSpsJXvH0Mtkg7AD0RlNjCP1/my3zkNfGb\n7xvtal60VljOuwsyjXRCIIrYzemxPf1DZSk5UpHxqz7nuA1/ggyT7c/1zN0HCG0Y\naihc4vNJAgMBAAECgf9aEnKixGYD+Nv3/bRxwj3Ys1RiY8bHfXdelOKXLvjMC1S0\nTOJwnkZayOgF0n2IGL5CXl8+hfM/GwvOgQGk7JCSnZwjD4ElnwZwz4rq4uOIvMKR\nnUKb9hbwU2Jj5kXlRfEcUUdhOfYx4JatEcfOk5cr5tXky8QHdwLNOLow52zVBXpQ\ntDjpyrOJlrwLibR/0r9Yn4bE2D/dFw7zsJihDqronMQCWofYBz+gvXeuGVyW9sEq\nJs0UONwM7RXb8tGyI3DQlB+CrDRYazYt0jiTYzj+gqDh8LWKGvsH5EHenKczjxP8\nh/P0yURhanS/s8FpEP7AHiKXF4i7eAmjropSFCECgYEA9OqLZN7FVEOAZCfI6jvE\nQdiDvzBqB4Yl8fQs8dc0LQm/gKHno5e9WrBtFqmQJ+5ZjyumLHhMujAIvLpwj4bQ\nh2mswBz7A0SobU5vzus6Vs7O+t/U37aOC8SOxmcY6R7i2v5MgRcpc8qw0Z9zzSuT\nrsfJjAYyMGCzTR4H6yLAaRcCgYEA58DUzgmAuSZfMCp4XTWFbvzo1iPsObD/r+QX\nsrWsBJDq2Wm8nvdr9Q7FFM/vZyqsH4c7vybDms5vrAfcxwho551yxvQpys8/1oYI\nKZHrmqYvrjJsGRKbqp3iSfR9j8zpNxTT4gLNfb3pmS9DAoMjhaIEjAofSp7wxKJ1\nfTicgp8CgYEAzlS6UqSKwc6MX9RUo2Dumjp545w591TAqvH221deEYNg3lGIAH5Z\nfAmeHbWESN+4e7FeMaC3ozPMaJL5OTFuhGY2rzK7FanF6zBlaYEqiO952Eix4ja9\nvJQ/ZE5+4gavP6d1dFu7BF4CUNdwi6zmohyWY2zk43TUGWfva9y/FMkCgYBXKD8g\nCZTejN7Jl39S1pkLB5RtTG8/tyBBvw9mh0pdIT8hatGkGzr/m4Fk9Vp8uyCmbs56\nchKoOrDmysIuHCyPxrfuuM6q1kyU2i1hrN4leBCAe7gJqeTfQqdi1s8N8KtYqr2Q\nxysO+ghLMuoJnNYUIL2DCR+BicrUuKBk6pB50wKBgQCc7gG5FDMwWIO92gJhKSEu\nfj1OVy48fGqTmLPa3PpmGtgrnasovanB6QJjTebzQc/qCJoIPcDlbpsfErgZPJcW\nrSYmZrIv2CCCVJJYDLFta7xxhLlkXI63SbUh2rxfvcC+ntqoGM0XHs42z7EzvhI1\nd7AXPEuUUyDYyV7JmksrNg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "moonshot-vertex-ai@moonshot-poc-dev.iam.gserviceaccount.com",
+  "client_id": "110972052083976873700",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/moonshot-vertex-ai%40moonshot-poc-dev.iam.gserviceaccount.com"
+}
